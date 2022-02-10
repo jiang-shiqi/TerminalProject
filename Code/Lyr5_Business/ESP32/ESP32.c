@@ -8,14 +8,14 @@ uint16_t ESP32_SerialNumber;
 uint8_t  ESP32_ConnectionFlag;
 uint8_t  ESP32_ConnectionStatus;
 
-uint8_t  ESP32_Wait_Flag;		//µÈ´ı×´Ì¬
-uint8_t  ESP32_Ready_Flag;		//ESP32·µ»ØµÄ¾ÍĞ÷×´Ì¬
-uint8_t  ESP32_Ready_Flag;		//ESP32·µ»ØµÄ´ı·¢ËÍ×´Ì¬
+uint8_t  ESP32_Wait_Flag;		//ç­‰å¾…çŠ¶æ€
+uint8_t  ESP32_Ready_Flag;		//ESP32è¿”å›çš„å°±ç»ªçŠ¶æ€
+uint8_t  ESP32_Ready_Flag;		//ESP32è¿”å›çš„å¾…å‘é€çŠ¶æ€
 
 char ReceiveNetDatBuf[1024];
 uint16_t ReceiveNetDatLenth;
 
-//ESP32³õÊ¼»¯º¯Êı
+//ESP32åˆå§‹åŒ–å‡½æ•°
 void ESP32_Init(void)
 {
 	ESP32_SerialNumber = 0;
@@ -25,7 +25,7 @@ void ESP32_Init(void)
 	ESP32_Wait_Flag = 0;
 }
 
-//ESP32 ·şÎñº¯Êı
+//ESP32 æœåŠ¡å‡½æ•°
 void ESP32_Service(void)
 {
 	if(ESP32_ConnectionFlag == 0)
@@ -39,7 +39,7 @@ void ESP32_Service(void)
 	else 
 	{
 		ESP32_ConnectionStatus = ESP32_SelectStatus();
-		//ÒÑÁ¬½Óµ½·şÎñÆ÷
+		//å·²è¿æ¥åˆ°æœåŠ¡å™¨
 		if(ESP32_ConnectionStatus == 2)
 		{
 			ESP32_SendNetData("Echo\n",5);
@@ -55,10 +55,10 @@ void ESP32_Service(void)
 	}
 }
 
-/**@brief ¶ÁÈ¡ID
-* @return º¯ÊıÖ´ĞĞ½á¹û
-* - EX_ERR        	ÉÏ±¨Ê§°Ü 
-* - other           Éè±¸IDºÅ
+/**@brief è¯»å–ID
+* @return å‡½æ•°æ‰§è¡Œç»“æœ
+* - EX_ERR        	ä¸ŠæŠ¥å¤±è´¥ 
+* - other           è®¾å¤‡IDå·
 */
 int16_t ESP32_ReadDeviceID(void)
 { 
@@ -86,11 +86,11 @@ int16_t ESP32_ReadDeviceID(void)
 }
 
 
-/**@brief ·¢ËÍÍøÂçÊı¾İ
-* @return º¯ÊıÖ´ĞĞ½á¹û
-* - EX_ERR        	ÉÏ±¨Ê§°Ü 
-* - EX_OK      		ÉÏ±¨³É¹¦
-* - -2        		ESP32Î´Á¬½Óµ½·şÎñÆ÷
+/**@brief å‘é€ç½‘ç»œæ•°æ®
+* @return å‡½æ•°æ‰§è¡Œç»“æœ
+* - EX_ERR        	ä¸ŠæŠ¥å¤±è´¥ 
+* - EX_OK      		ä¸ŠæŠ¥æˆåŠŸ
+* - -2        		ESP32æœªè¿æ¥åˆ°æœåŠ¡å™¨
 */
 int16_t ESP32_SendNetData(char *sendBuf, uint16_t lenth)
 { 
@@ -139,11 +139,11 @@ int16_t ESP32_SendNetData(char *sendBuf, uint16_t lenth)
 	return res;
 }
 
-/**@brief ½ÓÊÕÍøÂçÊı¾İ
-* @return º¯ÊıÖ´ĞĞ½á¹û 
-* - EX_ERR        	ÉÏ±¨Ê§°Ü 
-* - EX_OK      		ÉÏ±¨³É¹¦ 
-* - -2              Ã»ÓĞĞÂµÄÍøÂçÊı¾İ 
+/**@brief æ¥æ”¶ç½‘ç»œæ•°æ®
+* @return å‡½æ•°æ‰§è¡Œç»“æœ 
+* - EX_ERR        	ä¸ŠæŠ¥å¤±è´¥ 
+* - EX_OK      		ä¸ŠæŠ¥æˆåŠŸ 
+* - -2              æ²¡æœ‰æ–°çš„ç½‘ç»œæ•°æ® 
 */
 int16_t ESP32_ReceiveNetData(char *receiveBuf, uint16_t lenth)
 {
@@ -161,7 +161,7 @@ int16_t ESP32_ReceiveNetData(char *receiveBuf, uint16_t lenth)
 	   ((esp32_buf[4] | esp32_buf[5]) != 0) \
 	)
 	{
-		//»ñÈ¡½ÓÊÕ³¤¶È
+		//è·å–æ¥æ”¶é•¿åº¦
 		lenth = esp32_buf[4] << 8 |esp32_buf[5];
 		// delay_ms(1);
 		esp32_buf[0] = ESP32_START_BIT >> 8;
@@ -170,10 +170,10 @@ int16_t ESP32_ReceiveNetData(char *receiveBuf, uint16_t lenth)
 		esp32_buf[3] = ESP32_COM_RECEIVER & 0x00ff; 
 		esp32_buf[4] = 'O';
 		esp32_buf[5] = 'K';
-		//´«ÊäÓ¦´ğÊı¾İ
+		//ä¼ è¾“åº”ç­”æ•°æ®
 		ESP32_TransmitData( esp32_buf, NULL, 8);
 		// delay_ms(1);
-		//½ÓÊÕÍøÂçÊı¾İ
+		//æ¥æ”¶ç½‘ç»œæ•°æ®
 		ESP32_TransmitData( NULL, receiveBuf, ((lenth >> 2) + 1) << 2);
 
 		res = EX_OK;
@@ -185,7 +185,7 @@ int16_t ESP32_ReceiveNetData(char *receiveBuf, uint16_t lenth)
 	   ((esp32_buf[4] | esp32_buf[5]) == 0) \
 	)
 	{
-		//Ã»ÓĞĞÂµÄÍøÂçÊı¾İ
+		//æ²¡æœ‰æ–°çš„ç½‘ç»œæ•°æ®
 		res = -2;
 	}
 	else
@@ -196,10 +196,10 @@ int16_t ESP32_ReceiveNetData(char *receiveBuf, uint16_t lenth)
 	return res;
 }
 
-/**@brief ²éÑ¯ESPÁªÍø×´Ì¬
-* @return º¯ÊıÖ´ĞĞ½á¹û
-* - EX_ERR        	ÉÏ±¨Ê§°Ü 
-* - other      		ESPÄ£¿é×´Ì¬
+/**@brief æŸ¥è¯¢ESPè”ç½‘çŠ¶æ€
+* @return å‡½æ•°æ‰§è¡Œç»“æœ
+* - EX_ERR        	ä¸ŠæŠ¥å¤±è´¥ 
+* - other      		ESPæ¨¡å—çŠ¶æ€
 */
 int16_t ESP32_SelectStatus(void)
 { 
@@ -226,8 +226,8 @@ int16_t ESP32_SelectStatus(void)
 	return res;
 }
 
-/**@brief ·¢ËÍÖ¸Áî
-* @param[in]  com            ·¢ËÍµÄÖ¸Áî 
+/**@brief å‘é€æŒ‡ä»¤
+* @param[in]  com            å‘é€çš„æŒ‡ä»¤ 
 */
 void ESP32_SendCom(uint16_t com)
 {
@@ -236,17 +236,17 @@ void ESP32_SendCom(uint16_t com)
 	// delay_ms(1);
 	while(ESP32_HANDSHAKE_IO == 1);
 	ESP32_Wait_Flag = 0;
-	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_START_BIT>>8);       //·¢ËÍÆğÊ¼Î»
+	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_START_BIT>>8);       //å‘é€èµ·å§‹ä½
 	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_START_BIT&0x00ff);
-	SPI_ReadWriteByte(ESP32_SPICOM, com>>8);                   //·¢ËÍÖ¸Áî
+	SPI_ReadWriteByte(ESP32_SPICOM, com>>8);                   //å‘é€æŒ‡ä»¤
 	SPI_ReadWriteByte(ESP32_SPICOM, com&0x00ff);
 	ESP_CS = 1;		   
 }
 
-/**@brief ESP32 SPI´«ÊäÊı¾İ
-* @param[in]  sendBuf            ·¢ËÍÊı¾İ»º´æ  
-* @param[in]  readBuf            ½ÓÊÕÊı¾İ»º´æ  
-* @param[in]  len                ´«Êä³¤¶È      -³¤¶È±ØĞëÎª4µÄ±¶Êı
+/**@brief ESP32 SPIä¼ è¾“æ•°æ®
+* @param[in]  sendBuf            å‘é€æ•°æ®ç¼“å­˜  
+* @param[in]  readBuf            æ¥æ”¶æ•°æ®ç¼“å­˜  
+* @param[in]  len                ä¼ è¾“é•¿åº¦      -é•¿åº¦å¿…é¡»ä¸º4çš„å€æ•°
 */
 void ESP32_TransmitData(char *sendBuf,char *readBuf, uint16_t len)
 {
@@ -255,7 +255,7 @@ void ESP32_TransmitData(char *sendBuf,char *readBuf, uint16_t len)
 	if(((sendBuf == NULL)&&(readBuf == NULL))||(len == 0))
 		return ;
 	
-	//len²¹Î»
+	//lenè¡¥ä½
 	if((len & 0x03) != 0x00)
 	{
 		len = (((len>>2)+1)<<2);

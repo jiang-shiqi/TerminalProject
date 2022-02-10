@@ -2,19 +2,19 @@
 #define __ESP32_H			    
 #include "sys.h"  
 
-//Ê¹ÓÃµÄSPI¶Ë¿Ú
+//ä½¿ç”¨çš„SPIç«¯å£
 #define ESP32_SPICOM       SPI1
 
-//Éè±¸ID
+//è®¾å¤‡ID
 #define ESP32_DRIVE_ID     0XEF17
 
-//ÎÕÊÖIO
+//æ¡æ‰‹IO
 #define ESP32_HANDSHAKE_IO   ADC1_IN1
 
 
-//ÆğÊ¼·û
+//èµ·å§‹ç¬¦
 #define ESP32_START_BIT             0x5577
-//Ö¸Áî·û
+//æŒ‡ä»¤ç¬¦
 #define ESP32_COM_RESET             0x0001
 #define ESP32_COM_REQUEST_ID        0x0002
 #define ESP32_COM_SENDER            0x0003
@@ -26,13 +26,13 @@
 
 
 
-//È«¾Ö±äÁ¿
+//å…¨å±€å˜é‡
 extern uint16_t ESP32_SerialNumber;
 extern uint8_t  ESP32_Wait_Flag;
 extern uint8_t  ESP32_Ready_Flag;
 
 
-//º¯Êı
+//å‡½æ•°
 void ESP32_Init(void);
 void ESP32_Service(void);
 

@@ -2,31 +2,31 @@
 
 struct ESP32_Class_st_t ESP32_Drive;
 
-//RSP32³õÊ¼»¯
+//RSP32åˆå§‹åŒ–
 void ESP32_Init(void)
 {
-    ESP32_Drive.initStatus = 1;                          //³õÊ¼»¯×´Ì¬
-	ESP32_Drive.connectStatus = ESPStatus_NoResponse;    //Á¬½Ó×´Ì¬ 
-	ESP32_Drive.setAttr.serverAutoConnectEnable = 1;     //¿ÉÉèÖÃÊôĞÔ  
+    ESP32_Drive.initStatus = 1;                          //åˆå§‹åŒ–çŠ¶æ€
+	ESP32_Drive.connectStatus = ESPStatus_NoResponse;    //è¿æ¥çŠ¶æ€ 
+	ESP32_Drive.setAttr.serverAutoConnectEnable = 1;     //å¯è®¾ç½®å±æ€§  
     ESP32_Drive.setAttr.wifiAutoConnectEnable = 1;
-	ESP32_Drive.sendComStatus = 0;                       //·¢ËÍÖ¸ÁîµÄ×´Ì¬
-	ESP32_Drive.callbackTimeout = 0;                     //»Øµ÷³¬Ê±Ê±¼ä
-	ESP32_Drive.keepAlive = 100;                         //ĞÄÌø°üÊ±¼ä
-	ESP32_Drive.errorNum = 0;                            //´íÎó¼ÆÊıÆ÷
-	// ESP32_Drive.netSendoutData; //´ı·¢ËÍµÄÍøÂçÊı¾İ
-	// ESP32_Drive.netReceivedData;//½ÓÊÕµ½µÄÍøÂçÊı¾İ
-	ESP32_Drive.WifiConnectStatus = 0;                   //wifiÁ¬½Ó×´Ì¬
-	ESP32_Drive.WifiAttr;                  //WiFiÊôĞÔ
-	ESP32_Drive.serverAttr;              //·şÎñÆ÷ÊôĞÔ
-	ESP32_Drive.stnpTime;                     //STNPÊ±¼ä
-	//º¯ÊıÖ¸Õë³õÊ¼»¯
-	ESP32_Drive.connectWifi = connectWifi;            //Á¬½ÓWiFi
-	ESP32_Drive.disconnectWifi = disconnectWifi;          //¶Ï¿ªWiFi
-	ESP32_Drive.connectServer = connectServer;         //Á¬½Ó·şÎñÆ÷
-	ESP32_Drive.disconnectServer = disconnectServer;  //¶Ï¿ª·şÎñÆ÷
-	ESP32_Drive.netSendOutFun = netSendOutFun; //·¢ËÍÍøÂçÊı¾İ
-	ESP32_Drive.netReceivedFun = netReceivedFun; //½ÓÊÕÍøÂçÊı¾İ
-	ESP32_Drive.selectSNTPTime = selectSNTPTime;          //²éÑ¯SNTPÊ±¼ä
+	ESP32_Drive.sendComStatus = 0;                       //å‘é€æŒ‡ä»¤çš„çŠ¶æ€
+	ESP32_Drive.callbackTimeout = 0;                     //å›è°ƒè¶…æ—¶æ—¶é—´
+	ESP32_Drive.keepAlive = 100;                         //å¿ƒè·³åŒ…æ—¶é—´
+	ESP32_Drive.errorNum = 0;                            //é”™è¯¯è®¡æ•°å™¨
+	// ESP32_Drive.netSendoutData; //å¾…å‘é€çš„ç½‘ç»œæ•°æ®
+	// ESP32_Drive.netReceivedData;//æ¥æ”¶åˆ°çš„ç½‘ç»œæ•°æ®
+	ESP32_Drive.WifiConnectStatus = 0;                   //wifiè¿æ¥çŠ¶æ€
+	ESP32_Drive.WifiAttr;                  //WiFiå±æ€§
+	ESP32_Drive.serverAttr;              //æœåŠ¡å™¨å±æ€§
+	ESP32_Drive.stnpTime;                     //STNPæ—¶é—´
+	//å‡½æ•°æŒ‡é’ˆåˆå§‹åŒ–
+	ESP32_Drive.connectWifi = connectWifi;            //è¿æ¥WiFi
+	ESP32_Drive.disconnectWifi = disconnectWifi;          //æ–­å¼€WiFi
+	ESP32_Drive.connectServer = connectServer;         //è¿æ¥æœåŠ¡å™¨
+	ESP32_Drive.disconnectServer = disconnectServer;  //æ–­å¼€æœåŠ¡å™¨
+	ESP32_Drive.netSendOutFun = netSendOutFun; //å‘é€ç½‘ç»œæ•°æ®
+	ESP32_Drive.netReceivedFun = netReceivedFun; //æ¥æ”¶ç½‘ç»œæ•°æ®
+	ESP32_Drive.selectSNTPTime = selectSNTPTime;          //æŸ¥è¯¢SNTPæ—¶é—´
 }
 
 void ESP32_Service(void)
@@ -34,21 +34,21 @@ void ESP32_Service(void)
 	uint8_t res8;
 	uint16_t res16;
 	uint32_t res32; 
-	//×´Ì¬ÅĞ¶Ï ×´Ì¬´¦Àí
+	//çŠ¶æ€åˆ¤æ–­ çŠ¶æ€å¤„ç†
 	switch(ESP32_Drive.connectStatus)
 	{
-		case ESPStatus_NoResponse:               //Ä£¿éÎŞÏìÓ¦
-			//²éÑ¯Ä£¿éID
+		case ESPStatus_NoResponse:               //æ¨¡å—æ— å“åº”
+			//æŸ¥è¯¢æ¨¡å—ID
 			if(ESP32_Read_ID() == ESP32_SPI_ID)
 				ESP32_Drive.connectStatus = ESPStatus_NoInit;
 			break;
-		case ESPStatus_NoInit:                   //Ä£¿éÎ´³õÊ¼»¯
-			//ÏòESP32Ğ´ÈëWiFiĞÅÏ¢
-			//ÏòESP32Ğ´Èë·şÎñÆ÷ĞÅÏ¢
-			//´ı¶¨£º²éÑ¯STNPÊ±¼ä
+		case ESPStatus_NoInit:                   //æ¨¡å—æœªåˆå§‹åŒ–
+			//å‘ESP32å†™å…¥WiFiä¿¡æ¯
+			//å‘ESP32å†™å…¥æœåŠ¡å™¨ä¿¡æ¯
+			//å¾…å®šï¼šæŸ¥è¯¢STNPæ—¶é—´
 			break;
-		case ESPStatus_NoWifi:                   //Î´Á¬½Óµ½WiFi
-			//ÅäÖÃÎª×Ô¶¯Á¬½ÓWiFiÊ± Ö±½ÓÁ¬½ÓWiFi
+		case ESPStatus_NoWifi:                   //æœªè¿æ¥åˆ°WiFi
+			//é…ç½®ä¸ºè‡ªåŠ¨è¿æ¥WiFiæ—¶ ç›´æ¥è¿æ¥WiFi
 			if((ESP32_Drive.setAttr.wifiAutoConnectEnable == 1)&&(ESP32_Drive.WifiConnectStatus == 0))
 			{
 				res8 = connectWifi(&ESP32_Drive);
@@ -68,32 +68,32 @@ void ESP32_Service(void)
 				{
 					switch(ESP32_Drive.WifiConnectStatus)
 					{
-						case 0:        //·µ»Ø´íÎó
+						case 0:        //è¿”å›é”™è¯¯
 							ESP32_Drive.WifiConnectStatus = 0;
 							ESP32_Drive.errorNum ++;
 							break;
-						case 1:        //Á¬½Ó³É¹¦
+						case 1:        //è¿æ¥æˆåŠŸ
 							ESP32_Drive.connectStatus = ESPStatus_ConnectedWifi;
 							ESP32_Drive.WifiConnectStatus = 1;
 							ESP32_Drive.errorNum =0;
 							break;
-						case 2:        //ÕıÔÚÁ¬½Ó
+						case 2:        //æ­£åœ¨è¿æ¥
 							break;
-						case 3:        //Á¬½ÓÊ§°Ü
+						case 3:        //è¿æ¥å¤±è´¥
 							ESP32_Drive.WifiConnectStatus = 0;
 							ESP32_Drive.errorNum ++;
 							break;
 					}
 				}
-				else       //²Ù×÷²½Öè´íÎó ĞèÖØĞÂ¶Ï¿ªWiFiÔÙ½øĞĞÁ¬½Ó
+				else       //æ“ä½œæ­¥éª¤é”™è¯¯ éœ€é‡æ–°æ–­å¼€WiFiå†è¿›è¡Œè¿æ¥
 				{
 					ESP32_Drive.WifiConnectStatus = 0;
 					ESP32_Drive.errorNum ++;
 				} 
 			}
 			break;
-		case ESPStatus_ConnectedWifi:            //ÒÑÁ¬½Óµ½WiFi
-			//ÅäÖÃÎª×Ô¶¯Á¬½Ó·şÎñÆ÷Ê± Ö±½ÓÁ¬½Ó·şÎñÆ÷
+		case ESPStatus_ConnectedWifi:            //å·²è¿æ¥åˆ°WiFi
+			//é…ç½®ä¸ºè‡ªåŠ¨è¿æ¥æœåŠ¡å™¨æ—¶ ç›´æ¥è¿æ¥æœåŠ¡å™¨
 			if(ESP32_Drive.setAttr.serverAutoConnectEnable == 1)
 			{
 				res8 = connectServer(&ESP32_Drive);
@@ -106,18 +106,18 @@ void ESP32_Service(void)
 					ESP32_Drive.errorNum ++;
 			}
 			break;
-		case ESPStatus_ConnectedTCP:             //ÒÑÁ¬½Óµ½·şÎñÆ÷
-			//¶ÁÈ¡ESP32 SPIĞéÄâ¼Ä´æÆ÷ ÅĞ¶ÏÊÇ·ñÒÑÁ¬½Óµ½·şÎñÆ÷
+		case ESPStatus_ConnectedTCP:             //å·²è¿æ¥åˆ°æœåŠ¡å™¨
+			//è¯»å–ESP32 SPIè™šæ‹Ÿå¯„å­˜å™¨ åˆ¤æ–­æ˜¯å¦å·²è¿æ¥åˆ°æœåŠ¡å™¨
 			break;
-		case ESPStatus_ServerResponse:           //·şÎñÆ÷ÒÑÏìÓ¦
-			//·¢ËÍĞÄÌø°ü
-			//´ı·¢ËÍ/½ÓÊÕÊı¾İ´¦Àí
+		case ESPStatus_ServerResponse:           //æœåŠ¡å™¨å·²å“åº”
+			//å‘é€å¿ƒè·³åŒ…
+			//å¾…å‘é€/æ¥æ”¶æ•°æ®å¤„ç†
 			res8 = netSendOutReceivedFun(&ESP32_Drive);
 			if((ESP32_Drive.netSendoutData.status == 1)&&(res8 == 1))
 			{
 				ESP32_Drive.netSendoutData.status = 2;
 			}	
-			//½¨Á¢´íÎóÀÛ¼Ó»úÖÆ ·¢ËÍ´íÎó+1·¢ËÍÕıÈ·-8 »òÊÇ ¼ì²â¶ª°üÂÊ
+			//å»ºç«‹é”™è¯¯ç´¯åŠ æœºåˆ¶ å‘é€é”™è¯¯+1å‘é€æ­£ç¡®-8 æˆ–æ˜¯ æ£€æµ‹ä¸¢åŒ…ç‡
 			if(res8 == 1)
 			{
 				if(ESP32_Drive.errorNum >= 8)
@@ -129,7 +129,7 @@ void ESP32_Service(void)
 			}
 			break;
 	}
-	//Èç¹û´íÎóÀÛ¼ÓÖµµ½´ïÒ»¶¨ÊıÁ¿ Ôò½«Á¬½Ó×´Ì¬ÖØÖÃ
+	//å¦‚æœé”™è¯¯ç´¯åŠ å€¼åˆ°è¾¾ä¸€å®šæ•°é‡ åˆ™å°†è¿æ¥çŠ¶æ€é‡ç½®
 	if(ESP32_Drive.errorNum > 100)
 	{
 		ESP32_Drive.connectStatus = ESPStatus_NoResponse;
@@ -137,14 +137,14 @@ void ESP32_Service(void)
 	}
 }
 
-//Á¬½ÓWiFi
-//0:Ê§°Ü 1:³É¹¦ 2:Á¬½ÓÖĞ
+//è¿æ¥WiFi
+//0:å¤±è´¥ 1:æˆåŠŸ 2:è¿æ¥ä¸­
 uint16_t connectWifi(struct ESP32_Class_st_t *esp)
 {
 	uint16_t res;
 	uint16_t i;
 
-	//ÏÈÅĞ¶Ï¸Ã½×¶ÎÊÇ·ñ¿ÉÒÔÁ¬½ÓWiFi
+	//å…ˆåˆ¤æ–­è¯¥é˜¶æ®µæ˜¯å¦å¯ä»¥è¿æ¥WiFi
 	if((esp->connectStatus == ESPStatus_NoResponse) || \
 	   (esp->connectStatus == ESPStatus_NoInit))
 		return 0;
@@ -152,7 +152,7 @@ uint16_t connectWifi(struct ESP32_Class_st_t *esp)
 	if(esp->WifiConnectStatus == 0)
 	{ 
 		ESP32_SPICS=0;				    
-		//Ïò¹Ì¶¨¼Ä´æÆ÷Ğ´ÈëWiFiÁ¬½ÓĞÅÏ¢ 
+		//å‘å›ºå®šå¯„å­˜å™¨å†™å…¥WiFiè¿æ¥ä¿¡æ¯ 
 		SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_SetWifiAttr);
 		SPI_ReadWriteByte(ESP32_SPICOM, ESP32_WIFISSID_MAX); 
 		SPI_ReadWriteByte(ESP32_SPICOM, ESP32_WIFIPSWD_MAX);
@@ -166,15 +166,15 @@ uint16_t connectWifi(struct ESP32_Class_st_t *esp)
 		}
 		res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF)<<8;  
 		res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF);	 
-		//¼ì²â·µ»ØÖµÊÇ·ñÕıÈ·
+		//æ£€æµ‹è¿”å›å€¼æ˜¯å¦æ­£ç¡®
 		if(res != ESP32_ReturnCode_OK)
 			return 0;
-		//ÏòESP32·¢ËÍWiFiÁ¬½ÓÖ¸Áî
-		SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_ConnectWifi);//·¢ËÍÁ¬½ÓWiFiÃüÁî
+		//å‘ESP32å‘é€WiFiè¿æ¥æŒ‡ä»¤
+		SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_ConnectWifi);//å‘é€è¿æ¥WiFiå‘½ä»¤
 		res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF)<<8;  
 		res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF);	 
 		ESP32_SPICS=1;
-		//¼ì²â·µ»ØÖµÊÇ·ñÕıÈ·
+		//æ£€æµ‹è¿”å›å€¼æ˜¯å¦æ­£ç¡®
 		if(res == ESP32_ReturnCode_OK)
 			return 2;
 		else
@@ -191,34 +191,34 @@ uint16_t connectWifi(struct ESP32_Class_st_t *esp)
 
 	return 0;
 }   
-//¶Ï¿ªWiFi          
+//æ–­å¼€WiFi          
 uint8_t disconnectWifi(struct ESP32_Class_st_t *esp)
 {
 	uint16_t res;
-	//ÏòESP32·¢ËÍWiFi¶Ï¿ªÖ¸Áî
+	//å‘ESP32å‘é€WiFiæ–­å¼€æŒ‡ä»¤
 	ESP32_SPICS=0;
-	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_DisconnectWifi);//·¢ËÍ¶Ï¿ªWiFiÃüÁî
+	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_DisconnectWifi);//å‘é€æ–­å¼€WiFiå‘½ä»¤
 	res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF)<<8;  
 	res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF);	 
 	ESP32_SPICS=1;
-	//¼ì²â·µ»ØÖµÊÇ·ñÕıÈ·
+	//æ£€æµ‹è¿”å›å€¼æ˜¯å¦æ­£ç¡®
 	if(res != ESP32_ReturnCode_OK)
 		return 0;
 	esp->WifiConnectStatus = 0;
 	return 1;
 }
-//²éÑ¯WiFiÁ¬½Ó×´Ì¬
+//æŸ¥è¯¢WiFiè¿æ¥çŠ¶æ€
 uint8_t selectWifiConnectStatus(struct ESP32_Class_st_t *esp)
 {
 	unsigned int regSR1;
 	uint16_t res;
-	//¶ÁÈ¡×´Ì¬¼Ä´æÆ÷SR1
+	//è¯»å–çŠ¶æ€å¯„å­˜å™¨SR1
 	ESP32_SPICS=0;
 	regSR1 = ESP32_Read_SR(ESP32_Register_SR1);
 	res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF)<<8;  
 	res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF);	
 	ESP32_SPICS=1;
-	//¼ì²â·µ»ØÖµÊÇ·ñÕıÈ·
+	//æ£€æµ‹è¿”å›å€¼æ˜¯å¦æ­£ç¡®
 	if(res != ESP32_ReturnCode_OK)
 		return 0;
 	regSR1 = ((ESP32_Register_SR1_un_t *)&regSR1)->bit.wifiConSta;
@@ -243,24 +243,24 @@ uint8_t selectWifiConnectStatus(struct ESP32_Class_st_t *esp)
 
 	return 1;
 }
-//Á¬½Ó·şÎñÆ÷          
+//è¿æ¥æœåŠ¡å™¨          
 uint8_t connectServer(struct ESP32_Class_st_t *esp)
 {
-	//ÏÈÅĞ¶Ï¸Ã½×¶ÎÊÇ·ñ¿ÉÒÔÁ¬½Ó·şÎñÆ÷
+	//å…ˆåˆ¤æ–­è¯¥é˜¶æ®µæ˜¯å¦å¯ä»¥è¿æ¥æœåŠ¡å™¨
 }            
-//¶Ï¿ª·şÎñÆ÷
+//æ–­å¼€æœåŠ¡å™¨
 uint8_t disconnectServer(struct ESP32_Class_st_t *esp){}        
-//·¢ËÍ/½ÓÊÕÍøÂçÊı¾İ
+//å‘é€/æ¥æ”¶ç½‘ç»œæ•°æ®
 uint8_t netSendOutReceivedFun(struct ESP32_Class_st_t *esp){}  
-//²éÑ¯SNTPÊ±¼ä
+//æŸ¥è¯¢SNTPæ—¶é—´
 uint8_t selectSNTPTime(struct ESP32_Class_st_t *esp){}          
 
-//¶ÁÈ¡FLASH ID
+//è¯»å–FLASH ID
 uint16_t  ESP32_Read_ID(void)
 {
 	uint16_t res = 0;	  
 	ESP32_SPICS=0;				    
-	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_DeviceID);//·¢ËÍ¶ÁÈ¡IDÃüÁî	     			   
+	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_DeviceID);//å‘é€è¯»å–IDå‘½ä»¤	     			   
 	res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF)<<8;  
 	res|=SPI_ReadWriteByte(ESP32_SPICOM, 0xFF);	 
 	ESP32_SPICS=1;				    
@@ -268,7 +268,7 @@ uint16_t  ESP32_Read_ID(void)
 }       
  
 
-//¶ÁÈ¡×´Ì¬¼Ä´æÆ÷ 
+//è¯»å–çŠ¶æ€å¯„å­˜å™¨ 
 uint32_t ESP32_Read_SR(uint16_t registerNum)
 {
     uint32_t res = 0;
@@ -284,7 +284,7 @@ uint32_t ESP32_Read_SR(uint16_t registerNum)
     return res;
 }
 
-//Ğ´×´Ì¬¼Ä´æÆ÷
+//å†™çŠ¶æ€å¯„å­˜å™¨
 uint32_t ESP32_Write_SR(uint16_t registerNum,uint32_t sr)
 { 
     uint8_t res;
@@ -299,31 +299,31 @@ uint32_t ESP32_Write_SR(uint16_t registerNum,uint32_t sr)
     return res;
 }
 
-//Ğ´Ê¹ÄÜ 
+//å†™ä½¿èƒ½ 
 void ESP32_Write_Enable(void)
 {
 
 }
 
-//Ğ´±£»¤
+//å†™ä¿æŠ¤
 void ESP32_Write_Disable(void)
 {
 
 }
 
-//¶ÁÈ¡flash
+//è¯»å–flash
 void ESP32_Read(uint8_t* pBuffer,u32 ReadAddr,uint16_t NumByteToRead)
 {
 
 }
 
-//Ğ´Èëflash
+//å†™å…¥flash
 void ESP32_Write(uint8_t* pBuffer,u32 WriteAddr,uint16_t NumByteToWrite)
 {
 
 }
 
-//ÕûÆ¬²Á³ı
+//æ•´ç‰‡æ“¦é™¤
 uint8_t ESP32_Erase_Chip(void)
 {
     uint8_t res ;
@@ -333,31 +333,31 @@ uint8_t ESP32_Erase_Chip(void)
     return res;
 }
 
-//µÈ´ı¿ÕÏĞ
+//ç­‰å¾…ç©ºé—²
 void ESP32_Wait_Busy(void)
 {
 
 }
 
-//½øÈëµôµçÄ£Ê½
+//è¿›å…¥æ‰ç”µæ¨¡å¼
 void ESP32_PowerDown(void)
 {
 
 }
 
-//»½ĞÑ
+//å”¤é†’
 void ESP32_WAKEUP(void)
 {
 
 }
 
-//ÉèÖÃ·şÎñÆ÷ÊôĞÔ
+//è®¾ç½®æœåŠ¡å™¨å±æ€§
 void ESP32_SetServiceAttr(struct ESP32_Class_st_t *esp,ESP32_ServerConnect_st_t *serverAttr)
 {
 
 }
 
-//ÉèÖÃWiFiÊôĞÔ
+//è®¾ç½®WiFiå±æ€§
 void ESP32_SetWiFiAttr(struct ESP32_Class_st_t *esp,ESP32_WifiConnectAttr_st_t *wifiAttr)
 {
 	uint16_t i;
@@ -373,13 +373,13 @@ void ESP32_SetWiFiAttr(struct ESP32_Class_st_t *esp,ESP32_WifiConnectAttr_st_t *
 }
 
 
-//·¢ËÍÍøÂçÊı¾İ
+//å‘é€ç½‘ç»œæ•°æ®
 void ESP32_SendNetData(char *s, uint32_t num)
 {
 
 }
 
-//½ÓÊÕÍøÂçÊı¾İ
+//æ¥æ”¶ç½‘ç»œæ•°æ®
 void ESP32_ReceivedNetData(char *s, uint32_t num)
 {
 

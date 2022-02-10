@@ -61,7 +61,7 @@ TaskTCBStruct TaskTCBAttr[] ={
 { Tack_Graphics ,         " 图像绘制 " ,     14 ,  BLOCKED , 0 , 1000 , 0 , 0 , 0 , Task_CR_Def ,        Graphics_Display , NULL}, //暂时直接显示                                                         
 //{ Tack_GUIDisplay ,       " 图像显示 " ,   15 ,  BLOCKED , 0 ,   20 , 0 , 0 , 0 , Task_CR_Def ,             GUI_Display , NULL}, 
                                                            
-{ 63 ,     " 空闲任务 " ,     63 , RUNNABLE , 0 ,    0 , 0 , 0 , 0 , Task_CR_Def ,             LED_Service , NULL},
+{                63 ,     " 空闲任务 " ,     63 , RUNNABLE , 0 ,    0 , 0 , 0 , 0 , Task_CR_Def ,             LED_Service , NULL},
  
 }; 
 

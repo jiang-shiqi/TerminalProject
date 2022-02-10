@@ -4,48 +4,48 @@
 #include "include.h"
 #include "SPI.h"
 
-//ESP32Ä£¿éÄ£ÄâSPI ID
+//ESP32æ¨¡å—æ¨¡æ‹ŸSPI ID
 #define ESP32_SPI_ID          0xEF62
-//²Ù×÷ÕıÈ··µ»ØÂë
+//æ“ä½œæ­£ç¡®è¿”å›ç 
 #define ESP32_ReturnCode_OK   0x4F4B
-//ESP32Ê¹ÓÃµÄSPI¶Ë¿Ú
+//ESP32ä½¿ç”¨çš„SPIç«¯å£
 #define ESP32_SPICOM          SPI1
-//ESP32Ê¹ÓÃCS¶Ë¿Ú
+//ESP32ä½¿ç”¨CSç«¯å£
 #define ESP32_SPICS           ESP_CS
 
-//ESP32¸÷Êı×é×î´ó³¤¶È
+//ESP32å„æ•°ç»„æœ€å¤§é•¿åº¦
 #define ESP32_NetData_MAX   100
 #define ESP32_WIFILIST_MAX   10
 #define ESP32_WIFISSID_MAX   30
 #define ESP32_WIFIPSWD_MAX   30
 
-//ESP32 SPIÖ¸Áî±í  
-#define ESP32_COM_DeviceID          0x90 //¶ÁÈ¡Éè±¸ID
-#define ESP32_COM_PowerDown         0xB9 //ĞİÃß
-#define ESP32_COM_WakeUp            0xAB //»½ĞÑ
-#define ESP32_COM_ReadStatusReg     0x05 //¶ÁÈ¡×´Ì¬¼Ä´æÆ÷
-#define ESP32_COM_WriteStatusReg    0x01 //Ğ´Èë×´Ì¬¼Ä´æÆ÷
-#define ESP32_COM_ReadReceivedData  0x03 //¶ÁÈ¡½ÓÊÕÊı¾İ
-#define ESP32_COM_WriteSentoutData  0x02 //Ğ´Èë·¢ËÍÊı¾İ
-#define ESP32_COM_SetWifiAttr       0x10 //ÉèÖÃWiFiÊôĞÔ
-#define ESP32_COM_SetServerAttr     0x11 //ÉèÖÃ·şÎñÆ÷ÊôĞÔ
-#define ESP32_COM_ConnectWifi       0x20 //Á¬½ÓWiFi
-#define ESP32_COM_DisconnectWifi    0x21 //¶Ï¿ªWiFi
-#define ESP32_COM_ConnectServer     0x22 //Á¬½Ó·şÎñÆ÷
-#define ESP32_COM_SelectSNTP        0x23 //²éÑ¯SNTPÊ±¼ä
+//ESP32 SPIæŒ‡ä»¤è¡¨  
+#define ESP32_COM_DeviceID          0x90 //è¯»å–è®¾å¤‡ID
+#define ESP32_COM_PowerDown         0xB9 //ä¼‘çœ 
+#define ESP32_COM_WakeUp            0xAB //å”¤é†’
+#define ESP32_COM_ReadStatusReg     0x05 //è¯»å–çŠ¶æ€å¯„å­˜å™¨
+#define ESP32_COM_WriteStatusReg    0x01 //å†™å…¥çŠ¶æ€å¯„å­˜å™¨
+#define ESP32_COM_ReadReceivedData  0x03 //è¯»å–æ¥æ”¶æ•°æ®
+#define ESP32_COM_WriteSentoutData  0x02 //å†™å…¥å‘é€æ•°æ®
+#define ESP32_COM_SetWifiAttr       0x10 //è®¾ç½®WiFiå±æ€§
+#define ESP32_COM_SetServerAttr     0x11 //è®¾ç½®æœåŠ¡å™¨å±æ€§
+#define ESP32_COM_ConnectWifi       0x20 //è¿æ¥WiFi
+#define ESP32_COM_DisconnectWifi    0x21 //æ–­å¼€WiFi
+#define ESP32_COM_ConnectServer     0x22 //è¿æ¥æœåŠ¡å™¨
+#define ESP32_COM_SelectSNTP        0x23 //æŸ¥è¯¢SNTPæ—¶é—´
 
-//ÊôĞÔĞÅÏ¢¶¼¿ÉÒÔÍ¨¹ıĞ´ÈëflashµÄ²Ù×÷·¢ËÍ¸øESP32
-//ĞĞÎªÍ¨¹ıÖ¸Áî´«Êä
+//å±æ€§ä¿¡æ¯éƒ½å¯ä»¥é€šè¿‡å†™å…¥flashçš„æ“ä½œå‘é€ç»™ESP32
+//è¡Œä¸ºé€šè¿‡æŒ‡ä»¤ä¼ è¾“
 
-//ESP32 ×´Ì¬¼Ä´æÆ÷
+//ESP32 çŠ¶æ€å¯„å­˜å™¨
 #define ESP32_Register_SR1          0x01
 typedef union {
 	uint32_t dat;
 	struct
 	{
-		uint32_t        wifiConSta       : 2; //WiFiÁ¬½Ó×´Ì¬ 0:Î´Á¬½Ó 1:ÒÑÁ¬½Ó 2:Á¬½ÓÖĞ
-		uint32_t        ServerConSta     : 2; //·şÎñÆ÷Á¬½Ó×´Ì¬ 0:Î´Á¬½Ó 1:ÒÑÁ¬½Ó 2:Á¬½ÓÖĞ
-		uint32_t                         : 2; //½ÓÊÕÍ¨Öª 0:ÎŞĞÂÊı¾İ 1:½ÓÊÕÍê±Ï 2:ÕıÔÚ½ÓÊÕ
+		uint32_t        wifiConSta       : 2; //WiFiè¿æ¥çŠ¶æ€ 0:æœªè¿æ¥ 1:å·²è¿æ¥ 2:è¿æ¥ä¸­
+		uint32_t        ServerConSta     : 2; //æœåŠ¡å™¨è¿æ¥çŠ¶æ€ 0:æœªè¿æ¥ 1:å·²è¿æ¥ 2:è¿æ¥ä¸­
+		uint32_t                         : 2; //æ¥æ”¶é€šçŸ¥ 0:æ— æ–°æ•°æ® 1:æ¥æ”¶å®Œæ¯• 2:æ­£åœ¨æ¥æ”¶
 	
 		uint32_t                         :26; 
 	}bit; 
@@ -53,17 +53,17 @@ typedef union {
 
 
 
-//Á¬½Ó×´Ì¬ Ã¶¾Ù
+//è¿æ¥çŠ¶æ€ æšä¸¾
 typedef enum Esp32_ConnectStatusType_en_t{
-	ESPStatus_NoResponse,               //Ä£¿éÎŞÏìÓ¦
-	ESPStatus_NoInit,                   //Ä£¿éÎ´³õÊ¼»¯
-	ESPStatus_NoWifi,                   //Î´Á¬½Óµ½WiFi
-	ESPStatus_ConnectedWifi,            //ÒÑÁ¬½Óµ½WiFi
-	ESPStatus_ConnectedTCP,             //ÒÑÁ¬½Óµ½·şÎñÆ÷
-	ESPStatus_ServerResponse,           //·şÎñÆ÷ÒÑÏìÓ¦
+	ESPStatus_NoResponse,               //æ¨¡å—æ— å“åº”
+	ESPStatus_NoInit,                   //æ¨¡å—æœªåˆå§‹åŒ–
+	ESPStatus_NoWifi,                   //æœªè¿æ¥åˆ°WiFi
+	ESPStatus_ConnectedWifi,            //å·²è¿æ¥åˆ°WiFi
+	ESPStatus_ConnectedTCP,             //å·²è¿æ¥åˆ°æœåŠ¡å™¨
+	ESPStatus_ServerResponse,           //æœåŠ¡å™¨å·²å“åº”
 }en_ConnectStatusType;
 
-//·şÎñÆ÷Á¬½Ó·½Ê½ Ã¶¾Ù
+//æœåŠ¡å™¨è¿æ¥æ–¹å¼ æšä¸¾
 typedef enum ESP32_ServerConnectType_en_t{
 	ServerConnect_Null,
 	TCP,
@@ -71,7 +71,7 @@ typedef enum ESP32_ServerConnectType_en_t{
 	SSL,
 }en_ServerConnectType;
 
-//Ê±¼äÃ¶¾Ù
+//æ—¶é—´æšä¸¾
 typedef enum ESP32_TimeWeek_en_t{
 	Monday = 1,
 	Tuesday,
@@ -97,48 +97,48 @@ typedef enum ESPTimeMonth_en{
 }en_TimeMonth;
 
 
-//ESPÉèÖÃÊôĞÔ½á¹¹Ìå
+//ESPè®¾ç½®å±æ€§ç»“æ„ä½“
 typedef struct {
-	uint8_t wifiAutoConnectEnable         : 1;  //wifi×Ô¶¯Á¬½ÓÊ¹ÄÜ
-	uint8_t serverAutoConnectEnable       : 1;  //·şÎñÆ÷×Ô¶¯Á¬½ÓÊ¹ÄÜ
+	uint8_t wifiAutoConnectEnable         : 1;  //wifiè‡ªåŠ¨è¿æ¥ä½¿èƒ½
+	uint8_t serverAutoConnectEnable       : 1;  //æœåŠ¡å™¨è‡ªåŠ¨è¿æ¥ä½¿èƒ½
 }ESP32_SetAttr_st_t;
 
-//ESP·¢ËÍ½á¹¹Ìå 
+//ESPå‘é€ç»“æ„ä½“ 
 typedef struct { 
-	uint8_t status;                      //·¢ËÍ×´Ì¬ 
-	uint16_t lenth;                      //Êı¾İ³¤¶È
-	char data[ESP32_NetData_MAX];          //½ÓÊÕÊı¾İ
+	uint8_t status;                      //å‘é€çŠ¶æ€ 
+	uint16_t lenth;                      //æ•°æ®é•¿åº¦
+	char data[ESP32_NetData_MAX];          //æ¥æ”¶æ•°æ®
 }ESP32_NetDataSendOut_st_t;
 
-//ESP½ÓÊÕ½á¹¹Ìå 
+//ESPæ¥æ”¶ç»“æ„ä½“ 
 typedef struct { 
-	uint8_t status;                      //·¢ËÍ×´Ì¬ 
-	uint16_t lenth;                      //Êı¾İ³¤¶È
-	char data[ESP32_NetData_MAX];          //½ÓÊÕÊı¾İ
+	uint8_t status;                      //å‘é€çŠ¶æ€ 
+	uint16_t lenth;                      //æ•°æ®é•¿åº¦
+	char data[ESP32_NetData_MAX];          //æ¥æ”¶æ•°æ®
 }ESP32_NetDataReceived_st_t; 
 
-//wifiÊôĞÔ½á¹¹Ìå  
+//wifiå±æ€§ç»“æ„ä½“  
 typedef struct {
-	uint8_t ecn;	//¼ÓÃÜ·½Ê½
+	uint8_t ecn;	//åŠ å¯†æ–¹å¼
 	char    ssid[ESP32_WIFISSID_MAX];	//AP SSID
-	int8_t  rssi;//ĞÅºÅÇ¿¶È
-	uint8_t mac[6];//AP MACµØÖ·
-	uint8_t channel;//Í¨µÀºÅ
-//	int8_t  freq_offset;//APÆµÆ« µ¥Î»£ºkHz¡£´ËÊıÖµ³ıÒÔ 2.4£¬¿ÉµÃµ½ ppm Öµ
-//	int8_t  freqcali;//ÆµÆ«Ğ£×¼Öµ
+	int8_t  rssi;//ä¿¡å·å¼ºåº¦
+	uint8_t mac[6];//AP MACåœ°å€
+	uint8_t channel;//é€šé“å·
+//	int8_t  freq_offset;//APé¢‘å å•ä½ï¼škHzã€‚æ­¤æ•°å€¼é™¤ä»¥ 2.4ï¼Œå¯å¾—åˆ° ppm å€¼
+//	int8_t  freqcali;//é¢‘åæ ¡å‡†å€¼
 //	uint8_t pairwise_cipher;
 //	uint8_t group_cipher;
 //	uint8_t bgn;
 //	uint8_t wps; 
 }ESP32_WifiAttr_st_t;
 
-//wifiÁĞ±í½á¹¹Ìå
+//wifiåˆ—è¡¨ç»“æ„ä½“
 typedef struct {
 	ESP32_WifiAttr_st_t attr[ESP32_WIFILIST_MAX];
 	uint8_t lenth;
 }ESP32_WifiList_st_t;
 
-//·şÎñÆ÷Á¬½Ó½á¹¹Ìå
+//æœåŠ¡å™¨è¿æ¥ç»“æ„ä½“
 typedef struct {
 	enum ServerConnect_Type type; 
 	char website[50];
@@ -146,16 +146,16 @@ typedef struct {
 	uint16_t port; 
 }ESP32_ServerConnect_st_t;
 
-//wifi½á¹¹Ìå
+//wifiç»“æ„ä½“
 typedef struct {
-	uint8_t ecn;                    //¼ÓÃÜ·½Ê½
+	uint8_t ecn;                    //åŠ å¯†æ–¹å¼
 	char    ssid[ESP32_WIFISSID_MAX];	//AP SSID
 	char    pswd[ESP32_WIFIPSWD_MAX];  //AP PWD 
-	int8_t  rssi;                   //ĞÅºÅÇ¿¶È
-	uint8_t mac[6];                 //AP MACµØÖ·
+	int8_t  rssi;                   //ä¿¡å·å¼ºåº¦
+	uint8_t mac[6];                 //AP MACåœ°å€
 }ESP32_WifiConnectAttr_st_t;
 
-//SNTPÊ±¼ä½á¹¹Ìå  
+//SNTPæ—¶é—´ç»“æ„ä½“  
 typedef struct{
 	uint16_t year;
 	uint8_t month;
@@ -166,47 +166,47 @@ typedef struct{
 	enum ESPTimeWeek_en week; 
 }ESP32_STNPTime_st_t;
 
-//ESPÀà½á¹¹Ìå
+//ESPç±»ç»“æ„ä½“
 struct ESP32_Class_st_t{
-	uint8_t initStatus;                                //³õÊ¼»¯×´Ì¬
-	enum Esp32_ConnectStatusType_en_t connectStatus;   //Á¬½Ó×´Ì¬ 
-	ESP32_SetAttr_st_t setAttr;                        //¿ÉÉèÖÃÊôĞÔ  
-	uint8_t sendComStatus;                             //·¢ËÍÖ¸ÁîµÄ×´Ì¬
-	uint32_t callbackTimeout;                          //»Øµ÷³¬Ê±Ê±¼ä
-	uint32_t keepAlive;                                //ĞÄÌø°üÊ±¼ä
-	uint32_t errorNum;                                 //´íÎóÀÛ¼ÓÖµ
-	ESP32_NetDataSendOut_st_t netSendoutData;          //´ı·¢ËÍµÄÍøÂçÊı¾İ
-	ESP32_NetDataReceived_st_t netReceivedData;        //½ÓÊÕµ½µÄÍøÂçÊı¾İ
-	uint8_t WifiConnectStatus;                         //wifiÁ¬½Ó×´Ì¬
-	ESP32_WifiConnectAttr_st_t WifiAttr;               //WiFiÊôĞÔ
-	ESP32_ServerConnect_st_t serverAttr;               //·şÎñÆ÷ÊôĞÔ
-	ESP32_STNPTime_st_t stnpTime;                      //STNPÊ±¼ä
-	uint16_t (*connectWifi)(struct ESP32_Class_st_t *esp);             //Á¬½ÓWiFi
-	uint8_t (*disconnectWifi)(struct ESP32_Class_st_t *esp);          //¶Ï¿ªWiFi
-	uint8_t (*connectServer)(struct ESP32_Class_st_t *esp);           //Á¬½Ó·şÎñÆ÷
-	uint8_t (*disconnectServer)(struct ESP32_Class_st_t *esp);        //¶Ï¿ª·şÎñÆ÷
-	uint8_t (*netSendOutReceivedFun)(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //·¢ËÍ/½ÓÊÕÍøÂçÊı¾İ
-	uint8_t (*selectSNTPTime)(struct ESP32_Class_st_t *esp);          //²éÑ¯SNTPÊ±¼ä
+	uint8_t initStatus;                                //åˆå§‹åŒ–çŠ¶æ€
+	enum Esp32_ConnectStatusType_en_t connectStatus;   //è¿æ¥çŠ¶æ€ 
+	ESP32_SetAttr_st_t setAttr;                        //å¯è®¾ç½®å±æ€§  
+	uint8_t sendComStatus;                             //å‘é€æŒ‡ä»¤çš„çŠ¶æ€
+	uint32_t callbackTimeout;                          //å›è°ƒè¶…æ—¶æ—¶é—´
+	uint32_t keepAlive;                                //å¿ƒè·³åŒ…æ—¶é—´
+	uint32_t errorNum;                                 //é”™è¯¯ç´¯åŠ å€¼
+	ESP32_NetDataSendOut_st_t netSendoutData;          //å¾…å‘é€çš„ç½‘ç»œæ•°æ®
+	ESP32_NetDataReceived_st_t netReceivedData;        //æ¥æ”¶åˆ°çš„ç½‘ç»œæ•°æ®
+	uint8_t WifiConnectStatus;                         //wifiè¿æ¥çŠ¶æ€
+	ESP32_WifiConnectAttr_st_t WifiAttr;               //WiFiå±æ€§
+	ESP32_ServerConnect_st_t serverAttr;               //æœåŠ¡å™¨å±æ€§
+	ESP32_STNPTime_st_t stnpTime;                      //STNPæ—¶é—´
+	uint16_t (*connectWifi)(struct ESP32_Class_st_t *esp);             //è¿æ¥WiFi
+	uint8_t (*disconnectWifi)(struct ESP32_Class_st_t *esp);          //æ–­å¼€WiFi
+	uint8_t (*connectServer)(struct ESP32_Class_st_t *esp);           //è¿æ¥æœåŠ¡å™¨
+	uint8_t (*disconnectServer)(struct ESP32_Class_st_t *esp);        //æ–­å¼€æœåŠ¡å™¨
+	uint8_t (*netSendOutReceivedFun)(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //å‘é€/æ¥æ”¶ç½‘ç»œæ•°æ®
+	uint8_t (*selectSNTPTime)(struct ESP32_Class_st_t *esp);          //æŸ¥è¯¢SNTPæ—¶é—´
 };
 
 void ESP32_Init(void);
-u16  ESP32_Read_ID(void);               //¶ÁÈ¡FLASH ID
-uint32_t ESP32_Read_SR(uint16_t registerNum);               //¶ÁÈ¡×´Ì¬¼Ä´æÆ÷ 
-uint32_t ESP32_Write_SR(uint16_t registerNum,uint32_t sr);             //Ğ´×´Ì¬¼Ä´æÆ÷
-void ESP32_Write_Enable(void);          //Ğ´Ê¹ÄÜ 
-void ESP32_Write_Disable(void);         //Ğ´±£»¤ 
-void ESP32_Read(u8* pBuffer,u32 ReadAddr,u16 NumByteToRead);   //¶ÁÈ¡flash
-void ESP32_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite);//Ğ´Èëflash
-void ESP32_Erase_Chip(void);    	  	//ÕûÆ¬²Á³ı 
-void ESP32_Wait_Busy(void);           	//µÈ´ı¿ÕÏĞ
-void ESP32_PowerDown(void);        	//½øÈëµôµçÄ£Ê½
-void ESP32_WAKEUP(void);				//»½ĞÑ
+u16  ESP32_Read_ID(void);               //è¯»å–FLASH ID
+uint32_t ESP32_Read_SR(uint16_t registerNum);               //è¯»å–çŠ¶æ€å¯„å­˜å™¨ 
+uint32_t ESP32_Write_SR(uint16_t registerNum,uint32_t sr);             //å†™çŠ¶æ€å¯„å­˜å™¨
+void ESP32_Write_Enable(void);          //å†™ä½¿èƒ½ 
+void ESP32_Write_Disable(void);         //å†™ä¿æŠ¤ 
+void ESP32_Read(u8* pBuffer,u32 ReadAddr,u16 NumByteToRead);   //è¯»å–flash
+void ESP32_Write(u8* pBuffer,u32 WriteAddr,u16 NumByteToWrite);//å†™å…¥flash
+void ESP32_Erase_Chip(void);    	  	//æ•´ç‰‡æ“¦é™¤ 
+void ESP32_Wait_Busy(void);           	//ç­‰å¾…ç©ºé—²
+void ESP32_PowerDown(void);        	//è¿›å…¥æ‰ç”µæ¨¡å¼
+void ESP32_WAKEUP(void);				//å”¤é†’
 
-uint16_t connectWifi(struct ESP32_Class_st_t *esp);             //Á¬½ÓWiFi
-uint8_t disconnectWifi(struct ESP32_Class_st_t *esp);          //¶Ï¿ªWiFi
-uint8_t connectServer(struct ESP32_Class_st_t *esp);           //Á¬½Ó·şÎñÆ÷
-uint8_t disconnectServer(struct ESP32_Class_st_t *esp);        //¶Ï¿ª·şÎñÆ÷
-uint8_t netSendOutReceivedFun(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //·¢ËÍÍøÂçÊı¾İ
-uint8_t selectSNTPTime(struct ESP32_Class_st_t *esp);          //²éÑ¯SNTPÊ±¼ä
+uint16_t connectWifi(struct ESP32_Class_st_t *esp);             //è¿æ¥WiFi
+uint8_t disconnectWifi(struct ESP32_Class_st_t *esp);          //æ–­å¼€WiFi
+uint8_t connectServer(struct ESP32_Class_st_t *esp);           //è¿æ¥æœåŠ¡å™¨
+uint8_t disconnectServer(struct ESP32_Class_st_t *esp);        //æ–­å¼€æœåŠ¡å™¨
+uint8_t netSendOutReceivedFun(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //å‘é€ç½‘ç»œæ•°æ®
+uint8_t selectSNTPTime(struct ESP32_Class_st_t *esp);          //æŸ¥è¯¢SNTPæ—¶é—´
 
 #endif 
