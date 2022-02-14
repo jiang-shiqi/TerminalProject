@@ -5,6 +5,7 @@
         "include.h": "c",
         "can_communication_matrix.h": "c",
         "sys.h": "c",
-        "spi.h": "c"
+        "spi.h": "c",
+        "MMC_SD.C": "c"
     }
 }

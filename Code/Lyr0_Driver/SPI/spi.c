@@ -1,97 +1,97 @@
 #include "spi.h"
 
-//“‘œ¬ «SPIƒ£øÈµƒ≥ı ºªØ¥˙¬Î£¨≈‰÷√≥…÷˜ª˙ƒ£ Ω£¨∑√Œ W25Q128/NRF24L01
-//SPIø⁄≥ı ºªØ 
+//‰ª•‰∏ãÊòØSPIÊ®°ÂùóÁöÑÂàùÂßãÂåñ‰ª£Á†ÅÔºåÈÖçÁΩÆÊàê‰∏ªÊú∫Ê®°ÂºèÔºåËÆøÈóÆW25Q128/NRF24L01
+//SPIÂè£ÂàùÂßãÂåñ 
  
 
 void SPI_Init(SPI_TypeDef *SPIx)
 {	  
 #ifdef __CM3_CORE_H__	
-	RCC->APB2ENR|=1<<12;   	//SPI1 ±÷” πƒ‹ 
-	//’‚¿Ô÷ª’Î∂‘SPIø⁄≥ı ºªØ
+	RCC->APB2ENR|=1<<12;   	//SPI1Êó∂Èíü‰ΩøËÉΩ 
+	//ËøôÈáåÂè™ÈíàÂØπSPIÂè£ÂàùÂßãÂåñ
 //	GPIOA->CRL&=0X000FFFFF; 
-//	GPIOA->CRL|=0XBBB00000;	//PA5/6/7∏¥”√ 	    
-	GPIOA->ODR|=0X7<<5;   	//PA5/6/7…œ¿≠
-	SPIx->CR1|=0<<10;		//»´À´π§ƒ£ Ω	
-	SPIx->CR1|=1<<9; 		//»Ìº˛nssπ‹¿Ì
+//	GPIOA->CRL|=0XBBB00000;	//PA5/6/7Â§çÁî® 	    
+	GPIOA->ODR|=0X7<<5;   	//PA5/6/7‰∏äÊãâ
+	SPIx->CR1|=0<<10;		//ÂÖ®ÂèåÂ∑•Ê®°Âºè	
+	SPIx->CR1|=1<<9; 		//ËΩØ‰ª∂nssÁÆ°ÁêÜ
 	SPIx->CR1|=1<<8;  
 
-	SPIx->CR1|=1<<2; 		//SPI÷˜ª˙
-	SPIx->CR1|=0<<11;		//8bit ˝æ›∏Ò Ω	
-	SPIx->CR1|=1<<1; 		//ø’œ–ƒ£ Ωœ¬SCKŒ™1 CPOL=1
-	SPIx->CR1|=1<<0; 		// ˝æ›≤…—˘¥”µ⁄∂˛∏ˆ ±º‰±ﬂ—ÿø™ º,CPHA=1  
-	//∂‘SPI2 Ù”⁄APB1µƒÕ‚…Ë. ±÷”∆µ¬ ◊Ó¥ÛŒ™36M  
-	//SP1‘⁄APB2…œ  ±÷”◊Ó¥Û72M
+	SPIx->CR1|=1<<2; 		//SPI‰∏ªÊú∫
+	SPIx->CR1|=0<<11;		//8bitÊï∞ÊçÆÊ†ºÂºè	
+	SPIx->CR1|=1<<1; 		//Á©∫Èó≤Ê®°Âºè‰∏ãSCK‰∏∫1 CPOL=1
+	SPIx->CR1|=1<<0; 		//Êï∞ÊçÆÈááÊ†∑‰ªéÁ¨¨‰∫å‰∏™Êó∂Èó¥ËæπÊ≤øÂºÄÂßã,CPHA=1  
+	//ÂØπSPI2Â±û‰∫éAPB1ÁöÑÂ§ñËÆæ.Êó∂ÈíüÈ¢ëÁéáÊúÄÂ§ß‰∏∫36M  
+	//SP1Âú®APB2‰∏ä Êó∂ÈíüÊúÄÂ§ß72M
 	SPIx->CR1|=3<<3; 		//Fsck=Fpclk1/256
 	SPIx->CR1|=0<<7; 		//MSBfirst   
-	SPIx->CR1|=1<<6; 		//SPI…Ë±∏ πƒ‹
-	SPIx_ReadWriteByte(0xff);//∆Ù∂Ø¥´ ‰		 
+	SPIx->CR1|=1<<6; 		//SPIËÆæÂ§á‰ΩøËÉΩ
+	SPIx_ReadWriteByte(0xff);//ÂêØÂä®‰º†Ëæì		 
 #endif
 #ifdef __CORE_CM4_H_GENERIC
 	u16 tempreg=0; 
 	if(SPIx == SPI1) 
 	{
-		RCC->APB2ENR|=1<<12;   	//SPI1 ±÷” πƒ‹    
-		RCC->APB2RSTR|=1<<12;	//∏¥ŒªSPI1
-		RCC->APB2RSTR&=~(1<<12);//Õ£÷π∏¥ŒªSPI1
+		RCC->APB2ENR|=1<<12;   	//SPI1Êó∂Èíü‰ΩøËÉΩ    
+		RCC->APB2RSTR|=1<<12;	//Â§ç‰ΩçSPI1
+		RCC->APB2RSTR&=~(1<<12);//ÂÅúÊ≠¢Â§ç‰ΩçSPI1
 
 	}
 	else if(SPIx == SPI2)
 	{
-		RCC->APB1ENR|=1<<14;   	//SPI2 ±÷” πƒ‹  
-		RCC->APB1RSTR|=1<<14;	//∏¥ŒªSPI1
-		RCC->APB1RSTR&=~(1<<14);//Õ£÷π∏¥ŒªSPI1
+		RCC->APB1ENR|=1<<14;   	//SPI2Êó∂Èíü‰ΩøËÉΩ  
+		RCC->APB1RSTR|=1<<14;	//Â§ç‰ΩçSPI1
+		RCC->APB1RSTR&=~(1<<14);//ÂÅúÊ≠¢Â§ç‰ΩçSPI1
 	}
 	else if(SPIx == SPI3)
 	{
-		RCC->APB1ENR|=1<<15;   	//SPI2 ±÷” πƒ‹  
-		RCC->APB1RSTR|=1<<15;	//∏¥ŒªSPI1
-		RCC->APB1RSTR&=~(1<<15);//Õ£÷π∏¥ŒªSPI1
+		RCC->APB1ENR|=1<<15;   	//SPI2Êó∂Èíü‰ΩøËÉΩ  
+		RCC->APB1RSTR|=1<<15;	//Â§ç‰ΩçSPI1
+		RCC->APB1RSTR&=~(1<<15);//ÂÅúÊ≠¢Â§ç‰ΩçSPI1
 	}
 	else
 		return ;
-	tempreg|=0<<10;			//»´À´π§ƒ£ Ω	
-	tempreg|=1<<9;			//»Ìº˛nssπ‹¿Ì
+	tempreg|=0<<10;			//ÂÖ®ÂèåÂ∑•Ê®°Âºè	
+	tempreg|=1<<9;			//ËΩØ‰ª∂nssÁÆ°ÁêÜ
 	tempreg|=1<<8;			 
-	tempreg|=1<<2;			//SPI÷˜ª˙  
-	tempreg|=0<<11;			//8Œª ˝æ›∏Ò Ω	
-	tempreg|=1<<1;			//ø’œ–ƒ£ Ωœ¬SCKŒ™1 CPOL=1 
-	tempreg|=1<<0;			// ˝æ›≤…—˘¥”µ⁄2∏ˆ ±º‰±ﬂ—ÿø™ º,CPHA=1  
- 	//∂‘SPI1 Ù”⁄APB2µƒÕ‚…Ë. ±÷”∆µ¬ ◊Ó¥ÛŒ™84Mhz∆µ¬ .
+	tempreg|=1<<2;			//SPI‰∏ªÊú∫  
+	tempreg|=0<<11;			//8‰ΩçÊï∞ÊçÆÊ†ºÂºè	
+	tempreg|=1<<1;			//Á©∫Èó≤Ê®°Âºè‰∏ãSCK‰∏∫1 CPOL=1 
+	tempreg|=1<<0;			//Êï∞ÊçÆÈááÊ†∑‰ªéÁ¨¨2‰∏™Êó∂Èó¥ËæπÊ≤øÂºÄÂßã,CPHA=1
+ 	//ÂØπSPI1Â±û‰∫éAPB2ÁöÑÂ§ñËÆæ.Êó∂ÈíüÈ¢ëÁéáÊúÄÂ§ß‰∏∫84MhzÈ¢ëÁéá.
 	tempreg|=7<<3;			//Fsck=Fpclk1/256
 	tempreg|=0<<7;			//MSB First  
-	tempreg|=1<<6;			//SPI∆Ù∂Ø 
-	SPIx->CR1=tempreg; 		//…Ë÷√CR1  
-	SPIx->I2SCFGR&=~(1<<11);//—°‘ÒSPIƒ£ Ω
-	SPI_ReadWriteByte(SPIx,0xff);//∆Ù∂Ø¥´ ‰		 
+	tempreg|=1<<6;			//SPIÂêØÂä® 
+	SPIx->CR1=tempreg; 		//ËÆæÁΩÆCR1  
+	SPIx->I2SCFGR&=~(1<<11);//ÈÄâÊã©SPIÊ®°Âºè
+	SPI_ReadWriteByte(SPIx,0xff);//ÂêØÂä®‰º†Ëæì		 
 #endif
 }   
 
 
 void SPI_SetSpeed(SPI_TypeDef *SPIx,u8 SpeedSet)
 {
-	SpeedSet&=0X07;			//œﬁ÷∆∑∂Œß
+	SpeedSet&=0X07;			//ÈôêÂà∂ËåÉÂõ¥
 	SPIx->CR1&=0XFFC7; 
-	SPIx->CR1|=SpeedSet<<3;	//…Ë÷√SPI2ÀŸ∂»  
-	SPIx->CR1|=1<<6; 		//SPI…Ë±∏ πƒ‹	  
+	SPIx->CR1|=SpeedSet<<3;	//ËÆæÁΩÆSPI2ÈÄüÂ∫¶  
+	SPIx->CR1|=1<<6; 		//SPIËÆæÂ§á‰ΩøËÉΩ	  
 }  
 
 
 u8 SPI_ReadWriteByte(SPI_TypeDef *SPIx, u8 TxData)
 {		
 	u16 retry=0;				 
-	while((SPIx->SR&1<<1)==0)		//µ»¥˝∑¢ÀÕ«¯ø’	
+	while((SPIx->SR&1<<1)==0)		//Á≠âÂæÖÂèëÈÄÅÂå∫Á©∫	
 	{
 		retry++;
-		if(retry>=0XFFFE)return 0; 	//≥¨ ±ÕÀ≥ˆ
+		if(retry>=0XFFFE)return 0; 	//Ë∂ÖÊó∂ÈÄÄÂá∫
 	}			  
-	SPIx->DR=TxData;	 	  		//∑¢ÀÕ“ª∏ˆbyte 
+	SPIx->DR=TxData;	 	  		//ÂèëÈÄÅ‰∏Ä‰∏™byte 
 	retry=0;
-	while((SPIx->SR&1<<0)==0) 		//µ»¥˝Ω” ’ÕÍ“ª∏ˆbyte  
+	while((SPIx->SR&1<<0)==0) 		//Á≠âÂæÖÊé•Êî∂ÂÆå‰∏Ä‰∏™byte  
 	{
 		retry++;
-		if(retry>=0XFFFE)return 0;	//≥¨ ±ÕÀ≥ˆ
+		if(retry>=0XFFFE)return 0;	//Ë∂ÖÊó∂ÈÄÄÂá∫
 	}	  						    
-	return SPIx->DR;          		//∑µªÿ ’µΩµƒ ˝æ›				    
+	return SPIx->DR;          		//ËøîÂõûÊî∂Âà∞ÁöÑÊï∞ÊçÆ				    
 }
 

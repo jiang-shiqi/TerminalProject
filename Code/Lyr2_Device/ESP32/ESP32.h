@@ -1,17 +1,18 @@
 #ifndef _ESP32_H_
 #define _ESP32_H_
 
-#include "include.h"
-#include "SPI.h"
+#include "sys.h"  
 
 //ESP32模块模拟SPI ID
-#define ESP32_SPI_ID          0xEF62
+#define ESP32_DRIVE_ID     0XEF17
 //操作正确返回码
 #define ESP32_ReturnCode_OK   0x4F4B
 //ESP32使用的SPI端口
 #define ESP32_SPICOM          SPI1
 //ESP32使用CS端口
 #define ESP32_SPICS           ESP_CS
+//握手IO
+#define ESP32_HANDSHAKE_IO   ADC1_IN1
 
 //ESP32各数组最大长度
 #define ESP32_NetData_MAX   100
@@ -58,9 +59,11 @@ typedef enum Esp32_ConnectStatusType_en_t{
 	ESPStatus_NoResponse,               //模块无响应
 	ESPStatus_NoInit,                   //模块未初始化
 	ESPStatus_NoWifi,                   //未连接到WiFi
+	ESPStatus_WifiConnecting,           //WiFi连接中
 	ESPStatus_ConnectedWifi,            //已连接到WiFi
 	ESPStatus_ConnectedTCP,             //已连接到服务器
 	ESPStatus_ServerResponse,           //服务器已响应
+	ESPStatus_LargeFileTransferMode,	//大文件传输模式
 }en_ConnectStatusType;
 
 //服务器连接方式 枚举
@@ -190,7 +193,7 @@ struct ESP32_Class_st_t{
 };
 
 void ESP32_Init(void);
-u16  ESP32_Read_ID(void);               //读取FLASH ID
+int16_t ESP32_ReadDeviceID(void);               //读取FLASH ID
 uint32_t ESP32_Read_SR(uint16_t registerNum);               //读取状态寄存器 
 uint32_t ESP32_Write_SR(uint16_t registerNum,uint32_t sr);             //写状态寄存器
 void ESP32_Write_Enable(void);          //写使能 
@@ -208,5 +211,39 @@ uint8_t connectServer(struct ESP32_Class_st_t *esp);           //连接服务器
 uint8_t disconnectServer(struct ESP32_Class_st_t *esp);        //断开服务器
 uint8_t netSendOutReceivedFun(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //发送网络数据
 uint8_t selectSNTPTime(struct ESP32_Class_st_t *esp);          //查询SNTP时间
+
+
+
+//起始符
+#define ESP32_START_BIT             0x5577
+//指令符
+#define ESP32_COM_RESET             0x0001
+#define ESP32_COM_REQUEST_ID        0x0002
+#define ESP32_COM_SENDER            0x0003
+#define ESP32_COM_RECEIVER          0x0004
+#define ESP32_COM_GET_STATUS        0x0005
+#define ESP32_COM_SET_WIFI_ATTR     0x0006
+#define ESP32_COM_SET_SERVER_ATTR   0x0007
+#define ESP32_COM_RECONNECT_WIFI    0x0008
+
+//全局变量
+extern uint16_t ESP32_SerialNumber;
+extern uint8_t  ESP32_Wait_Flag;
+extern uint8_t  ESP32_Ready_Flag;
+
+//函数
+void ESP32_Init(void);
+void ESP32_Service(void);
+
+void ESP32_SendCom(uint16_t com);
+void ESP32_TransmitData(char *sendBuf,char *readBuf, uint16_t len);
+
+int16_t ESP32_ReadDeviceID(void);
+int16_t ESP32_SendNetData(char *sendBuf, uint16_t lenth);
+int16_t ESP32_ReceiveNetData(char *receiveBuf, uint16_t lenth);
+int16_t ESP32_SelectStatus(void);
+
+
+
 
 #endif 

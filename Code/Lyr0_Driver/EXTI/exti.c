@@ -5,75 +5,75 @@
 #include "ESP32.h"
 
 
-////Íâ²¿ÖÐ¶Ï0·þÎñ³ÌÐò
+////å¤–éƒ¨ä¸­æ–­0æœåŠ¡ç¨‹åº
 //void EXTI0_IRQHandler(void)
 //{ 
 //	
-//	EXTI->PR=1<<0;  //Çå³ýLINE0ÉÏµÄÖÐ¶Ï±êÖ¾Î»  
+//	EXTI->PR=1<<0;  //æ¸…é™¤LINE0ä¸Šçš„ä¸­æ–­æ ‡å¿—ä½  
 //}	
 
-//Íâ²¿ÖÐ¶Ï1·þÎñ³ÌÐò
+//å¤–éƒ¨ä¸­æ–­1æœåŠ¡ç¨‹åº
 void EXTI1_IRQHandler(void)
 { 
-	//ÐèESP32·´À¡
+	//éœ€ESP32åé¦ˆ
 	if(ESP32_Wait_Flag == 1)
 	{
 		ESP32_Wait_Flag = 0;
 		// ESP32_Ready_Flag = 1;
 	}
-	//½ÓÊÕµ½ESP32´ý·¢ËÍ×´Ì¬
+	//æŽ¥æ”¶åˆ°ESP32å¾…å‘é€çŠ¶æ€
 	else
 	{
 		
 	}
 	
-	EXTI->PR=1<<1;  //Çå³ýLINE0ÉÏµÄÖÐ¶Ï±êÖ¾Î»  
+	EXTI->PR=1<<1;  //æ¸…é™¤LINE0ä¸Šçš„ä¸­æ–­æ ‡å¿—ä½  
 }	
 
-////Íâ²¿ÖÐ¶Ï2·þÎñ³ÌÐò
+////å¤–éƒ¨ä¸­æ–­2æœåŠ¡ç¨‹åº
 //void EXTI2_IRQHandler(void)
 //{
-//	delay_ms(10);	//Ïû¶¶
+//	delay_ms(10);	//æ¶ˆæŠ–
 //	if(KEY2==0)	  
 //	{	 
 //		LED0=!LED0; 			 
 //	}		 
-//	EXTI->PR=1<<2;  //Çå³ýLINE2ÉÏµÄÖÐ¶Ï±êÖ¾Î»  
+//	EXTI->PR=1<<2;  //æ¸…é™¤LINE2ä¸Šçš„ä¸­æ–­æ ‡å¿—ä½  
 //}
-////Íâ²¿ÖÐ¶Ï3·þÎñ³ÌÐò
+////å¤–éƒ¨ä¸­æ–­3æœåŠ¡ç¨‹åº
 //void EXTI3_IRQHandler(void)
 //{
-//	delay_ms(10);	//Ïû¶¶
+//	delay_ms(10);	//æ¶ˆæŠ–
 //	if(KEY1==0)	 
 //	{
 //		LED1=!LED1;
 //	}		 
-//	EXTI->PR=1<<3;  //Çå³ýLINE3ÉÏµÄÖÐ¶Ï±êÖ¾Î»  
+//	EXTI->PR=1<<3;  //æ¸…é™¤LINE3ä¸Šçš„ä¸­æ–­æ ‡å¿—ä½  
 //}
-////Íâ²¿ÖÐ¶Ï4·þÎñ³ÌÐò
+////å¤–éƒ¨ä¸­æ–­4æœåŠ¡ç¨‹åº
 //void EXTI4_IRQHandler(void)
 //{
-//	delay_ms(10);	//Ïû¶¶
+//	delay_ms(10);	//æ¶ˆæŠ–
 //	if(KEY0==0)	 
 //	{		
 //		LED0=!LED0;	
 //		LED1=!LED1;		
 //	}		 
-//	EXTI->PR=1<<4;  //Çå³ýLINE4ÉÏµÄÖÐ¶Ï±êÖ¾Î»  
+//	EXTI->PR=1<<4;  //æ¸…é™¤LINE4ä¸Šçš„ä¸­æ–­æ ‡å¿—ä½  
 //}
 	   
-//Íâ²¿ÖÐ¶Ï³õÊ¼»¯³ÌÐò
-//³õÊ¼»¯PE2~4,PA0ÎªÖÐ¶ÏÊäÈë.
+//å¤–éƒ¨ä¸­æ–­åˆå§‹åŒ–ç¨‹åº
+//åˆå§‹åŒ–PE2~4,PA0ä¸ºä¸­æ–­è¾“å…¥.
 void EXTIX_Init(void)
 {
-	Ex_NVIC_Config(GPIO_A,1,FTIR); 		//ÏÂ½µÑØ´¥·¢
-//	Ex_NVIC_Config(GPIO_E,3,FTIR); 		//ÏÂ½µÑØ´¥·¢
-//	Ex_NVIC_Config(GPIO_E,4,FTIR); 		//ÏÂ½µÑØ´¥·¢
-// 	Ex_NVIC_Config(GPIO_A,0,RTIR); 	 	//ÉÏÉýÑØ´¥·¢ 
-	MY_NVIC_Init(3,2,EXTI1_IRQn,2);		//ÇÀÕ¼3£¬×ÓÓÅÏÈ¼¶2£¬×é2
-//	MY_NVIC_Init(2,2,EXTI3_IRQn,2);		//ÇÀÕ¼2£¬×ÓÓÅÏÈ¼¶2£¬×é2	   
-//	MY_NVIC_Init(1,2,EXTI4_IRQn,2);		//ÇÀÕ¼1£¬×ÓÓÅÏÈ¼¶2£¬×é2	   
-//	MY_NVIC_Init(0,2,EXTI0_IRQn,2);		//ÇÀÕ¼0£¬×ÓÓÅÏÈ¼¶2£¬×é2	   
+	Ex_NVIC_Config(GPIO_A,1,FTIR); 		//ä¸‹é™æ²¿è§¦å‘
+//	Ex_NVIC_Config(GPIO_E,3,FTIR); 		//ä¸‹é™æ²¿è§¦å‘
+//	Ex_NVIC_Config(GPIO_E,4,FTIR); 		//ä¸‹é™æ²¿è§¦å‘
+// 	Ex_NVIC_Config(GPIO_A,0,RTIR); 	 	//ä¸Šå‡æ²¿è§¦å‘ 
+	MY_NVIC_Init(3,2,EXTI1_IRQn,2);		//æŠ¢å 3ï¼Œå­ä¼˜å…ˆçº§2ï¼Œç»„2
+//	MY_NVIC_Init(2,2,EXTI3_IRQn,2);		//æŠ¢å 2ï¼Œå­ä¼˜å…ˆçº§2ï¼Œç»„2	   
+//	MY_NVIC_Init(1,2,EXTI4_IRQn,2);		//æŠ¢å 1ï¼Œå­ä¼˜å…ˆçº§2ï¼Œç»„2	   
+//	MY_NVIC_Init(0,2,EXTI0_IRQn,2);		//æŠ¢å 0ï¼Œå­ä¼˜å…ˆçº§2ï¼Œç»„2	   
 }
 
 
