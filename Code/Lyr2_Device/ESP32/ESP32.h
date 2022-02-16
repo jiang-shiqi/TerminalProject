@@ -19,6 +19,11 @@
 #define ESP32_WIFILIST_MAX   10
 #define ESP32_WIFISSID_MAX   30
 #define ESP32_WIFIPSWD_MAX   30
+#define ESP32_WEBSITE_MAX    50
+
+//ESP32超时时间 ms
+#define ESP32_TIMEOUT_WiFi   5000
+#define ESP32_TIMEOUT_Server 5000
 
 //ESP32 SPI指令表  
 #define ESP32_COM_DeviceID          0x90 //读取设备ID
@@ -56,15 +61,31 @@ typedef union {
 
 //连接状态 枚举
 typedef enum Esp32_ConnectStatusType_en_t{
-	ESPStatus_NoResponse,               //模块无响应
-	ESPStatus_NoInit,                   //模块未初始化
-	ESPStatus_NoWifi,                   //未连接到WiFi
-	ESPStatus_WifiConnecting,           //WiFi连接中
-	ESPStatus_ConnectedWifi,            //已连接到WiFi
-	ESPStatus_ConnectedTCP,             //已连接到服务器
-	ESPStatus_ServerResponse,           //服务器已响应
-	ESPStatus_LargeFileTransferMode,	//大文件传输模式
+	ESPStatus_NoResponse,             //模块无响应
+	ESPStatus_RequestManualAction,    //需手动操作
+	ESPStatus_NoWifi,                 //未连接到WiFi
+	ESPStatus_WifiConnecting,         //WiFi连接中
+	ESPStatus_WifiConnectError,       //wifi连接错误
+	ESPStatus_WifiConnectSucceeded,   //已连接到WiFi
+	ESPStatus_ServerConnecting,    	  //服务器连接中
+	ESPStatus_ServerResponse,         //服务器已响应
+//	ESPStatus_LargeFileTransferMode,  //大文件传输模式
 }en_ConnectStatusType;
+
+//信息显示 枚举
+typedef enum Esp32_InfoDisplay_en_t{
+	ESPInfo_NoResponse,               //模块无响应
+	ESPInfo_WifiConnecting,           //WiFi连接中
+	ESPInfo_WiFiWaitConnect,          //WiFi等待连接
+	ESPInfo_WifiAttrError,            //WiFi属性有误
+	ESPInfo_WifiConnectTimeout,       //WiFi连接超时
+	ESPInfo_WifiPasswordError,        //WiFi密码错误
+	ESPInfo_NoAPFound,                //未搜索到AP
+	ESPInfo_ServerConnecting,         //服务器连接中
+	ESPInfo_ServerAttrError,          //服务器属性有误
+	ESPInfo_ServerConnectTimeout,     //服务器连接超时
+	ESPInfo_ServerConnectSucceeded,   //已连接到服务器
+}en_InfoDisplay;
 
 //服务器连接方式 枚举
 typedef enum ESP32_ServerConnectType_en_t{
@@ -84,7 +105,7 @@ typedef enum ESP32_TimeWeek_en_t{
 	Saturday,
 	Sunday,
 }en_TimeWeek;
-typedef enum ESPTimeMonth_en{
+typedef enum ESPTimeMonth_en_t{
 	January = 1,
 	February,
 	March,
@@ -143,19 +164,21 @@ typedef struct {
 
 //服务器连接结构体
 typedef struct {
-	enum ServerConnect_Type type; 
-	char website[50];
-	uint8_t ip[4];
-	uint16_t port; 
+	uint8_t ready_Flag;                 //准备就绪标志位
+	enum ServerConnect_Type type;       //服务器连接方式
+	char website[ESP32_WEBSITE_MAX];    //服务器网址
+	uint8_t ip[4];                      //服务器IPV4
+	uint16_t port;                      //服务器端口号
 }ESP32_ServerConnect_st_t;
 
 //wifi结构体
 typedef struct {
-	uint8_t ecn;                    //加密方式
+	uint8_t ready_Flag;                 //准备就绪标志位
+	uint8_t ecn;                        //加密方式
 	char    ssid[ESP32_WIFISSID_MAX];	//AP SSID
-	char    pswd[ESP32_WIFIPSWD_MAX];  //AP PWD 
-	int8_t  rssi;                   //信号强度
-	uint8_t mac[6];                 //AP MAC地址
+	char    pswd[ESP32_WIFIPSWD_MAX];   //AP PWD 
+	int8_t  rssi;                       //信号强度
+	uint8_t mac[6];                     //AP MAC地址
 }ESP32_WifiConnectAttr_st_t;
 
 //SNTP时间结构体  
@@ -173,23 +196,23 @@ typedef struct{
 struct ESP32_Class_st_t{
 	uint8_t initStatus;                                //初始化状态
 	enum Esp32_ConnectStatusType_en_t connectStatus;   //连接状态 
+	enum Esp32_InfoDisplay_en_t infoDisplay;           //信息显示
+	uint8_t connectionReady;                           //连接就绪
+	uint8_t requestManualAction;                       //请求手动处理
 	ESP32_SetAttr_st_t setAttr;                        //可设置属性  
-	uint8_t sendComStatus;                             //发送指令的状态
-	uint32_t callbackTimeout;                          //回调超时时间
-	uint32_t keepAlive;                                //心跳包时间
+	uint32_t timeOut;                                  //超时等待时间
 	uint32_t errorNum;                                 //错误累加值
 	ESP32_NetDataSendOut_st_t netSendoutData;          //待发送的网络数据
 	ESP32_NetDataReceived_st_t netReceivedData;        //接收到的网络数据
-	uint8_t WifiConnectStatus;                         //wifi连接状态
 	ESP32_WifiConnectAttr_st_t WifiAttr;               //WiFi属性
 	ESP32_ServerConnect_st_t serverAttr;               //服务器属性
 	ESP32_STNPTime_st_t stnpTime;                      //STNP时间
 	uint16_t (*connectWifi)(struct ESP32_Class_st_t *esp);             //连接WiFi
-	uint8_t (*disconnectWifi)(struct ESP32_Class_st_t *esp);          //断开WiFi
-	uint8_t (*connectServer)(struct ESP32_Class_st_t *esp);           //连接服务器
-	uint8_t (*disconnectServer)(struct ESP32_Class_st_t *esp);        //断开服务器
-	uint8_t (*netSendOutReceivedFun)(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //发送/接收网络数据
-	uint8_t (*selectSNTPTime)(struct ESP32_Class_st_t *esp);          //查询SNTP时间
+	uint8_t  (*disconnectWifi)(struct ESP32_Class_st_t *esp);          //断开WiFi
+	uint8_t  (*connectServer)(struct ESP32_Class_st_t *esp);           //连接服务器
+	uint8_t  (*disconnectServer)(struct ESP32_Class_st_t *esp);        //断开服务器
+	uint8_t  (*netSendOutReceivedFun)(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //发送/接收网络数据
+	uint8_t  (*selectSNTPTime)(struct ESP32_Class_st_t *esp);          //查询SNTP时间
 };
 
 void ESP32_Init(void);

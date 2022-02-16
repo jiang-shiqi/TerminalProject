@@ -24,24 +24,20 @@ void ESP32_Init(void)
 	ESP32_Drive.connectStatus = ESPStatus_NoResponse;    //连接状态 
 	ESP32_Drive.setAttr.serverAutoConnectEnable = 1;     //可设置属性  
     ESP32_Drive.setAttr.wifiAutoConnectEnable = 1;
-	ESP32_Drive.sendComStatus = 0;                       //发送指令的状态
-	ESP32_Drive.callbackTimeout = 0;                     //回调超时时间
-	ESP32_Drive.keepAlive = 100;                         //心跳包时间
 	ESP32_Drive.errorNum = 0;                            //错误计数器
 	// ESP32_Drive.netSendoutData; //待发送的网络数据
 	// ESP32_Drive.netReceivedData;//接收到的网络数据
-	ESP32_Drive.WifiConnectStatus = 0;                   //wifi连接状态
-	ESP32_Drive.WifiAttr;                  //WiFi属性
-	ESP32_Drive.serverAttr;              //服务器属性
-	ESP32_Drive.stnpTime;                     //STNP时间
+	ESP32_Drive.WifiAttr;                                //WiFi属性
+	ESP32_Drive.serverAttr;                              //服务器属性
+	ESP32_Drive.stnpTime;                                //STNP时间
 	//函数指针初始化
-	ESP32_Drive.connectWifi = connectWifi;            //连接WiFi
-	ESP32_Drive.disconnectWifi = disconnectWifi;          //断开WiFi
-	ESP32_Drive.connectServer = connectServer;         //连接服务器
-	ESP32_Drive.disconnectServer = disconnectServer;  //断开服务器
-	ESP32_Drive.netSendOutFun = netSendOutFun; //发送网络数据
-	ESP32_Drive.netReceivedFun = netReceivedFun; //接收网络数据
-	ESP32_Drive.selectSNTPTime = selectSNTPTime;          //查询SNTP时间
+	ESP32_Drive.connectWifi = connectWifi;               //连接WiFi
+	ESP32_Drive.disconnectWifi = disconnectWifi;         //断开WiFi
+	ESP32_Drive.connectServer = connectServer;           //连接服务器
+	ESP32_Drive.disconnectServer = disconnectServer;     //断开服务器
+	ESP32_Drive.netSendOutFun = netSendOutFun;           //发送网络数据
+	ESP32_Drive.netReceivedFun = netReceivedFun;         //接收网络数据
+	ESP32_Drive.selectSNTPTime = selectSNTPTime;         //查询SNTP时间
 }
 
 void ESP32_Service(void)
@@ -51,75 +47,13 @@ void ESP32_Service(void)
 	uint32_t res32; 
 	//状态检测 
 	ESP32_ConnectionStatus = ESP32_SelectStatus();
+	ESP32_SerialNumber = ESP32_ReadDeviceID();
+				if(ESP32_SerialNumber == ESP32_DRIVE_ID)
 	//状态处理
 	switch(ESP32_Drive.connectStatus)
 	{
-		case ESPStatus_NoResponse:               //模块无响应
-			//查询模块ID
-				ESP32_SerialNumber = ESP32_ReadDeviceID();
-				if(ESP32_SerialNumber == ESP32_DRIVE_ID)
-				{
-					ESP32_Drive.connectStatus = ESPStatus_NoInit;
-				}
-			break;
-		case ESPStatus_NoWifi:                   //未连接到WiFi
-			//配置为自动连接WiFi时 直接连接WiFi
-			if((ESP32_Drive.setAttr.wifiAutoConnectEnable == 1)&&(ESP32_Drive.WifiConnectStatus == 0))
-			{
-				res8 = connectWifi(&ESP32_Drive);
-				if(res8 == 0)
-				{
-					ESP32_Drive.errorNum ++;
-				}
-				else
-				{
-					ESP32_Drive.errorNum =0;
-				}
-			}
-			if(ESP32_Drive.WifiConnectStatus == 2)
-			{
-				
-			}
-			break;
-		case ESPStatus_WifiConnecting:			//WiFi连接中
 
-			break;
-		case ESPStatus_ConnectedWifi:            //已连接到WiFi
-			//配置为自动连接服务器时 直接连接服务器
-			if(ESP32_Drive.setAttr.serverAutoConnectEnable == 1)
-			{
-				res8 = connectServer(&ESP32_Drive);
-				if(res8 == 1)
-				{
-					ESP32_Drive.connectStatus = ESPStatus_ConnectedTCP;
-					ESP32_Drive.errorNum = 0;
-				} 
-				else
-					ESP32_Drive.errorNum ++;
-			}
-			break;
-		case ESPStatus_ConnectedTCP:             //已连接到服务器
-			//读取ESP32 SPI虚拟寄存器 判断是否已连接到服务器
-			break;
-		case ESPStatus_ServerResponse:           //服务器已响应
-			//发送心跳包
-			//待发送/接收数据处理
-			res8 = netSendOutReceivedFun(&ESP32_Drive);
-			if((ESP32_Drive.netSendoutData.status == 1)&&(res8 == 1))
-			{
-				ESP32_Drive.netSendoutData.status = 2;
-			}	
-			//建立错误累加机制 发送错误+1发送正确-8 或是 检测丢包率
-			if(res8 == 1)
-			{
-				if(ESP32_Drive.errorNum >= 8)
-					ESP32_Drive.errorNum -= 8;
-			}
-			else
-			{
-				ESP32_Drive.errorNum ++;
-			}
-			break;
+			
 	}
 	//如果错误累加值到达一定数量 则将连接状态重置
 	if(ESP32_Drive.errorNum > 100)
@@ -233,8 +167,7 @@ uint8_t disconnectWifi(struct ESP32_Class_st_t *esp)
 // 			esp->WifiConnectStatus = 2;
 // 	}
 
-// 	return 1;
-// }
+// 	return 1;                                                                                                                                                                                                                                                                                                                                                           承载着做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做做                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 //连接服务器          
 uint8_t connectServer(struct ESP32_Class_st_t *esp)
 {
@@ -307,16 +240,10 @@ void ESP32_Write(uint8_t* pBuffer,u32 WriteAddr,uint16_t NumByteToWrite)
 uint8_t ESP32_Erase_Chip(void)
 {
     uint8_t res ;
-    SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_ReadStatusReg); 
-    res = SPI_ReadWriteByte(ESP32_SPICOM, 0x00); 
+    // SPI_ReadWriteByte(ESP32_SPICOM, ESP32_COM_ReadStatusReg); 
+    // res = SPI_ReadWriteByte(ESP32_SPICOM, 0x00); 
 
     return res;
-}
-
-//等待空闲
-void ESP32_Wait_Busy(void)
-{
-
 }
 
 //进入掉电模式
@@ -334,14 +261,23 @@ void ESP32_WAKEUP(void)
 //设置服务器属性
 void ESP32_SetServiceAttr(struct ESP32_Class_st_t *esp,ESP32_ServerConnect_st_t *serverAttr)
 {
+	uint16_t i;
 
+	esp->serverAttr.ready_Flag = serverAttr->ready_Flag;
+	esp->serverAttr.type = serverAttr->type;
+	for(i=0;i<ESP32_WEBSITE_MAX;i++)
+		esp->serverAttr.website[i] = serverAttr->website[i];
+	for(i=0;i<4;i++)
+		esp->serverAttr.ip[i] = serverAttr->ip[i];
+	esp->serverAttr.port = serverAttr->port;
 }
 
-//设置WiFi属性
+//向ESP32结构体中设置WiFi属性
 void ESP32_SetWiFiAttr(struct ESP32_Class_st_t *esp,ESP32_WifiConnectAttr_st_t *wifiAttr)
 {
 	uint16_t i;
 
+	esp->WifiAttr.ready_Flag = wifiAttr->ready_Flag;
 	esp->WifiAttr.ecn = wifiAttr->ecn;
 	for(i=0;i<ESP32_WIFISSID_MAX;i++)
 		esp->WifiAttr.ssid[i] = wifiAttr->ssid[i];
@@ -544,7 +480,7 @@ int16_t ESP32_SelectStatus(void)
 void ESP32_SendCom(uint16_t com)
 {
 	ESP32_Wait_Flag = 1;
-	ESP_CS = 0;	
+	ESP32_SPICS = 0;	
 	// delay_ms(1);
 	while(ESP32_HANDSHAKE_IO == 1);
 	ESP32_Wait_Flag = 0;
@@ -552,7 +488,7 @@ void ESP32_SendCom(uint16_t com)
 	SPI_ReadWriteByte(ESP32_SPICOM, ESP32_START_BIT&0x00ff);
 	SPI_ReadWriteByte(ESP32_SPICOM, com>>8);                   //发送指令
 	SPI_ReadWriteByte(ESP32_SPICOM, com&0x00ff);
-	ESP_CS = 1;		   
+	ESP32_SPICS = 1;		   
 }
 
 /**@brief ESP32 SPI传输数据
@@ -576,35 +512,35 @@ void ESP32_TransmitData(char *sendBuf,char *readBuf, uint16_t len)
 	if((sendBuf == NULL)&&(readBuf != NULL))
 	{
 		ESP32_Wait_Flag = 1;
-		ESP_CS = 0;
+		ESP32_SPICS = 0;
 		while(ESP32_Wait_Flag == 1);
 		for(i=0;i<len;i++)
 		{
 			readBuf[i] = SPI_ReadWriteByte(ESP32_SPICOM, 0x00);
 		}
-		ESP_CS = 1;	
+		ESP32_SPICS = 1;	
 	}
 	else if((sendBuf != NULL)&&(readBuf == NULL))
 	{
 		ESP32_Wait_Flag = 1;
-		ESP_CS = 0;
+		ESP32_SPICS = 0;
 		while(ESP32_Wait_Flag == 1);
 		for(i=0;i<len;i++)
 		{
 			SPI_ReadWriteByte(ESP32_SPICOM, sendBuf[i]);
 		}
-		ESP_CS = 1;	
+		ESP32_SPICS = 1;	
 	}
 	else if((sendBuf != NULL)&&(readBuf != NULL))
 	{
 		ESP32_Wait_Flag = 1;
-		ESP_CS = 0;
+		ESP32_SPICS = 0;
 		while(ESP32_Wait_Flag == 1);
 		for(i=0;i<len;i++)
 		{
 			readBuf[i] = SPI_ReadWriteByte(ESP32_SPICOM, sendBuf[i]);
 		}
-		ESP_CS = 1;	
+		ESP32_SPICS = 1;	
 	}
 	else
 	{
