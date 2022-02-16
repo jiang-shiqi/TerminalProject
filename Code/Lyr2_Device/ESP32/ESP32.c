@@ -258,7 +258,10 @@ void ESP32_WAKEUP(void)
 
 }
 
-//设置服务器属性
+/**@brief 向ESP32结构体中设置服务器属性
+* @param[in]  *esp            待修改的ESP32类  
+* @param[in]  *serverAttr     填充好的服务器属性结构体  
+*/
 void ESP32_SetServiceAttr(struct ESP32_Class_st_t *esp,ESP32_ServerConnect_st_t *serverAttr)
 {
 	uint16_t i;
@@ -272,7 +275,10 @@ void ESP32_SetServiceAttr(struct ESP32_Class_st_t *esp,ESP32_ServerConnect_st_t 
 	esp->serverAttr.port = serverAttr->port;
 }
 
-//向ESP32结构体中设置WiFi属性
+/**@brief 向ESP32结构体中设置WiFi属性
+* @param[in]  *esp            待修改的ESP32类  
+* @param[in]  *wifiAttr       填充好的WiFi属性结构体  
+*/
 void ESP32_SetWiFiAttr(struct ESP32_Class_st_t *esp,ESP32_WifiConnectAttr_st_t *wifiAttr)
 {
 	uint16_t i;
