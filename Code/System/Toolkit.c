@@ -1,10 +1,11 @@
 #include "Toolkit.h"
 
+//字符串转十六进制
 int32_t StringToHex(char *s, uint8_t lenth)
 {
   int32_t res;
 	
-	//�ж�������Ч��
+	//判断数据有效性
 	if((lenth > 9) || \
 		 ((lenth == 1)&&(s[0] == '-')) || \
 	   (lenth == 0) \
@@ -76,11 +77,12 @@ int32_t StringToHex(char *s, uint8_t lenth)
 	return res;
 }
 
+//字符串转十进制
 int32_t StringToDec(char *s, uint8_t lenth)
 {
   int32_t res;
 	
-	//�ж�������Ч��
+	//判断数据有效性
 	if((lenth >= 10) || \
 		 ((lenth == 1)&&(s[0] == '-')) || \
 	   (lenth == 0) \
@@ -158,6 +160,7 @@ int32_t StringToDec(char *s, uint8_t lenth)
 	return res;
 }
 
+//单字符转数字
 uint8_t CharToUInt8(char c)
 {
 	uint8_t res = 0;
@@ -188,6 +191,7 @@ uint8_t CharToUInt8(char c)
 	return res;
 }
 
+//字符串比对
 int8_t my_Memcmp(char *a, char *b, uint16_t lenth)
 {
 	uint16_t i;
@@ -204,6 +208,7 @@ int8_t my_Memcmp(char *a, char *b, uint16_t lenth)
 	return EX_OK;
 }
 
+//计算字符串长度
 int16_t my_strlen(char *a)
 {
 	int16_t lenth;
@@ -220,6 +225,7 @@ int16_t my_strlen(char *a)
 	return lenth;
 }
 
+//字符串拷贝
 void my_strcpy(char* strDestination, const char* strSource, uint16_t lenth)
 {
 	uint16_t i;
@@ -250,6 +256,21 @@ void my_strcpy(char* strDestination, const char* strSource, uint16_t lenth)
 	} 
 }
 
+//字符串累加
+void my_strcat(char* strDestination, const char* strSource, uint16_t position, uint16_t lenth)
+{
+	uint16_t i;
+
+	if (strDestination == NULL || strSource == NULL)
+	{
+		return NULL;
+	}
+
+	for( i = 0 ; i < lenth ; i++ )
+		strDestination[position + i] = strSource[i];
+}
+
+//空类型拷贝
 void * my_memcpy(void *dest, void *src, unsigned int count )
 {
 	if (dest == NULL || src == NULL)
@@ -264,8 +285,7 @@ void * my_memcpy(void *dest, void *src, unsigned int count )
 	}
 	return dest;
 }
-
-
+//空类型填充
 void * my_memset(void *dest, int set, unsigned int len)
 {
 	if (dest == NULL || len == 0)

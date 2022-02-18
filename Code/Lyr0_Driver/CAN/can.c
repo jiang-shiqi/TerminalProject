@@ -4,18 +4,18 @@
 //#include "delay.h"
 //#include "usart.h"
 
-//CAN³õÊ¼»¯
-//tsjw:ÖØĞÂÍ¬²½ÌøÔ¾Ê±¼äµ¥Ôª.·¶Î§:1~3;
-//tbs2:Ê±¼ä¶Î2µÄÊ±¼äµ¥Ôª.·¶Î§:1~8;
-//tbs1:Ê±¼ä¶Î1µÄÊ±¼äµ¥Ôª.·¶Î§:1~16;
-//brp :²¨ÌØÂÊ·ÖÆµÆ÷.·¶Î§:1~1024;(Êµ¼ÊÒª¼Ó1,Ò²¾ÍÊÇ1~1024) tq=(brp)*tpclk1
-//×¢ÒâÒÔÉÏ²ÎÊıÈÎºÎÒ»¸ö¶¼²»ÄÜÉèÎª0,·ñÔò»áÂÒ.
-//²¨ÌØÂÊ=Fpclk1/((tbs1+tbs2+1)*brp);
-//mode:0,ÆÕÍ¨Ä£Ê½;1,»Ø»·Ä£Ê½;
-//Fpclk1µÄÊ±ÖÓÔÚ³õÊ¼»¯µÄÊ±ºòÉèÖÃÎª42M,Èç¹ûÉèÖÃCAN1_Mode_Init(1,6,7,6,1);
-//Ôò²¨ÌØÂÊÎª:42M/((6+7+1)*6)=500Kbps
-//·µ»ØÖµ:0,³õÊ¼»¯OK;
-//    ÆäËû,³õÊ¼»¯Ê§°Ü;
+//CANåˆå§‹åŒ–
+//tsjw:é‡æ–°åŒæ­¥è·³è·ƒæ—¶é—´å•å…ƒ.èŒƒå›´:1~3;
+//tbs2:æ—¶é—´æ®µ2çš„æ—¶é—´å•å…ƒ.èŒƒå›´:1~8;
+//tbs1:æ—¶é—´æ®µ1çš„æ—¶é—´å•å…ƒ.èŒƒå›´:1~16;
+//brp :æ³¢ç‰¹ç‡åˆ†é¢‘å™¨.èŒƒå›´:1~1024;(å®é™…è¦åŠ 1,ä¹Ÿå°±æ˜¯1~1024) tq=(brp)*tpclk1
+//æ³¨æ„ä»¥ä¸Šå‚æ•°ä»»ä½•ä¸€ä¸ªéƒ½ä¸èƒ½è®¾ä¸º0,å¦åˆ™ä¼šä¹±.
+//æ³¢ç‰¹ç‡=Fpclk1/((tbs1+tbs2+1)*brp);
+//mode:0,æ™®é€šæ¨¡å¼;1,å›ç¯æ¨¡å¼;
+//Fpclk1çš„æ—¶é’Ÿåœ¨åˆå§‹åŒ–çš„æ—¶å€™è®¾ç½®ä¸º42M,å¦‚æœè®¾ç½®CAN1_Mode_Init(1,6,7,6,1);
+//åˆ™æ³¢ç‰¹ç‡ä¸º:42M/((6+7+1)*6)=500Kbps
+//è¿”å›å€¼:0,åˆå§‹åŒ–OK;
+//    å…¶ä»–,åˆå§‹åŒ–å¤±è´¥;
 u8 CAN_Mode_Init(CAN_TypeDef *CANx,u16 BAUD,u8 mode)
 {
 	u8 tsjw;
@@ -55,7 +55,7 @@ u8 CAN_Mode_Init(CAN_TypeDef *CANx,u16 BAUD,u8 mode)
 		return 1;
 
  	if(tsjw==0||tbs2==0||tbs1==0||brp==0)return 1;
-	tsjw-=1;//ÏÈ¼õÈ¥1.ÔÙÓÃÓÚÉèÖÃ
+	tsjw-=1;//å…ˆå‡å»1.å†ç”¨äºè®¾ç½®
 	tbs2-=1;
 	tbs1-=1;
 	brp-=1;
@@ -63,65 +63,65 @@ u8 CAN_Mode_Init(CAN_TypeDef *CANx,u16 BAUD,u8 mode)
 	if((uint32_t)CANx == (uint32_t)CAN1)
 	{
 		CAN1_STB = 0;
-		RCC->APB1ENR|=1<<25;//Ê¹ÄÜCAN1Ê±ÖÓ CAN1Ê¹ÓÃµÄÊÇAPB1µÄÊ±ÖÓ(max:42M)
+		RCC->APB1ENR|=1<<25;//ä½¿èƒ½CAN1æ—¶é’Ÿ CAN1ä½¿ç”¨çš„æ˜¯APB1çš„æ—¶é’Ÿ(max:42M)
 	}
 	else if((uint32_t)CANx == (uint32_t)CAN2)
 	{
 		CAN2_STB = 0;	
-		RCC->APB1ENR|=1<<26;//Ê¹ÄÜCAN2Ê±ÖÓ CAN1Ê¹ÓÃµÄÊÇAPB1µÄÊ±ÖÓ(max:42M)
+		RCC->APB1ENR|=1<<26;//ä½¿èƒ½CAN2æ—¶é’Ÿ CAN1ä½¿ç”¨çš„æ˜¯APB1çš„æ—¶é’Ÿ(max:42M)
 	}
 	
-	CANx->MCR=0x0000;	//ÍË³öË¯ÃßÄ£Ê½(Í¬Ê±ÉèÖÃËùÓĞÎ»Îª0)
-	CANx->MCR|=1<<0;		//ÇëÇóCAN½øÈë³õÊ¼»¯Ä£Ê½
+	CANx->MCR=0x0000;	//é€€å‡ºç¡çœ æ¨¡å¼(åŒæ—¶è®¾ç½®æ‰€æœ‰ä½ä¸º0)
+	CANx->MCR|=1<<0;		//è¯·æ±‚CANè¿›å…¥åˆå§‹åŒ–æ¨¡å¼
 	while((CANx->MSR&1<<0)==0)
 	{
 		i++;
-		if(i>100)return 2;//½øÈë³õÊ¼»¯Ä£Ê½Ê§°Ü
+		if(i>100)return 2;//è¿›å…¥åˆå§‹åŒ–æ¨¡å¼å¤±è´¥
 	}
-	CANx->MCR|=0<<7;		//·ÇÊ±¼ä´¥·¢Í¨ĞÅÄ£Ê½
-	CANx->MCR|=0<<6;		//Èí¼ş×Ô¶¯ÀëÏß¹ÜÀí
-	CANx->MCR|=0<<5;		//Ë¯ÃßÄ£Ê½Í¨¹ıÈí¼ş»½ĞÑ(Çå³ıCAN1->MCRµÄSLEEPÎ»)
-	CANx->MCR|=1<<4;		//½ûÖ¹±¨ÎÄ×Ô¶¯´«ËÍ
-	CANx->MCR|=0<<3;		//±¨ÎÄ²»Ëø¶¨,ĞÂµÄ¸²¸Ç¾ÉµÄ
-	CANx->MCR|=0<<2;		//ÓÅÏÈ¼¶ÓÉ±¨ÎÄ±êÊ¶·û¾ö¶¨
-	CANx->BTR=0x00000000;	//Çå³ıÔ­À´µÄÉèÖÃ.
-	CANx->BTR|=mode<<30;	//Ä£Ê½ÉèÖÃ 0,ÆÕÍ¨Ä£Ê½;1,»Ø»·Ä£Ê½;2,¾²Ä¬Ä£Ê½
-	CANx->BTR|=tsjw<<24; 	//ÖØĞÂÍ¬²½ÌøÔ¾¿í¶È(Tsjw)Îªtsjw+1¸öÊ±¼äµ¥Î»
-	CANx->BTR|=tbs2<<20; 	//Tbs2=tbs2+1¸öÊ±¼äµ¥Î»
-	CANx->BTR|=tbs1<<16;	//Tbs1=tbs1+1¸öÊ±¼äµ¥Î»
-	CANx->BTR|=brp<<0;  	//·ÖÆµÏµÊı(Fdiv)Îªbrp+1
-							//²¨ÌØÂÊ:Fpclk1/((Tbs1+Tbs2+1)*Fdiv)
-	CANx->MCR&=~(1<<0);		//ÇëÇóCANÍË³ö³õÊ¼»¯Ä£Ê½
+	CANx->MCR|=0<<7;		//éæ—¶é—´è§¦å‘é€šä¿¡æ¨¡å¼
+	CANx->MCR|=0<<6;		//è½¯ä»¶è‡ªåŠ¨ç¦»çº¿ç®¡ç†
+	CANx->MCR|=0<<5;		//ç¡çœ æ¨¡å¼é€šè¿‡è½¯ä»¶å”¤é†’(æ¸…é™¤CAN1->MCRçš„SLEEPä½)
+	CANx->MCR|=1<<4;		//ç¦æ­¢æŠ¥æ–‡è‡ªåŠ¨ä¼ é€
+	CANx->MCR|=0<<3;		//æŠ¥æ–‡ä¸é”å®š,æ–°çš„è¦†ç›–æ—§çš„
+	CANx->MCR|=0<<2;		//ä¼˜å…ˆçº§ç”±æŠ¥æ–‡æ ‡è¯†ç¬¦å†³å®š
+	CANx->BTR=0x00000000;	//æ¸…é™¤åŸæ¥çš„è®¾ç½®.
+	CANx->BTR|=mode<<30;	//æ¨¡å¼è®¾ç½® 0,æ™®é€šæ¨¡å¼;1,å›ç¯æ¨¡å¼;2,é™é»˜æ¨¡å¼
+	CANx->BTR|=tsjw<<24; 	//é‡æ–°åŒæ­¥è·³è·ƒå®½åº¦(Tsjw)ä¸ºtsjw+1ä¸ªæ—¶é—´å•ä½
+	CANx->BTR|=tbs2<<20; 	//Tbs2=tbs2+1ä¸ªæ—¶é—´å•ä½
+	CANx->BTR|=tbs1<<16;	//Tbs1=tbs1+1ä¸ªæ—¶é—´å•ä½
+	CANx->BTR|=brp<<0;  	//åˆ†é¢‘ç³»æ•°(Fdiv)ä¸ºbrp+1
+							//æ³¢ç‰¹ç‡:Fpclk1/((Tbs1+Tbs2+1)*Fdiv)
+	CANx->MCR&=~(1<<0);		//è¯·æ±‚CANé€€å‡ºåˆå§‹åŒ–æ¨¡å¼
 	while((CANx->MSR&1<<0)==1)
 	{
 		i++;
-		if(i>0XFFF0)return 3;//ÍË³ö³õÊ¼»¯Ä£Ê½Ê§°Ü
+		if(i>0XFFF0)return 3;//é€€å‡ºåˆå§‹åŒ–æ¨¡å¼å¤±è´¥
 	}
-	//¹ıÂËÆ÷³õÊ¼»¯
-	CANx->FMR|=1<<0;		//¹ıÂËÆ÷×é¹¤×÷ÔÚ³õÊ¼»¯Ä£Ê½
-	CANx->FA1R&=~(1<<0);	//¹ıÂËÆ÷0²»¼¤»î
-	CANx->FS1R|=1<<0; 		//¹ıÂËÆ÷Î»¿íÎª32Î».
-	CANx->FM1R|=0<<0;		//¹ıÂËÆ÷0¹¤×÷ÔÚ±êÊ¶·ûÆÁ±ÎÎ»Ä£Ê½
-	CANx->FFA1R|=0<<0;		//¹ıÂËÆ÷0¹ØÁªµ½FIFO0
-	CANx->sFilterRegister[0].FR1=0X00000000;//32Î»ID
-	CANx->sFilterRegister[0].FR2=0X00000000;//32Î»MASK
-	CANx->FA1R|=1<<0;		//¼¤»î¹ıÂËÆ÷0
-	CANx->FMR&=0<<0;		//¹ıÂËÆ÷×é½øÈëÕı³£Ä£Ê½
+	//è¿‡æ»¤å™¨åˆå§‹åŒ–
+	CANx->FMR|=1<<0;		//è¿‡æ»¤å™¨ç»„å·¥ä½œåœ¨åˆå§‹åŒ–æ¨¡å¼
+	CANx->FA1R&=~(1<<0);	//è¿‡æ»¤å™¨0ä¸æ¿€æ´»
+	CANx->FS1R|=1<<0; 		//è¿‡æ»¤å™¨ä½å®½ä¸º32ä½.
+	CANx->FM1R|=0<<0;		//è¿‡æ»¤å™¨0å·¥ä½œåœ¨æ ‡è¯†ç¬¦å±è”½ä½æ¨¡å¼
+	CANx->FFA1R|=0<<0;		//è¿‡æ»¤å™¨0å…³è”åˆ°FIFO0
+	CANx->sFilterRegister[0].FR1=0X00000000;//32ä½ID
+	CANx->sFilterRegister[0].FR2=0X00000000;//32ä½MASK
+	CANx->FA1R|=1<<0;		//æ¿€æ´»è¿‡æ»¤å™¨0
+	CANx->FMR&=0<<0;		//è¿‡æ»¤å™¨ç»„è¿›å…¥æ­£å¸¸æ¨¡å¼
 
 	if((uint32_t)CANx == (uint32_t)CAN1)
 	{
 #if CAN1_RX0_INT_ENABLE
-		//Ê¹ÓÃÖĞ¶Ï½ÓÊÕ
-		CAN1->IER|=1<<1;		//FIFO0ÏûÏ¢¹ÒºÅÖĞ¶ÏÔÊĞí.	    
-		MY_NVIC_Init(1,0,CAN1_RX0_IRQn,2);//×é2
+		//ä½¿ç”¨ä¸­æ–­æ¥æ”¶
+		CAN1->IER|=1<<1;		//FIFO0æ¶ˆæ¯æŒ‚å·ä¸­æ–­å…è®¸.	    
+		MY_NVIC_Init(1,0,CAN1_RX0_IRQn,2);//ç»„2
 #endif
 	}
 	else if((uint32_t)CANx == (uint32_t)CAN2)
 	{
 #if CAN2_RX0_INT_ENABLE
-		//Ê¹ÓÃÖĞ¶Ï½ÓÊÕ
-		CAN2->IER|=1<<1;		//FIFO0ÏûÏ¢¹ÒºÅÖĞ¶ÏÔÊĞí.	    
-		MY_NVIC_Init(1,0,CAN2_RX0_IRQn,2);//×é2
+		//ä½¿ç”¨ä¸­æ–­æ¥æ”¶
+		CAN2->IER|=1<<1;		//FIFO0æ¶ˆæ¯æŒ‚å·ä¸­æ–­å…è®¸.	    
+		MY_NVIC_Init(1,0,CAN2_RX0_IRQn,2);//ç»„2
 #endif
 	}
 
@@ -129,36 +129,36 @@ u8 CAN_Mode_Init(CAN_TypeDef *CANx,u16 BAUD,u8 mode)
 
 	return 0;
 }   
-//id:±ê×¼ID(11Î»)/À©Õ¹ID(11Î»+18Î»)	    
-//ide:0,±ê×¼Ö¡;1,À©Õ¹Ö¡
-//rtr:0,Êı¾İÖ¡;1,Ô¶³ÌÖ¡
-//len:Òª·¢ËÍµÄÊı¾İ³¤¶È(¹Ì¶¨Îª8¸ö×Ö½Ú,ÔÚÊ±¼ä´¥·¢Ä£Ê½ÏÂ,ÓĞĞ§Êı¾İÎª6¸ö×Ö½Ú)
-//*dat:Êı¾İÖ¸Õë.
-//·µ»ØÖµ:0~3,ÓÊÏä±àºÅ.0XFF,ÎŞÓĞĞ§ÓÊÏä.
+//id:æ ‡å‡†ID(11ä½)/æ‰©å±•ID(11ä½+18ä½)	    
+//ide:0,æ ‡å‡†å¸§;1,æ‰©å±•å¸§
+//rtr:0,æ•°æ®å¸§;1,è¿œç¨‹å¸§
+//len:è¦å‘é€çš„æ•°æ®é•¿åº¦(å›ºå®šä¸º8ä¸ªå­—èŠ‚,åœ¨æ—¶é—´è§¦å‘æ¨¡å¼ä¸‹,æœ‰æ•ˆæ•°æ®ä¸º6ä¸ªå­—èŠ‚)
+//*dat:æ•°æ®æŒ‡é’ˆ.
+//è¿”å›å€¼:0~3,é‚®ç®±ç¼–å·.0XFF,æ— æœ‰æ•ˆé‚®ç®±.
 u8 CAN_Tx_Msg(CAN_TypeDef *CANx,u32 id,u8 ide,u8 rtr,u8 len,u8 *dat)
 {	   
 	u8 mbox;	  
-	if(CANx->TSR&(1<<26))mbox=0;			//ÓÊÏä0Îª¿Õ
-	else if(CANx->TSR&(1<<27))mbox=1;	//ÓÊÏä1Îª¿Õ
-	else if(CANx->TSR&(1<<28))mbox=2;	//ÓÊÏä2Îª¿Õ
-	else return 0XFF;					//ÎŞ¿ÕÓÊÏä,ÎŞ·¨·¢ËÍ 
-	CANx->sTxMailBox[mbox].TIR=0;		//Çå³ıÖ®Ç°µÄÉèÖÃ
-	if(ide==0)	//±ê×¼Ö¡
+	if(CANx->TSR&(1<<26))mbox=0;			//é‚®ç®±0ä¸ºç©º
+	else if(CANx->TSR&(1<<27))mbox=1;	//é‚®ç®±1ä¸ºç©º
+	else if(CANx->TSR&(1<<28))mbox=2;	//é‚®ç®±2ä¸ºç©º
+	else return 0XFF;					//æ— ç©ºé‚®ç®±,æ— æ³•å‘é€ 
+	CANx->sTxMailBox[mbox].TIR=0;		//æ¸…é™¤ä¹‹å‰çš„è®¾ç½®
+	if(ide==0)	//æ ‡å‡†å¸§
 	{
-		id&=0x7ff;//È¡µÍ11Î»stdid
+		id&=0x7ff;//å–ä½11ä½stdid
 		id<<=21;		  
-	}else		//À©Õ¹Ö¡
+	}else		//æ‰©å±•å¸§
 	{
-		id&=0X1FFFFFFF;//È¡µÍ32Î»extid
+		id&=0X1FFFFFFF;//å–ä½32ä½extid
 		id<<=3;									   
 	}
 	CANx->sTxMailBox[mbox].TIR|=id;		 
 	CANx->sTxMailBox[mbox].TIR|=ide<<2;	  
 	CANx->sTxMailBox[mbox].TIR|=rtr<<1;
-	len&=0X0F;//µÃµ½µÍËÄÎ»
+	len&=0X0F;//å¾—åˆ°ä½å››ä½
 	CANx->sTxMailBox[mbox].TDTR&=~(0X0000000F);
-	CANx->sTxMailBox[mbox].TDTR|=len;		   //ÉèÖÃDLC.
-	//´ı·¢ËÍÊı¾İ´æÈëÓÊÏä.
+	CANx->sTxMailBox[mbox].TDTR|=len;		   //è®¾ç½®DLC.
+	//å¾…å‘é€æ•°æ®å­˜å…¥é‚®ç®±.
 	CANx->sTxMailBox[mbox].TDHR=(((u32)dat[7]<<24)|
 								((u32)dat[6]<<16)|
  								((u32)dat[5]<<8)|
@@ -167,12 +167,12 @@ u8 CAN_Tx_Msg(CAN_TypeDef *CANx,u32 id,u8 ide,u8 rtr,u8 len,u8 *dat)
 								((u32)dat[2]<<16)|
  								((u32)dat[1]<<8)|
 								((u32)dat[0]));
-	CANx->sTxMailBox[mbox].TIR|=1<<0; //ÇëÇó·¢ËÍÓÊÏäÊı¾İ
+	CANx->sTxMailBox[mbox].TIR|=1<<0; //è¯·æ±‚å‘é€é‚®ç®±æ•°æ®
 	return mbox;
 }
-//»ñµÃ·¢ËÍ×´Ì¬.
-//mbox:ÓÊÏä±àºÅ;
-//·µ»ØÖµ:·¢ËÍ×´Ì¬. 0,¹ÒÆğ;0X05,·¢ËÍÊ§°Ü;0X07,·¢ËÍ³É¹¦.
+//è·å¾—å‘é€çŠ¶æ€.
+//mbox:é‚®ç®±ç¼–å·;
+//è¿”å›å€¼:å‘é€çŠ¶æ€. 0,æŒ‚èµ·;0X05,å‘é€å¤±è´¥;0X07,å‘é€æˆåŠŸ.
 u8 CAN_Tx_Staus(CAN_TypeDef *CANx,u8 mbox)
 {	
 	u8 sta=0;					    
@@ -194,41 +194,41 @@ u8 CAN_Tx_Staus(CAN_TypeDef *CANx,u8 mbox)
 			sta |=((CANx->TSR&(1<<28))>>26);	//TME2
 			break;
 		default:
-			sta=0X05;//ÓÊÏäºÅ²»¶Ô,¿Ï¶¨Ê§°Ü.
+			sta=0X05;//é‚®ç®±å·ä¸å¯¹,è‚¯å®šå¤±è´¥.
 		break;
 	}
 	return sta;
 } 
-//µÃµ½ÔÚFIFO0/FIFO1ÖĞ½ÓÊÕµ½µÄ±¨ÎÄ¸öÊı.
-//fifox:0/1.FIFO±àºÅ;
-//·µ»ØÖµ:FIFO0/FIFO1ÖĞµÄ±¨ÎÄ¸öÊı.
+//å¾—åˆ°åœ¨FIFO0/FIFO1ä¸­æ¥æ”¶åˆ°çš„æŠ¥æ–‡ä¸ªæ•°.
+//fifox:0/1.FIFOç¼–å·;
+//è¿”å›å€¼:FIFO0/FIFO1ä¸­çš„æŠ¥æ–‡ä¸ªæ•°.
 u8 CAN_Msg_Pend(CAN_TypeDef *CANx,u8 fifox)
 {
 	if(fifox==0)return CANx->RF0R&0x03; 
 	else if(fifox==1)return CANx->RF1R&0x03; 
 	else return 0;
 }
-//½ÓÊÕÊı¾İ
-//fifox:ÓÊÏäºÅ
-//id:±ê×¼ID(11Î»)/À©Õ¹ID(11Î»+18Î»)	    
-//ide:0,±ê×¼Ö¡;1,À©Õ¹Ö¡
-//rtr:0,Êı¾İÖ¡;1,Ô¶³ÌÖ¡
-//len:½ÓÊÕµ½µÄÊı¾İ³¤¶È(¹Ì¶¨Îª8¸ö×Ö½Ú,ÔÚÊ±¼ä´¥·¢Ä£Ê½ÏÂ,ÓĞĞ§Êı¾İÎª6¸ö×Ö½Ú)
-//dat:Êı¾İ»º´æÇø
+//æ¥æ”¶æ•°æ®
+//fifox:é‚®ç®±å·
+//id:æ ‡å‡†ID(11ä½)/æ‰©å±•ID(11ä½+18ä½)	    
+//ide:0,æ ‡å‡†å¸§;1,æ‰©å±•å¸§
+//rtr:0,æ•°æ®å¸§;1,è¿œç¨‹å¸§
+//len:æ¥æ”¶åˆ°çš„æ•°æ®é•¿åº¦(å›ºå®šä¸º8ä¸ªå­—èŠ‚,åœ¨æ—¶é—´è§¦å‘æ¨¡å¼ä¸‹,æœ‰æ•ˆæ•°æ®ä¸º6ä¸ªå­—èŠ‚)
+//dat:æ•°æ®ç¼“å­˜åŒº
 void CAN_Rx_Msg(CAN_TypeDef *CANx,u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat)
 {	   
-	*ide=CANx->sFIFOMailBox[fifox].RIR&0x04;//µÃµ½±êÊ¶·ûÑ¡ÔñÎ»µÄÖµ  
- 	if(*ide==0)//±ê×¼±êÊ¶·û
+	*ide=CANx->sFIFOMailBox[fifox].RIR&0x04;//å¾—åˆ°æ ‡è¯†ç¬¦é€‰æ‹©ä½çš„å€¼  
+ 	if(*ide==0)//æ ‡å‡†æ ‡è¯†ç¬¦
 	{
 		*id=CANx->sFIFOMailBox[fifox].RIR>>21;
-	}else	   //À©Õ¹±êÊ¶·û
+	}else	   //æ‰©å±•æ ‡è¯†ç¬¦
 	{
 		*id=CANx->sFIFOMailBox[fifox].RIR>>3;
 	}
-	*rtr=CANx->sFIFOMailBox[fifox].RIR&0x02;	//µÃµ½Ô¶³Ì·¢ËÍÇëÇóÖµ.
-	*len=CANx->sFIFOMailBox[fifox].RDTR&0x0F;//µÃµ½DLC
- 	//*fmi=(CANx->sFIFOMailBox[FIFONumber].RDTR>>8)&0xFF;//µÃµ½FMI
-	//½ÓÊÕÊı¾İ
+	*rtr=CANx->sFIFOMailBox[fifox].RIR&0x02;	//å¾—åˆ°è¿œç¨‹å‘é€è¯·æ±‚å€¼.
+	*len=CANx->sFIFOMailBox[fifox].RDTR&0x0F;//å¾—åˆ°DLC
+ 	//*fmi=(CANx->sFIFOMailBox[FIFONumber].RDTR>>8)&0xFF;//å¾—åˆ°FMI
+	//æ¥æ”¶æ•°æ®
 	dat[0]=CANx->sFIFOMailBox[fifox].RDLR&0XFF;
 	dat[1]=(CANx->sFIFOMailBox[fifox].RDLR>>8)&0XFF;
 	dat[2]=(CANx->sFIFOMailBox[fifox].RDLR>>16)&0XFF;
@@ -237,12 +237,12 @@ void CAN_Rx_Msg(CAN_TypeDef *CANx,u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *d
 	dat[5]=(CANx->sFIFOMailBox[fifox].RDHR>>8)&0XFF;
 	dat[6]=(CANx->sFIFOMailBox[fifox].RDHR>>16)&0XFF;
 	dat[7]=(CANx->sFIFOMailBox[fifox].RDHR>>24)&0XFF;    
-  	if(fifox==0)CANx->RF0R|=0X20;//ÊÍ·ÅFIFO0ÓÊÏä
-	else if(fifox==1)CANx->RF1R|=0X20;//ÊÍ·ÅFIFO1ÓÊÏä	 
+  	if(fifox==0)CANx->RF0R|=0X20;//é‡Šæ”¾FIFO0é‚®ç®±
+	else if(fifox==1)CANx->RF1R|=0X20;//é‡Šæ”¾FIFO1é‚®ç®±	 
 }
 
-#if CAN1_RX0_INT_ENABLE	//Ê¹ÄÜRX0ÖĞ¶Ï
-//ÖĞ¶Ï·şÎñº¯Êı			    
+#if CAN1_RX0_INT_ENABLE	//ä½¿èƒ½RX0ä¸­æ–­
+//ä¸­æ–­æœåŠ¡å‡½æ•°			    
 void CAN1_RX0_IRQHandler(void)
 {
 	u8 rxbuf[8];
@@ -264,8 +264,8 @@ void CAN1_RX0_IRQHandler(void)
 }
 #endif
 
-#if CAN2_RX0_INT_ENABLE	//Ê¹ÄÜRX0ÖĞ¶Ï
-//ÖĞ¶Ï·şÎñº¯Êı			    
+#if CAN2_RX0_INT_ENABLE	//ä½¿èƒ½RX0ä¸­æ–­
+//ä¸­æ–­æœåŠ¡å‡½æ•°			    
 void CAN2_RX0_IRQHandler(void)
 {
 	u8 rxbuf[8];
@@ -287,31 +287,31 @@ void CAN2_RX0_IRQHandler(void)
 }
 #endif
 
-//can·¢ËÍÒ»×éÊı¾İ(¹Ì¶¨¸ñÊ½:±ê×¼Ö¡,Êı¾İÖ¡)	
-//len:Êı¾İ³¤¶È(×î´óÎª8)				     
-//msg:Êı¾İÖ¸Õë,×î´óÎª8¸ö×Ö½Ú.
-//·µ»ØÖµ:0,³É¹¦;
-//		 ÆäËû,Ê§°Ü;
+//canå‘é€ä¸€ç»„æ•°æ®(å›ºå®šæ ¼å¼:æ ‡å‡†å¸§,æ•°æ®å¸§)	
+//len:æ•°æ®é•¿åº¦(æœ€å¤§ä¸º8)				     
+//msg:æ•°æ®æŒ‡é’ˆ,æœ€å¤§ä¸º8ä¸ªå­—èŠ‚.
+//è¿”å›å€¼:0,æˆåŠŸ;
+//		 å…¶ä»–,å¤±è´¥;
 u8 CAN_Send_Msg(CAN_TypeDef *CANx,u16 id,u8* msg,u8 len)
 {	
 	u8 mbox;
 	u16 i=0;	  	 						       
     mbox=CAN_Tx_Msg(CANx,id,0,0,len,msg);
-	while((CAN_Tx_Staus(CANx,mbox)!=0X07)&&(i<0XFFF))i++;//µÈ´ı·¢ËÍ½áÊø
-	if(i>=0XFFF)return 1;							//·¢ËÍÊ§°Ü?
-	return 0;										//·¢ËÍ³É¹¦;
+	while((CAN_Tx_Staus(CANx,mbox)!=0X07)&&(i<0XFFF))i++;//ç­‰å¾…å‘é€ç»“æŸ
+	if(i>=0XFFF)return 1;							//å‘é€å¤±è´¥?
+	return 0;										//å‘é€æˆåŠŸ;
 }
-//can¿Ú½ÓÊÕÊı¾İ²éÑ¯
-//buf:Êı¾İ»º´æÇø;	 
-//·µ»ØÖµ:0,ÎŞÊı¾İ±»ÊÕµ½;
-//		 ÆäËû,½ÓÊÕµÄÊı¾İ³¤¶È;
+//canå£æ¥æ”¶æ•°æ®æŸ¥è¯¢
+//buf:æ•°æ®ç¼“å­˜åŒº;	 
+//è¿”å›å€¼:0,æ— æ•°æ®è¢«æ”¶åˆ°;
+//		 å…¶ä»–,æ¥æ”¶çš„æ•°æ®é•¿åº¦;
 u8 CAN_Receive_Msg(CAN_TypeDef *CANx,u8 *buf)
 {		   		   
 	u32 id;
 	u8 ide,rtr,len; 
-	if(CAN_Msg_Pend(CANx,0)==0)return 0;		//Ã»ÓĞ½ÓÊÕµ½Êı¾İ,Ö±½ÓÍË³ö 	 
-  	CAN_Rx_Msg(CANx,0,&id,&ide,&rtr,&len,buf); 	//¶ÁÈ¡Êı¾İ
-    if(id!=0x12||ide!=0||rtr!=0)len=0;		//½ÓÊÕ´íÎó	   
+	if(CAN_Msg_Pend(CANx,0)==0)return 0;		//æ²¡æœ‰æ¥æ”¶åˆ°æ•°æ®,ç›´æ¥é€€å‡º 	 
+  	CAN_Rx_Msg(CANx,0,&id,&ide,&rtr,&len,buf); 	//è¯»å–æ•°æ®
+    if(id!=0x12||ide!=0||rtr!=0)len=0;		//æ¥æ”¶é”™è¯¯	   
 	return len;	
 }
 

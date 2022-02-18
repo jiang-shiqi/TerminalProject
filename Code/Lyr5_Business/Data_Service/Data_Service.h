@@ -34,6 +34,9 @@ typedef struct
 	uint8_t  status;               //状态(是否被吃掉)
 }Data_Game_SnakeFood_st;
 
+//Data_Service服务函数调用间隔
+#define DATA_SERVICE_CYCLE  1000
+
 
 #define DATA_NET_RXTIMEOUT_MAX 100
 #define DATA_NET_KEYLENTH_MAX 30
@@ -64,7 +67,8 @@ typedef struct
 	const uint16_t sendKeyLenth;
 
 }Data_Net_SendString_st;
-typedef enum{
+
+typedef enum Data_Net_Key_en_t{
 	DataNet_projectName,
 	DataNet_Time,
 	DataNet_Watering,
@@ -72,9 +76,9 @@ typedef enum{
 	DataNet_CriticalHumidity,
 	DataNet_Character,
 	DataNet_sentry,
-}Data_Net_Key_en;
+}en_Data_Net_Key;
 
-typedef enum{
+typedef enum Data_Net_ValType_en_t{
 	DataNet_TYPE_NULL,
 	DataNet_TYPE_Byte,
 	DataNet_TYPE_Short,
@@ -89,20 +93,14 @@ typedef enum{
 	DataNet_TYPE_Object,
 	DataNet_TYPE_File,
 	DataNet_TYPE_sentry,
-}Data_Net_ValType_en;
+}en_Net_ValType;
 
 
 
 void Data_Service(void);
 void Graphics_Display(void);
 
-//网络
-void Data_Net_Init(void);
-void Data_Net_processing(void);
-void Data_Net_SetTxData(uint16_t protocolVersion,Data_Net_Key_en key,uint16_t vType,uint16_t vLenth,char *vStr);
-int8_t Data_Net_TXData(struct ESP_cl *esp, Data_Net_Data_st *netdata);
-int8_t Data_Net_decomposeRXData(Data_Net_Data_st *netdata, char * str);
-int8_t Data_Net_getRxData(struct ESP_cl *esp,Data_Net_Data_st *data);
+
 //游戏贪吃蛇
 void Game_Snake_Init(void);
 void Game_Snake_processing(void);

@@ -1,8 +1,8 @@
-//´ËÎÄ¼şÓÃÓÚ±£´æÀ©Õ¹Éè±¸µÄÊı¾İÀàĞÍ
+//æ­¤æ–‡ä»¶ç”¨äºä¿å­˜æ‰©å±•è®¾å¤‡çš„æ•°æ®ç±»å‹
 #ifndef _CAN_EXTENSION_EQUIPMENT_TYPES_H_
 #define _CAN_EXTENSION_EQUIPMENT_TYPES_H_
 
-//ĞÅÏ¢×¢²áID 0x000
+//ä¿¡æ¯æ³¨å†ŒID 0x000
 typedef union 
 { 
     uint8_t Msg[8]; 
@@ -12,7 +12,7 @@ typedef union
       uint32_t   			                            :32; // Reserve  
     } Sig;  
 } CAN_InfoRegisterID_un_t; 
-//Éè±¸»Ø¸´ID 0x001
+//è®¾å¤‡å›å¤ID 0x001
 typedef union 
 { 
     uint8_t Msg[8]; 
@@ -22,7 +22,7 @@ typedef union
       uint32_t   			                            :32; // Reserve  
     } Sig;  
 } CAN_DeviceResponseID_un_t; 
-//Ö÷»ú¹ã²¥ID 0x002
+//ä¸»æœºå¹¿æ’­ID 0x002
 typedef union 
 { 
     uint8_t Msg[8]; 
@@ -35,25 +35,25 @@ typedef union
 
 
 
-//À©Õ¹°´¼ü
-//°´¼üÀàĞÍ1 µ¥°´¼ü¼ì²â ÊÊÓÃÓÚ°´¼üÊıÁ¿½Ï¶à¡¢²»ĞèÒª¶à°´¼üµÄ¼üÅÌ
+//æ‰©å±•æŒ‰é”®
+//æŒ‰é”®ç±»å‹1 å•æŒ‰é”®æ£€æµ‹ é€‚ç”¨äºæŒ‰é”®æ•°é‡è¾ƒå¤šã€ä¸éœ€è¦å¤šæŒ‰é”®çš„é”®ç›˜
 typedef union 
 { 
     uint8_t Msg[8]; 
     struct 
     {
-      uint32_t   			status                      : 8; // ×´Ì¬  
+      uint32_t   			status                      : 8; // çŠ¶æ€  
       uint32_t   			                            :24; // Reserve  
       uint32_t   			value                       :32; //   
     } Sig;  
 } CAN_KeyboardType1_un_t; 
-//°´¼üÀàĞÍ2 ¶à°´¼ü¼ì²â ÊÊÓÃÓÚ°´¼üÊıÁ¿½ÏÉÙ¡¢ĞèÒª¶à°´¼ü¼ì²âµÄ¼üÅÌ
+//æŒ‰é”®ç±»å‹2 å¤šæŒ‰é”®æ£€æµ‹ é€‚ç”¨äºæŒ‰é”®æ•°é‡è¾ƒå°‘ã€éœ€è¦å¤šæŒ‰é”®æ£€æµ‹çš„é”®ç›˜
 typedef union 
 { 
     uint8_t Msg[8]; 
     struct 
     {
-      uint32_t        status                      : 8; // ×´Ì¬
+      uint32_t        status                      : 8; // çŠ¶æ€
       uint32_t   			key00                       : 1; //   
       uint32_t   			key01                       : 1; //   
       uint32_t   			key02                       : 1; //   
@@ -113,15 +113,15 @@ typedef union
     } Sig;  
 } CAN_KeyboardType2_un_t; 
 
-//AD¼ì²â
+//ADæ£€æµ‹
 typedef union 
 { 
     uint8_t Msg[8]; 
     struct 
     {
-      uint32_t   			ch                          : 8; // Í¨µÀ  
+      uint32_t   			ch                          : 8; // é€šé“  
       uint32_t   			                            :24; // Reserve  
-      uint32_t   			value                       :32; // ¼ì²âÊıÖµ  
+      uint32_t   			value                       :32; // æ£€æµ‹æ•°å€¼  
     } Sig;  
 } CAN_ADDetection_un_t; 
 

@@ -38,7 +38,7 @@ void Rocker_Service(void)
 	{ 
 		for(j=0;j<2;j++)
 		{
-			//ÔÚÖĞÖµ·¶Î§ÄÚ
+			//åœ¨ä¸­å€¼èŒƒå›´å†…
 			if((*(YGVal[i].rockerVal[0].currentVal) >= (YGVal[i].rockerVal[0].midVal - YGVal[i].rockerVal[0].midRange))&&   \
 				 (*(YGVal[i].rockerVal[0].currentVal) <= (YGVal[i].rockerVal[0].midVal + YGVal[i].rockerVal[0].midRange))&&   \
 				 (*(YGVal[i].rockerVal[1].currentVal) >= (YGVal[i].rockerVal[1].midVal - YGVal[i].rockerVal[1].midRange))&&   \
@@ -48,10 +48,10 @@ void Rocker_Service(void)
 			}
 			
 	 
-			//Ğ¡ÓÚÖĞÖµ·¶Î§
+			//å°äºä¸­å€¼èŒƒå›´
 			else if(*(YGVal[i].rockerVal[j].currentVal) <= YGVal[i].rockerVal[j].midVal)
 			{
-				//ÔÚÓĞĞ§ÇøÍâ
+				//åœ¨æœ‰æ•ˆåŒºå¤–
 				if(*(YGVal[i].rockerVal[j].currentVal) < YGVal[i].rockerVal[j].minValidVal)
 					YGVal[i].rockerVal[j].val = 0;
 				else
@@ -59,10 +59,10 @@ void Rocker_Service(void)
 					YGVal[i].rockerVal[j].val = (*(YGVal[i].rockerVal[j].currentVal) - YGVal[i].rockerVal[j].minValidVal)*50/(YGVal[i].rockerVal[j].midVal - YGVal[i].rockerVal[j].minValidVal);
 				}
 			}
-			//´óÓÚÖĞÖµ·¶Î§
+			//å¤§äºä¸­å€¼èŒƒå›´
 			else if(*(YGVal[i].rockerVal[j].currentVal) > YGVal[i].rockerVal[j].midVal)
 			{
-				//ÔÚÓĞĞ§ÇøÍâ
+				//åœ¨æœ‰æ•ˆåŒºå¤–
 				if(*(YGVal[i].rockerVal[j].currentVal) > YGVal[i].rockerVal[j].maxVallidVal)
 					YGVal[i].rockerVal[j].val = 100;
 				else
@@ -72,43 +72,43 @@ void Rocker_Service(void)
 			}
 		}
 		
-		//Ó²¼ş´íÎó²¹¶¡
+		//ç¡¬ä»¶é”™è¯¯è¡¥ä¸
 		if(i == 0)
 		{
 			YGVal[0].rockerVal[0].val = 100 - YGVal[0].rockerVal[0].val;
 			YGVal[0].rockerVal[1].val = 100 - YGVal[0].rockerVal[1].val;
 		}
 		 
-		//·½Ïò¼ÆËã
+		//æ–¹å‘è®¡ç®—
 		YGVal[i].dir = 0;
-		//ÉÏ
+		//ä¸Š
 		if(YGVal[i].rockerVal[1].val <= 50 - YGVal[i].dirRange)
 		{
 			YGVal[i].dir += DIR_UP;
 		}
-		//ÏÂ
+		//ä¸‹
 		if(YGVal[i].rockerVal[1].val >  50 + YGVal[i].dirRange)
 		{
 		  YGVal[i].dir += DIR_DOWN;
 		}
-		//×ó
+		//å·¦
 		if(YGVal[i].rockerVal[0].val <= 50 - YGVal[i].dirRange)
 		{
 		  YGVal[i].dir += DIR_LEFT;
 		}
-		//ÓÒ
+		//å³
 		if(YGVal[i].rockerVal[0].val >  50 + YGVal[i].dirRange)
 		{
 		  YGVal[i].dir += DIR_RIGHT; 
 		}
 		
-		//¼Ğ½Ç¼ÆËã
+		//å¤¹è§’è®¡ç®—
 		
 	}
 		
 }
 
-//Ğ£×¼ADÖĞÖµ
+//æ ¡å‡†ADä¸­å€¼
 void Rocker_CaliAdcValue(void) 
 {
 	uint8_t i,j;

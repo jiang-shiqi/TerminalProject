@@ -1,40 +1,40 @@
 #include "dma.h"																	   	  
 #include "My_Delay.h"																	   	  
  
-u16 DMA1_MEM_LEN;//±£´æDMAÃ¿´ÎÊý¾Ý´«ËÍµÄ³¤¶È 	
+u16 DMA1_MEM_LEN;//ä¿å­˜DMAæ¯æ¬¡æ•°æ®ä¼ é€çš„é•¿åº¦ 	
 
 
-//DMA1µÄ¸÷Í¨µÀÅäÖÃ
-//ÕâÀïµÄ´«ÊäÐÎÊ½ÊÇ¹Ì¶¨µÄ,ÕâµãÒª¸ù¾Ý²»Í¬µÄÇé¿öÀ´ÐÞ¸Ä
-//´Ó´æ´¢Æ÷->ÍâÉèÄ£Ê½/8Î»Êý¾Ý¿í¶È/´æ´¢Æ÷ÔöÁ¿Ä£Ê½
-//DMA_CHx:DMAÍ¨µÀCHx
-//cpar:ÍâÉèµØÖ·
-//cmar:´æ´¢Æ÷µØÖ·
-//cndtr:Êý¾Ý´«ÊäÁ¿  
+//DMA1çš„å„é€šé“é…ç½®
+//è¿™é‡Œçš„ä¼ è¾“å½¢å¼æ˜¯å›ºå®šçš„,è¿™ç‚¹è¦æ ¹æ®ä¸åŒçš„æƒ…å†µæ¥ä¿®æ”¹
+//ä»Žå­˜å‚¨å™¨->å¤–è®¾æ¨¡å¼/8ä½æ•°æ®å®½åº¦/å­˜å‚¨å™¨å¢žé‡æ¨¡å¼
+//DMA_CHx:DMAé€šé“CHx
+//cpar:å¤–è®¾åœ°å€
+//cmar:å­˜å‚¨å™¨åœ°å€
+//cndtr:æ•°æ®ä¼ è¾“é‡  
 void MYDMA_Config(DMA_Channel_TypeDef*DMA_CHx,u32 cpar,u32 cmar,u16 cndtr)
 {
-	RCC->AHBENR|=1<<0;			//¿ªÆôDMA1Ê±ÖÓ
-	delay_ms(5);				//µÈ´ýDMAÊ±ÖÓÎÈ¶¨
-	DMA_CHx->CPAR=cpar; 	 	//DMA1 ÍâÉèµØÖ· 
-	DMA_CHx->CMAR=(u32)cmar; 	//DMA1,´æ´¢Æ÷µØÖ·
-	DMA1_MEM_LEN=cndtr;      	//±£´æDMA´«ÊäÊý¾ÝÁ¿
-	DMA_CHx->CNDTR=cndtr;    	//DMA1,´«ÊäÊý¾ÝÁ¿
-	DMA_CHx->CCR=0X00000000;	//¸´Î»
-	DMA_CHx->CCR|=0<<4;  		//´ÓÍâÉè¶Á
-	DMA_CHx->CCR|=0<<5;  		//·ÇÑ­»·Ä£Ê½
-	DMA_CHx->CCR|=0<<6; 		//ÍâÉèµØÖ··ÇÔöÁ¿Ä£Ê½
-	DMA_CHx->CCR|=1<<7; 	 	//´æ´¢Æ÷ÔöÁ¿Ä£Ê½
-	DMA_CHx->CCR|=0<<8; 	 	//ÍâÉèÊý¾Ý¿í¶ÈÎª8Î»
-	DMA_CHx->CCR|=0<<10; 		//´æ´¢Æ÷Êý¾Ý¿í¶È8Î»
-	DMA_CHx->CCR|=1<<12; 		//ÖÐµÈÓÅÏÈ¼¶
-	DMA_CHx->CCR|=0<<14; 		//·Ç´æ´¢Æ÷µ½´æ´¢Æ÷Ä£Ê½		  	
+	RCC->AHBENR|=1<<0;			//å¼€å¯DMA1æ—¶é’Ÿ
+	delay_ms(5);				//ç­‰å¾…DMAæ—¶é’Ÿç¨³å®š
+	DMA_CHx->CPAR=cpar; 	 	//DMA1 å¤–è®¾åœ°å€ 
+	DMA_CHx->CMAR=(u32)cmar; 	//DMA1,å­˜å‚¨å™¨åœ°å€
+	DMA1_MEM_LEN=cndtr;      	//ä¿å­˜DMAä¼ è¾“æ•°æ®é‡
+	DMA_CHx->CNDTR=cndtr;    	//DMA1,ä¼ è¾“æ•°æ®é‡
+	DMA_CHx->CCR=0X00000000;	//å¤ä½
+	DMA_CHx->CCR|=0<<4;  		//ä»Žå¤–è®¾è¯»
+	DMA_CHx->CCR|=0<<5;  		//éžå¾ªçŽ¯æ¨¡å¼
+	DMA_CHx->CCR|=0<<6; 		//å¤–è®¾åœ°å€éžå¢žé‡æ¨¡å¼
+	DMA_CHx->CCR|=1<<7; 	 	//å­˜å‚¨å™¨å¢žé‡æ¨¡å¼
+	DMA_CHx->CCR|=0<<8; 	 	//å¤–è®¾æ•°æ®å®½åº¦ä¸º8ä½
+	DMA_CHx->CCR|=0<<10; 		//å­˜å‚¨å™¨æ•°æ®å®½åº¦8ä½
+	DMA_CHx->CCR|=1<<12; 		//ä¸­ç­‰ä¼˜å…ˆçº§
+	DMA_CHx->CCR|=0<<14; 		//éžå­˜å‚¨å™¨åˆ°å­˜å‚¨å™¨æ¨¡å¼		  	
 } 
-//¿ªÆôÒ»´ÎDMA´«Êä
+//å¼€å¯ä¸€æ¬¡DMAä¼ è¾“
 void MYDMA_Enable(DMA_Channel_TypeDef*DMA_CHx)
 {
-	DMA_CHx->CCR&=~(1<<0);       //¹Ø±ÕDMA´«Êä 
-	DMA_CHx->CNDTR=DMA1_MEM_LEN; //DMA1,´«ÊäÊý¾ÝÁ¿ 
-	DMA_CHx->CCR|=1<<0;          //¿ªÆôDMA´«Êä
+	DMA_CHx->CCR&=~(1<<0);       //å…³é—­DMAä¼ è¾“ 
+	DMA_CHx->CNDTR=DMA1_MEM_LEN; //DMA1,ä¼ è¾“æ•°æ®é‡ 
+	DMA_CHx->CCR|=1<<0;          //å¼€å¯DMAä¼ è¾“
 }	  
 
  

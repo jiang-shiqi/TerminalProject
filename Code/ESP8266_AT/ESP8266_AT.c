@@ -22,27 +22,27 @@ const ESP_SendComFun_st ESP_TXDComMessageTable[] = {
 	{ESP_SendCom_SENDOUT,             13 , 1 ,  13,/*"SEND OK"*/           3000,     ESP_SendCom_SENDOUT_Callback},
 };
 
-//½ÓÊÕÊı¾İ»ØÖ´±íÊı×é
-//0:ÎŞĞ§
-//1:»ØÖ´±¨ÎÄ
-//2:ESP·µ»ØÊı¾İ
+//æ¥æ”¶æ•°æ®å›æ‰§è¡¨æ•°ç»„
+//0:æ— æ•ˆ
+//1:å›æ‰§æŠ¥æ–‡
+//2:ESPè¿”å›æ•°æ®
 const ESP_CommandMessage_st ESP_ReceivingDataComparisonTable[] ={
 	{"-----"               , 0,  0,             NULL              },
 	{"OK"                  , 1,  1, NULL                          },
-	{"+CWLAP:"             , 2,  1, ESP_CWLAP_RxMessageOperationFun },   //WiFiĞÅÏ¢
-	{"+CWJAP_CUR"          , 3,  1, NULL                          },   //Á¬½ÓWiFiºó·µ»ØĞÅÏ¢
-	{"+STA_CONNECTED"      , 4,  1, NULL                          },   //ÓĞÉè±¸Á¬½Óµ½softAP
-	{"+STA_DISCONNECTED"   , 5,  1, NULL                          },   //ÓĞÉè±¸¶Ï¿ªÁ¬½Ó
-	{"+DIST_STA_IP"        , 6,  2, NULL                          },   //softAPÎªĞÂÉè±¸·ÖÅäIPµØÖ· 
-	{"WIFI CONNECTED"      , 7,  1, ESP_WifiCONNECTED_RxMessageOperationFun },   //wifiÒÑÁ¬½Ó
-	{"WIFI GOT IP"         , 8,  2, ESP_WiFiGotIP_RxMessageOperationFun },//WiFiÒÑÎªESP·ÖÅäIP
-	{"ready"               , 9,  1, NULL                          },   //RSTÖ¸ÁîÊ¹ÓÃ
-	{"+IPD"                , 10, 2, ESP_IPD_RxMessageOperationFun },   //½ÓÊÜµ½ÍøÂçÊı¾İ
-	{"WIFI DISCONNECT"     , 11, 2, ESP_WifiDisconnect_RxMessageOperationFun },   //wifiÒÑ¶Ï¿ª
-	{"CONNECT"             , 12, 1, ESP_CONNECT_RxMessageOperationFun },    //Á¬½Óµ½·şÎñÆ÷·µ»Ø
+	{"+CWLAP:"             , 2,  1, ESP_CWLAP_RxMessageOperationFun },   //WiFiä¿¡æ¯
+	{"+CWJAP_CUR"          , 3,  1, NULL                          },   //è¿æ¥WiFiåè¿”å›ä¿¡æ¯
+	{"+STA_CONNECTED"      , 4,  1, NULL                          },   //æœ‰è®¾å¤‡è¿æ¥åˆ°softAP
+	{"+STA_DISCONNECTED"   , 5,  1, NULL                          },   //æœ‰è®¾å¤‡æ–­å¼€è¿æ¥
+	{"+DIST_STA_IP"        , 6,  2, NULL                          },   //softAPä¸ºæ–°è®¾å¤‡åˆ†é…IPåœ°å€ 
+	{"WIFI CONNECTED"      , 7,  1, ESP_WifiCONNECTED_RxMessageOperationFun },   //wifiå·²è¿æ¥
+	{"WIFI GOT IP"         , 8,  2, ESP_WiFiGotIP_RxMessageOperationFun },//WiFiå·²ä¸ºESPåˆ†é…IP
+	{"ready"               , 9,  1, NULL                          },   //RSTæŒ‡ä»¤ä½¿ç”¨
+	{"+IPD"                , 10, 2, ESP_IPD_RxMessageOperationFun },   //æ¥å—åˆ°ç½‘ç»œæ•°æ®
+	{"WIFI DISCONNECT"     , 11, 2, ESP_WifiDisconnect_RxMessageOperationFun },   //wifiå·²æ–­å¼€
+	{"CONNECT"             , 12, 1, ESP_CONNECT_RxMessageOperationFun },    //è¿æ¥åˆ°æœåŠ¡å™¨è¿”å›
 	{"SEND OK"             , 13, 1, ESP_SENDOK_RxMessageOperationFun  },
-	{"> "                  , 14, 1, ESP_ARROW_RxMessageOperationFun },    //·¢ËÍ¼ıÍ·
-	{"Recv "               , 15, 1, NULL  },    //ÌáÊ¾·¢ËÍ
+	{"> "                  , 14, 1, ESP_ARROW_RxMessageOperationFun },    //å‘é€ç®­å¤´
+	{"Recv "               , 15, 1, NULL  },    //æç¤ºå‘é€
 	{"CLOSED"              , 16, 2, ESP_CLOSED_RxMessageOperationFun },
 	{"link is not valid"   , 17, 2, ESP_CLOSED_RxMessageOperationFun },
 	{"ALREADY CONNECTED"   , 18, 2, ESP_CONNECT_RxMessageOperationFun },
@@ -60,34 +60,34 @@ const ESP_CommandMessage_st ESP_ReceivingDataComparisonTable[] ={
 
 void ESP_Init(void)
 {
-	//ÊôĞÔ³õÊ¼»¯
+	//å±æ€§åˆå§‹åŒ–
 	ESP_Device[0].initStatus = 0;
-	ESP_Device[0].connectStatus = ESPStatus_NoResponse;//Á¬½Ó×´Ì¬ 
+	ESP_Device[0].connectStatus = ESPStatus_NoResponse;//è¿æ¥çŠ¶æ€ 
 	ESP_Device[0].sendComNumber = 0;
 	ESP_Device[0].callbackTimeout = 0;
 	ESP_Device[0].keepAlive = 0;
-	//USART½ÓÊÕ½á¹¹Ìå
+	//USARTæ¥æ”¶ç»“æ„ä½“
 	ESP_Device[0].uartReceivedData.number = 0;
 	ESP_Device[0].uartReceivedData.lenth = 0;
 	ESP_Device[0].uartReceivedData.status = 0;
 	ESP_Device[0].uartReceivedData.timeoutVal = 0;
-	//UARTÊôĞÔ
+	//UARTå±æ€§
 	ESP_Device[0].uartAttr.channel = 1;
 	ESP_Device[0].uartAttr.baud = Baud_115200;
 	ESP_Device[0].uartAttr.data = Data_8bit;
 	ESP_Device[0].uartAttr.stop = Stop_1bit;
 	ESP_Device[0].uartAttr.parity = Parity_None;
 	ESP_Device[0].uartAttr.flowControl = FlowControl_None;
-  //WiFiÊôĞÔ
+  //WiFiå±æ€§
 //	ESP_Device[0].EspWifiAttr.ecn = 0xff;
 	ESP_Device[0].WifiAttr.ecn = 1;
 	my_strcpy(ESP_Device[0].WifiAttr.ssid, "LAPTOP-FTV1PBJJ 7782", 0);
 	my_strcpy(ESP_Device[0].WifiAttr.pwd, "QWERasdf1234", 0);
-	//·şÎñÆ÷ÊôĞÔ 
+	//æœåŠ¡å™¨å±æ€§ 
 	ESP_Device[0].serverAttr.type = TCP;
 	my_strcpy(ESP_Device[0].serverAttr.website, "boredgod.qicp.vip", 0); 
 	ESP_Device[0].serverAttr.port = 55215;
-	//º¯ÊıÖ¸Õë
+	//å‡½æ•°æŒ‡é’ˆ
 	ESP_Device[0].connectWifi = ESP_connectWifi;
 	ESP_Device[0].disconnectWifi = ESP_disconnectWifi;
 	ESP_Device[0].connectServer = ESP_connectServer;
@@ -97,16 +97,16 @@ void ESP_Init(void)
 	ESP_Device[0].setUARTParameters = ESP_setUARTParameters;
 	ESP_Device[0].selectSNTPTime = ESP_selectSNTPTime;
 	
-	//WiFiÁĞ±í³õÊ¼»¯
+	//WiFiåˆ—è¡¨åˆå§‹åŒ–
 	wifiList.lenth = 0;
 	
-	//ESP¿ÉÉèÖÃ×´Ì¬
+	//ESPå¯è®¾ç½®çŠ¶æ€
 	ESP_Device[0].setAttr.wifiAutoConnectEnable = 1;
 	ESP_Device[0].setAttr.serverAutoConnectEnable = 1;
 	
-	//ÉèÖÃUART 
+	//è®¾ç½®UART 
 	
-	//·¢ËÍ½á¹¹Ìå
+	//å‘é€ç»“æ„ä½“
 	ESP_Device[0].netSendoutData.status = 0;
 	ESP_Device[0].netSendoutData.lenth = 0; 
 	
@@ -122,18 +122,18 @@ void ESP_SendoutTineout_operating(struct ESP_cl *esp)
 }
 
 /***********************************************************************************************************
-* º¯ÊıÃû³Æ:ESP_Service
-* Ãè    Êö:ESP·şÎñº¯Êı
-* ¹¦    ÄÜ:1.´¦Àí´«ÈëµÄÖ¸Áî£¬²¢Ö¸ÏòÏÂÒ»Ö¸Áî
-*          2.²éÑ¯ESPÁ¬½Ó×´Ì¬
+* å‡½æ•°åç§°:ESP_Service
+* æ    è¿°:ESPæœåŠ¡å‡½æ•°
+* åŠŸ    èƒ½:1.å¤„ç†ä¼ å…¥çš„æŒ‡ä»¤ï¼Œå¹¶æŒ‡å‘ä¸‹ä¸€æŒ‡ä»¤
+*          2.æŸ¥è¯¢ESPè¿æ¥çŠ¶æ€
 *          3.
-* ÊäÈë²ÎÊı:none
-* ·µ»Ø²ÎÊı:none
-* µ±Ç°°æ±¾:1.0.1
-* ×÷    Õß:jiangshiqi
-* Íê³ÉÈÕÆÚ:2021/02/28
+* è¾“å…¥å‚æ•°:none
+* è¿”å›å‚æ•°:none
+* å½“å‰ç‰ˆæœ¬:1.0.1
+* ä½œ    è€…:jiangshiqi
+* å®Œæˆæ—¥æœŸ:2021/02/28
 * ---------------------------------------------------------------------------------------------------------*
-* ÀúÊ·ĞÅÏ¢£º 
+* å†å²ä¿¡æ¯ï¼š 
 *     <Date>    |    <Version>    |    <Author>    |    <Description>
 * ---------------------------------------------------------------------------------------------------------*
 *   20221/02/28 |     1.0.1       |   jiangshiqi   |     Create file                                       *
@@ -144,10 +144,10 @@ void ESP_Service(void)
 	int8_t res = 0;
 
 	
-	 //³¬Ê±¼ÆÊıÆ÷ÀÛ¼Ó ¶ÔÓÚ´®¿Ú½ÓÊÕµ½ÍêÕûÒ»Ìõ±¨ÎÄ ×î´óµÈ´ıÊ±¼ä
+	 //è¶…æ—¶è®¡æ•°å™¨ç´¯åŠ  å¯¹äºä¸²å£æ¥æ”¶åˆ°å®Œæ•´ä¸€æ¡æŠ¥æ–‡ æœ€å¤§ç­‰å¾…æ—¶é—´
 	 if((ESP_Device[0].uartReceivedData.status != 2)&&(ESP_Device[0].uartReceivedData.status != 4))
 	 {
-	 	ESP_Device[0].uartReceivedData.timeoutVal += TaskTCBAttr[Tack_ESP].cyclel;
+	 	ESP_Device[0].uartReceivedData.timeoutVal += TaskTCBAttr[Tack_ESP].cycle;
 	 	if(ESP_Device[0].uartReceivedData.timeoutVal > 1000)
 	 	{
 	 		ESP_Device[0].uartReceivedData.timeoutVal = 0;
@@ -159,13 +159,13 @@ void ESP_Service(void)
 	 {
 	 	ESP_Device[0].uartReceivedData.timeoutVal = 0;
 	 }
-	//»Øµ÷³¬Ê±ÅĞ¶Ï ¶ÔÓÚÒÑ¾­·¢ËÍµÄÖ¸Áî·µ»ØÕıÈ·µÄ»ØÖ´±¨ÎÄ ×î´óµÈ´ıÊ±¼ä
+	//å›è°ƒè¶…æ—¶åˆ¤æ–­ å¯¹äºå·²ç»å‘é€çš„æŒ‡ä»¤è¿”å›æ­£ç¡®çš„å›æ‰§æŠ¥æ–‡ æœ€å¤§ç­‰å¾…æ—¶é—´
 	if(ESP_Device[0].sendComStatus == 1)
 	{
-		ESP_Device[0].callbackTimeout += TaskTCBAttr[Tack_ESP].cyclel;
+		ESP_Device[0].callbackTimeout += TaskTCBAttr[Tack_ESP].cycle;
 		if(ESP_Device[0].callbackTimeout > ESP_TXDComMessageTable[ESP_Device[0].sendComNumber].timeout)
 		{
-			//³¬Ê±Ö´ĞĞ
+			//è¶…æ—¶æ‰§è¡Œ
 			ESP_SendoutTineout_operating(&ESP_Device[0]);
 		}
 	}
@@ -173,21 +173,21 @@ void ESP_Service(void)
 	{
 		ESP_Device[0].callbackTimeout = 0;
 	}
-	// //ĞÄÌø°ü·¢ËÍÅĞ¶Ï
-	// //Ã»ÓĞÕıÔÚ·¢ËÍµÄÖ¸Áî || ÕıÔÚ·¢ËÍ²âÊÔÖ¸Áî£¨AT£©
+	// //å¿ƒè·³åŒ…å‘é€åˆ¤æ–­
+	// //æ²¡æœ‰æ­£åœ¨å‘é€çš„æŒ‡ä»¤ || æ­£åœ¨å‘é€æµ‹è¯•æŒ‡ä»¤ï¼ˆATï¼‰
 	// if((ESP_Device[0].sendComStatus == 0)||(ESP_Device[0].sendComNumber == 1))
 	// {
 	// 	ESP_Device[0].keepAlive ++;
-	// 	//µ½´ïĞèÎ¬³ÖÊ±¼ä
+	// 	//åˆ°è¾¾éœ€ç»´æŒæ—¶é—´
 	// 	if(ESP_Device[0].keepAlive > ESP_KEEPALIVE0_MAX)
 	// 	{
-	// 		//·¢ËÍ²âÊÔÖ¸Áî
+	// 		//å‘é€æµ‹è¯•æŒ‡ä»¤
 	// 		ESP_Device[0].waitingSendComNumber = 1;
 	// 	}
-	// 	//³¬¹ıĞÄÌø°üµÈ´ıÊ±¼ä
+	// 	//è¶…è¿‡å¿ƒè·³åŒ…ç­‰å¾…æ—¶é—´
 	// 	else if(ESP_Device[0].keepAlive > ESP_KEEPALIVE1_MAX)
 	// 	{
-	// 		//ÇĞ»»ESP×´Ì¬Îª£ºESPÄ£¿éÎŞÏìÓ¦
+	// 		//åˆ‡æ¢ESPçŠ¶æ€ä¸ºï¼šESPæ¨¡å—æ— å“åº”
 	// 		ESP_Device[0].connectStatus = ESPStatus_NoResponse;
 	// 	}		
 	// }
@@ -195,15 +195,15 @@ void ESP_Service(void)
 	// {
 	// 		ESP_Device[0].keepAlive = 0;
 	// }
-	//½ÓÊÕµ½ĞÂ±¨ÎÄ
+	//æ¥æ”¶åˆ°æ–°æŠ¥æ–‡
 	if(ESP_Device[0].uartReceivedData.status == 4)
 	{
-		//½ÓÊÕµ½»Øµ÷±¨ÎÄ
+		//æ¥æ”¶åˆ°å›è°ƒæŠ¥æ–‡
 		if(ESP_ReceivingDataComparisonTable[ESP_Device[0].uartReceivedData.number].type == 1)
 		{
-			//·Ö¼ğ±¨ÎÄ²¢´¦Àí
+			//åˆ†æ‹£æŠ¥æ–‡å¹¶å¤„ç†
 			res = ESP_SortingRXData(&ESP_Device[0]);
-			//ÅĞ¶Ï ±¨ÎÄÕıÈ·&&µ±Ç°ÓĞ·¢ËÍ±¨ÎÄµÈ´ı»ØÖ´&&ÊÇĞèÒªµÄ±¨ÎÄ
+			//åˆ¤æ–­ æŠ¥æ–‡æ­£ç¡®&&å½“å‰æœ‰å‘é€æŠ¥æ–‡ç­‰å¾…å›æ‰§&&æ˜¯éœ€è¦çš„æŠ¥æ–‡
 			if((res == 0)&& \
 				 (ESP_Device[0].sendComStatus != 0)&& \
 			   (((ESP_TXDComMessageTable[ESP_Device[0].sendComNumber].type == 2)&&(ESP_Device[0].uartReceivedData.number == 1)) ||\
@@ -218,15 +218,15 @@ void ESP_Service(void)
 				{
 					res = -1;
 				}
-				//½ÓÊÕÍê±Ï
+				//æ¥æ”¶å®Œæ¯•
 				switch(res)
 				{
-					case 0:  //½ÓÊÜÕıÈ· µ«»¹Î´½ÓÊÕÍê±Ï 
+					case 0:  //æ¥å—æ­£ç¡® ä½†è¿˜æœªæ¥æ”¶å®Œæ¯• 
 						break;
-					case 1:  //È·ÈÏ½ÓÊÕÍê±Ï
+					case 1:  //ç¡®è®¤æ¥æ”¶å®Œæ¯•
 						ESP_Device[0].sendComStatus = 0;
 						break;
-					default:  //½ÓÊÕ³öÏÖ´íÎó
+					default:  //æ¥æ”¶å‡ºç°é”™è¯¯
 						ESP_Device[0].sendComStatus = 0;
 						break;
 				} 
@@ -236,16 +236,16 @@ void ESP_Service(void)
 			
 			}
 		}
-		//½ÓÊÕµ½ESP·¢ËÍ±¨ÎÄ
+		//æ¥æ”¶åˆ°ESPå‘é€æŠ¥æ–‡
 		else if(ESP_ReceivingDataComparisonTable[ESP_Device[0].uartReceivedData.number].type == 2)
 		{ 
-			//·Ö¼ğ±¨ÎÄ²¢´¦Àí
+			//åˆ†æ‹£æŠ¥æ–‡å¹¶å¤„ç†
 			res = ESP_SortingRXData(&ESP_Device[0]);  
 			
 //			ESP_Device[0].sendComStatus = 0;
 //			ESP_Device[0].sendComNumber = 0; 
 		}
-		//´íÎó½ÓÊÕ
+		//é”™è¯¯æ¥æ”¶
 		else
 		{
 		
@@ -254,11 +254,11 @@ void ESP_Service(void)
 		ESP_Device[0].uartReceivedData.status = 2;
 	}	 
 	
-	//×´Ì¬´¦Àí
+	//çŠ¶æ€å¤„ç†
 	ESP_OperationStatus(&ESP_Device[0]);
 	
-	//·¢ËÍĞÂÖ¸Áî
-	//ÓĞ´ı·¢ËÍÃüÁî&&·¢ËÍ×´Ì¬Îª¿Õ&&ÃüÁîÏÂ±êÎ´³¬³ö
+	//å‘é€æ–°æŒ‡ä»¤
+	//æœ‰å¾…å‘é€å‘½ä»¤&&å‘é€çŠ¶æ€ä¸ºç©º&&å‘½ä»¤ä¸‹æ ‡æœªè¶…å‡º
 	if((ESP_Device[0].waitingSendComNumber != 0) && \
 		 (ESP_Device[0].sendComStatus == 0) && \
 	   ((sizeof(ESP_TXDComMessageTable)/sizeof(ESP_SendComFun_st)) > ESP_Device[0].waitingSendComNumber) \
@@ -270,7 +270,7 @@ void ESP_Service(void)
 		ESP_TXDComMessageTable[ESP_Device[0].sendComNumber].sendComFun(&ESP_Device[0]);
 	}
 	else
-	//²»Âú×ã·¢ËÍÒªÇóÊ± ÅĞ¶Ï´ı·¢ËÍÖ¸ÁîÊÇ·ñÕıÈ·
+	//ä¸æ»¡è¶³å‘é€è¦æ±‚æ—¶ åˆ¤æ–­å¾…å‘é€æŒ‡ä»¤æ˜¯å¦æ­£ç¡®
 	{
 		if((sizeof(ESP_TXDComMessageTable)/sizeof(ESP_SendComFun_st)) <= ESP_Device[0].waitingSendComNumber)
 		{
@@ -279,17 +279,17 @@ void ESP_Service(void)
 	}
 } 
 
-/*--Á¬½Ó¹¦ÄÜ--*/
-//wifi APIº¯Êı
-//²éÑ¯WiFiÁĞ±í
+/*--è¿æ¥åŠŸèƒ½--*/
+//wifi APIå‡½æ•°
+//æŸ¥è¯¢WiFiåˆ—è¡¨
 uint8_t ESP_selectWifiList(WifiList_st *wifiList_buf)
 {
 	wifiList_buf = &wifiList;
 	return 1;
 }
-//Á¬½ÓWiFi
+//è¿æ¥WiFi
 uint8_t ESP_connectWifi(struct ESP_cl *esp){return 1;} 
-//¶Ï¿ªWiFi
+//æ–­å¼€WiFi
 uint8_t ESP_disconnectWifi(struct ESP_cl *esp)
 {
 	esp->sendComNumber = 8; 
@@ -299,8 +299,8 @@ uint8_t ESP_disconnectWifi(struct ESP_cl *esp)
 	ESP_TXDComMessageTable[esp->sendComNumber].sendComFun(esp);
 	return 1;
 }
-//·şÎñÆ÷ APIº¯Êı
-//Á¬½Ó·şÎñÆ÷
+//æœåŠ¡å™¨ APIå‡½æ•°
+//è¿æ¥æœåŠ¡å™¨
 uint8_t ESP_connectServer(struct ESP_cl *esp)
 {
 	uint8_t res = 0;
@@ -322,7 +322,7 @@ uint8_t ESP_connectServer(struct ESP_cl *esp)
 	return res;
 }
 	
-//¶Ï¿ª·şÎñÆ÷
+//æ–­å¼€æœåŠ¡å™¨
 uint8_t ESP_disconnectServer(struct ESP_cl *esp)
 {
 	esp->connectStatus = ESPStatus_ConnectedWifi;
@@ -335,7 +335,7 @@ uint8_t ESP_disconnectServer(struct ESP_cl *esp)
 	return 1;
 }
 
-//ÅĞ¶Ï½ÓÊÕ±¨ÎÄÀàĞÍ
+//åˆ¤æ–­æ¥æ”¶æŠ¥æ–‡ç±»å‹
 int8_t ESP_JudgeRXDataType(struct ESP_cl *esp)
 {
 	int8_t res = 0;
@@ -344,7 +344,7 @@ int8_t ESP_JudgeRXDataType(struct ESP_cl *esp)
 	{
 		for(i=0;i<ESP_RECEIVINGDATACOMPARISON_MAX;i++)
 		{
-			//Èç¹û½ÓÊÕµ½µÄ±êºÅºÍ½ÓÊÕ±êºÅÊı×éÀïµÄÒ»ÏîÆ¥Åä
+			//å¦‚æœæ¥æ”¶åˆ°çš„æ ‡å·å’Œæ¥æ”¶æ ‡å·æ•°ç»„é‡Œçš„ä¸€é¡¹åŒ¹é…
 			if(my_Memcmp(esp->uartReceivedData.data.data,ESP_ReceivingDataComparisonTable[i].str,my_strlen(ESP_ReceivingDataComparisonTable[i].str)) == EX_OK)
 			{
 				esp->uartReceivedData.number = i;
@@ -360,12 +360,12 @@ int8_t ESP_JudgeRXDataType(struct ESP_cl *esp)
 	} 
 	return res;
 } 
-//·Ö¼ğ½ÓÊÕ±¨ÎÄ 
+//åˆ†æ‹£æ¥æ”¶æŠ¥æ–‡ 
 int8_t ESP_SortingRXData(struct ESP_cl *esp)
 {
 	int8_t res = 0; 
 	
-	//Èç¹û½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı²»Îª¿Õ
+	//å¦‚æœæ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°ä¸ä¸ºç©º
 	if(ESP_ReceivingDataComparisonTable[esp->uartReceivedData.number].rxMessageOperationFun != NULL)
 	{
 		res = ESP_ReceivingDataComparisonTable[esp->uartReceivedData.number].rxMessageOperationFun(esp);
@@ -373,7 +373,7 @@ int8_t ESP_SortingRXData(struct ESP_cl *esp)
 	return res;
 }
 
-//CWLAP½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//CWLAPæ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	ESP_UartReceived_st *data;
@@ -391,7 +391,7 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 		if(data->data.data[i] == ',')
 			a++;
 	} 
-	//Èç¹ûĞ¡ÓÚ4¸ö¶ººÅ
+	//å¦‚æœå°äº4ä¸ªé€—å·
 	if(a < 4)
 		return -1;
 	
@@ -406,22 +406,22 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 	)
 	{
 		index = 8;
-		//½ÓÊÕWiFi.Ecn
+		//æ¥æ”¶WiFi.Ecn
 		cwlap_data.ecn = data->data.data[index];
 		if((++index) >= data->lenth) return -2;
 		if((++index) >= data->lenth) return -2;
 		if((++index) >= data->lenth) return -2;
-		//½ÓÊÕWifi.SSID
+		//æ¥æ”¶Wifi.SSID
 		for(i=0;(i<ESP_WIFISSID_MAX)&&(data->data.data[index] != '"');i++)
 		{
 			cwlap_data.ssid[i] = data->data.data[index];
 			
 			if((++index) >= data->lenth) return -2;
 		} 
-		//Èç¹ûSSID³¤¶ÈĞ¡ÓÚÉè¶¨×î´ó´æ´¢³¤¶È
+		//å¦‚æœSSIDé•¿åº¦å°äºè®¾å®šæœ€å¤§å­˜å‚¨é•¿åº¦
 		if(data->data.data[index] == '"')
 		{
-			//ÔÚ½áÎ²²åÈë'\0'½áÊø×Ö·û
+			//åœ¨ç»“å°¾æ’å…¥'\0'ç»“æŸå­—ç¬¦
 			if(i != ESP_WIFISSID_MAX)
 			{				
 				cwlap_data.ssid[i] = 0; 
@@ -430,10 +430,10 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 		}
 		else
 		{
-			//ÔÚ½áÎ²²åÈë"~1"×÷Îª½áÎ²
+			//åœ¨ç»“å°¾æ’å…¥"~1"ä½œä¸ºç»“å°¾
 			cwlap_data.ssid[ESP_WIFISSID_MAX-2] = '~';
 			cwlap_data.ssid[ESP_WIFISSID_MAX-1] = '1';			
-			//Ê¹Ö¸ÕëÖ¸Ïò'"'Î»ÖÃ
+			//ä½¿æŒ‡é’ˆæŒ‡å‘'"'ä½ç½®
 			for(;data->data.data[index]!='"';)
 			{
 				if((++index) >= data->lenth) return -2;
@@ -442,8 +442,8 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 		}
 		if((++index) >= data->lenth) return -2;
 		if((++index) >= data->lenth) return -2;
-		//½ÓÊÕWiFi.Rssi
-		//²âËãRSSIËùÕ¼³¤¶È
+		//æ¥æ”¶WiFi.Rssi
+		//æµ‹ç®—RSSIæ‰€å é•¿åº¦
 		a = 0;
 		if(data->data.data[index] != ',')
 		{
@@ -463,19 +463,19 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 				}
 			}
 		}
-		//ĞÅºÅÕıÈ·ĞÔÅĞ¶Ï
+		//ä¿¡å·æ­£ç¡®æ€§åˆ¤æ–­
 		if((a == 0) ||\
 			 ((data->data.data[index] == '-')&&(a == 1)) \
 			)
 		return -3;
 		cwlap_data.rssi = StringToDec(&data->data.data[index],a);
-		//Ö¸Õëµ÷Õûµ½ÏÂÒ»ÆğÊ¼Î»
+		//æŒ‡é’ˆè°ƒæ•´åˆ°ä¸‹ä¸€èµ·å§‹ä½
 		for(i=0;i<(a+2);i++)
 		{
 			if((++index) >= data->lenth) return -2;
 
 		}
-		//½ÓÊÕWiFi.Mac
+		//æ¥æ”¶WiFi.Mac
 		for(i=0;i<6;i++)
 		{
 			cwlap_data.mac[0] = StringToHex(&data->data.data[index],2);
@@ -483,15 +483,15 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 			if((++index) >= data->lenth) return -2;
 			if((++index) >= data->lenth) return -2;
 		}
-		//½ÓÊÕWifi.channel Í¨µÀºÅ
-		//½ÓÊÕWifi.freq_offset 
-		//½ÓÊÕWifi.freqcali 
-		//½ÓÊÕWifi.pairwise_cipher
-		//½ÓÊÕWifi.group_cipher
-		//½ÓÊÕWifi.bgn
-		//½ÓÊÕWifi.wps  
+		//æ¥æ”¶Wifi.channel é€šé“å·
+		//æ¥æ”¶Wifi.freq_offset 
+		//æ¥æ”¶Wifi.freqcali 
+		//æ¥æ”¶Wifi.pairwise_cipher
+		//æ¥æ”¶Wifi.group_cipher
+		//æ¥æ”¶Wifi.bgn
+		//æ¥æ”¶Wifi.wps  
 		
-		//Êı¾İ×ªÒÆ
+		//æ•°æ®è½¬ç§»
 		data->data.cwlapData.ecn  = cwlap_data.ecn;
 		for(i=0;i<ssid_lenth;i++)
 		{
@@ -506,7 +506,7 @@ int8_t ESP_CWLAP_RxMessageOperationFun(struct ESP_cl *esp)
 	}
 	return res;
 }
-//WIFI Connected ½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//WIFI Connected æ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_WifiCONNECTED_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	// if(esp->connectStatus <= ESPStatus_ConnectedWifi)
@@ -516,7 +516,7 @@ int8_t ESP_WifiCONNECTED_RxMessageOperationFun(struct ESP_cl *esp)
 	return 0;
 }
 
-//WIFI GOT IP½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//WIFI GOT IPæ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_WiFiGotIP_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	if(esp->connectStatus < ESPStatus_ConnectedWifi)
@@ -526,7 +526,7 @@ int8_t ESP_WiFiGotIP_RxMessageOperationFun(struct ESP_cl *esp)
 		
 	return 0;
 }
-//IPD½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//IPDæ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_IPD_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	int8_t res;
@@ -543,7 +543,7 @@ int8_t ESP_IPD_RxMessageOperationFun(struct ESP_cl *esp)
 		num += esp->uartReceivedData.data.data[i]-0x30;
 	}
 	
-	//½ÓÊÕ³¤¶ÈÕıÈ·
+	//æ¥æ”¶é•¿åº¦æ­£ç¡®
 	if((num != 0)&&(num < ESP_SENDOUT_MAX))
 	{
 		a = i+1;
@@ -555,18 +555,18 @@ int8_t ESP_IPD_RxMessageOperationFun(struct ESP_cl *esp)
 		esp->netReceivedData.status = 1;
 		res = 0;  
 	}
-	//½ÓÊÕ³¤¶È²»ÕıÈ·
+	//æ¥æ”¶é•¿åº¦ä¸æ­£ç¡®
 	else
 	{
 		esp->netReceivedData.lenth = 0;
 		esp->netReceivedData.status = 0;
 		res = -1;
-		//´íÎóÀÛ¼Æ¹¦ÄÜ<<<<<<<<<<<<<<<<<<<
-		//½ÓÊÜ´íÎó´ÎÊı¹ı¶à ·µ»Øµ½ESPStatus_ConnectedWifi
+		//é”™è¯¯ç´¯è®¡åŠŸèƒ½<<<<<<<<<<<<<<<<<<<
+		//æ¥å—é”™è¯¯æ¬¡æ•°è¿‡å¤š è¿”å›åˆ°ESPStatus_ConnectedWifi
 	}
 	return res;
 }
-//WIFI DISCONNECT½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//WIFI DISCONNECTæ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_WifiDisconnect_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	if(esp->connectStatus >= ESPStatus_NoWifi)
@@ -576,7 +576,7 @@ int8_t ESP_WifiDisconnect_RxMessageOperationFun(struct ESP_cl *esp)
 	return 0;
 }
 
-//CONNECT ½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//CONNECT æ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_CONNECT_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	if(esp->connectStatus <= ESPStatus_ConnectedTCP)
@@ -586,20 +586,20 @@ int8_t ESP_CONNECT_RxMessageOperationFun(struct ESP_cl *esp)
 	return 0;
 }
 
-//SEND OK ½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//SEND OK æ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_SENDOK_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	esp->netSendoutData.status = 0;
 	return 0;
 }
 
-//·¢ËÍ¼ıÍ· ½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//å‘é€ç®­å¤´ æ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_ARROW_RxMessageOperationFun(struct ESP_cl *esp)
 {
 //	esp->netSendoutData.status = 2;
 	return 0;
 }
-//·şÎñÆ÷¶ÏÁ¬ ½ÓÊÕ±¨ÎÄ´¦Àíº¯Êı
+//æœåŠ¡å™¨æ–­è¿ æ¥æ”¶æŠ¥æ–‡å¤„ç†å‡½æ•°
 int8_t ESP_CLOSED_RxMessageOperationFun(struct ESP_cl *esp)
 {
 	if(esp->connectStatus >= ESPStatus_ConnectedWifi)
@@ -610,27 +610,27 @@ int8_t ESP_CLOSED_RxMessageOperationFun(struct ESP_cl *esp)
 }
 
 
-/*--ÆäËû¹¦ÄÜ--*/ 
+/*--å…¶ä»–åŠŸèƒ½--*/ 
 
-//²éÑ¯ESP×´Ì¬
+//æŸ¥è¯¢ESPçŠ¶æ€
 uint8_t ESP_selectESPStatus(struct ESP_cl *esp)
 {
 	return esp->connectStatus; 
 }
 
-//×´Ì¬´¦Àíº¯Êı
+//çŠ¶æ€å¤„ç†å‡½æ•°
 void ESP_OperationStatus(struct ESP_cl *esp)
 {
 	switch(esp->connectStatus)
 	{ 
-		case ESPStatus_NoResponse: //Ä£¿éÎŞÏìÓ¦ 
-			//·¢ËÍAT²âÊÔÖ¸Áî ÔÚAT²âÊÔ»Øµ÷Ö¸ÁîÖĞĞ´ÈëÅĞ¶Ï×´Ì¬
+		case ESPStatus_NoResponse: //æ¨¡å—æ— å“åº” 
+			//å‘é€ATæµ‹è¯•æŒ‡ä»¤ åœ¨ATæµ‹è¯•å›è°ƒæŒ‡ä»¤ä¸­å†™å…¥åˆ¤æ–­çŠ¶æ€
 			if(esp->sendComNumber != ESP_TXDComMessageTable[1].number)
 			{
 				esp->waitingSendComNumber = ESP_TXDComMessageTable[1].number;
 			} 
 			break;
-		case ESPStatus_NoInit://Ä£¿éÎ´³õÊ¼»¯
+		case ESPStatus_NoInit://æ¨¡å—æœªåˆå§‹åŒ–
 			if(ESP_Device[0].initStatus == 0)
 			{
 				if(esp->sendComNumber != ESP_TXDComMessageTable[5].number)
@@ -650,9 +650,9 @@ void ESP_OperationStatus(struct ESP_cl *esp)
 				esp->connectStatus = ESPStatus_NoWifi;
 			}
 			break;
-		case ESPStatus_NoWifi: //Î´Á¬½Óµ½WiFi
-			//ÅäÖÃ³ÉÊÖ¶¯Á¬½Ó ÎŞ²Ù×÷ µÈ´ıÊÖ¶¯Ñ¡Ôñ ĞèÊÖ¶¯Á¬½Óº¯Êı
-			//ÅäÖÃ³É×Ô¶¯Á¬½Ó ÅĞ¶ÏWiFiÊôĞÔÊÇ·ñÎª¿Õ ·Ç¿Õ¿ªÊ¼Á¬½Ó
+		case ESPStatus_NoWifi: //æœªè¿æ¥åˆ°WiFi
+			//é…ç½®æˆæ‰‹åŠ¨è¿æ¥ æ— æ“ä½œ ç­‰å¾…æ‰‹åŠ¨é€‰æ‹© éœ€æ‰‹åŠ¨è¿æ¥å‡½æ•°
+			//é…ç½®æˆè‡ªåŠ¨è¿æ¥ åˆ¤æ–­WiFiå±æ€§æ˜¯å¦ä¸ºç©º éç©ºå¼€å§‹è¿æ¥
 			if(esp->setAttr.wifiAutoConnectEnable == 1)
 			{
 				if(ESP_IS_WifiAttrNonempty(esp))
@@ -664,9 +664,9 @@ void ESP_OperationStatus(struct ESP_cl *esp)
 				}
 			}
 			break;
-		case ESPStatus_ConnectedWifi: //ÒÑÁ¬½Óµ½WiFi
-			//ÅäÖÃ³ÉÊÖ¶¯Á¬½Ó ÎŞ²Ù×÷ µÈ´ıÊÖ¶¯Ñ¡Ôñ ĞèÊÖ¶¯Á¬½Óº¯Êı
-			//ÅäÖÃ³É×Ô¶¯Á¬½Ó ÅĞ¶Ï·şÎñÆ÷ÊôĞÔÊÇ·ñÎª¿Õ ·Ç¿Õ¿ªÊ¼Á¬½Ó
+		case ESPStatus_ConnectedWifi: //å·²è¿æ¥åˆ°WiFi
+			//é…ç½®æˆæ‰‹åŠ¨è¿æ¥ æ— æ“ä½œ ç­‰å¾…æ‰‹åŠ¨é€‰æ‹© éœ€æ‰‹åŠ¨è¿æ¥å‡½æ•°
+			//é…ç½®æˆè‡ªåŠ¨è¿æ¥ åˆ¤æ–­æœåŠ¡å™¨å±æ€§æ˜¯å¦ä¸ºç©º éç©ºå¼€å§‹è¿æ¥
 			if(esp->setAttr.serverAutoConnectEnable == 1)
 			{
 				if(ESP_IS_ServiceAttrNonempty(esp))
@@ -678,8 +678,8 @@ void ESP_OperationStatus(struct ESP_cl *esp)
 				}
 			}
 			break;
-		case ESPStatus_ConnectedTCP: //ÒÑÁ¬½Óµ½·şÎñÆ÷ 
-			//ºô½Ğ·şÎñÆ÷ÏìÓ¦
+		case ESPStatus_ConnectedTCP: //å·²è¿æ¥åˆ°æœåŠ¡å™¨ 
+			//å‘¼å«æœåŠ¡å™¨å“åº”
 			if((ESP_Device[0].netSendoutData.status == 1)&&(ESP_Device[0].netSendoutData.lenth != 0))
 			{
 				if(esp->sendComNumber != ESP_TXDComMessageTable[10].number)
@@ -695,12 +695,12 @@ void ESP_OperationStatus(struct ESP_cl *esp)
 				}  
 			}
 			break;
-		case ESPStatus_ServerResponse: //·şÎñÆ÷ÒÑÏìÓ¦
-			//¸ô¶ÎÊ±¼ä·¢ËÍĞÄÌø°ü
+		case ESPStatus_ServerResponse: //æœåŠ¡å™¨å·²å“åº”
+			//éš”æ®µæ—¶é—´å‘é€å¿ƒè·³åŒ…
 			break;
 	}
 }
-//wifiÊôĞÔ·Ç¿ÕÅĞ¶Ï
+//wifiå±æ€§éç©ºåˆ¤æ–­
 uint8_t ESP_IS_WifiAttrNonempty(struct ESP_cl *esp)
 {
 	if(esp->WifiAttr.ecn != 0xff)
@@ -708,7 +708,7 @@ uint8_t ESP_IS_WifiAttrNonempty(struct ESP_cl *esp)
 	else
 		return 0;
 }
-//serviceÊôĞÔ·Ç¿ÕÅĞ¶Ï
+//serviceå±æ€§éç©ºåˆ¤æ–­
 uint8_t ESP_IS_ServiceAttrNonempty(struct ESP_cl *esp)
 {
 	if(esp->serverAttr.type != ServerConnect_Null)
@@ -721,12 +721,12 @@ uint8_t ESP_IS_ServiceAttrNonempty(struct ESP_cl *esp)
 	} 
 }
 
-//ÉèÖÃUART²ÎÊı
+//è®¾ç½®UARTå‚æ•°
 uint8_t ESP_setUARTParameters(struct ESP_cl *esp){return 0;}//(EspUartAttr_st *EspUartAttr);
-//²éÑ¯SNTPÊ±¼ä	
+//æŸ¥è¯¢SNTPæ—¶é—´	
 uint8_t ESP_selectSNTPTime(struct ESP_cl *esp){return 0;}//(STNPTime_st *stnpTime);
-/*--ÊÕ·¢¹¦ÄÜ--*/
-//ÏòÍøÂç·¢ËÍÊı¾İº¯Êı	
+/*--æ”¶å‘åŠŸèƒ½--*/
+//å‘ç½‘ç»œå‘é€æ•°æ®å‡½æ•°	
 int8_t ESP_netSendOutFun(struct ESP_cl *esp, char *s, uint16_t num)
 {
 	esp->netSendoutData.status = 1;
@@ -735,7 +735,7 @@ int8_t ESP_netSendOutFun(struct ESP_cl *esp, char *s, uint16_t num)
 	
 	return 0;
 }
-//²éÑ¯ÍøÂç½ÓÊÕº¯Êı
+//æŸ¥è¯¢ç½‘ç»œæ¥æ”¶å‡½æ•°
 int8_t ESP_netReceivedFun(struct ESP_cl *esp, char *s, uint16_t *num)
 {
 	int8_t res = 0;
@@ -757,57 +757,57 @@ int8_t ESP_netReceivedFun(struct ESP_cl *esp, char *s, uint16_t *num)
 	return res;
 }	
 
-//ATÖ¸Áî·¢ËÍº¯Êı
-//AT²âÊÔ
+//ATæŒ‡ä»¤å‘é€å‡½æ•°
+//ATæµ‹è¯•
 void ESP_SendCom_AT(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT");
 	USART_Send_Enter(esp->uartAttr.channel);
 }
-//¸´Î»Ö¸Áî
+//å¤ä½æŒ‡ä»¤
 void ESP_SendCom_AT_RST(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+RST");
 	USART_Send_Enter(esp->uartAttr.channel);
 }   
-//ESP³õÊ¼»¯£º¹Ø±Õ»ØÏÔ
+//ESPåˆå§‹åŒ–ï¼šå…³é—­å›æ˜¾
 void ESP_SendCom_ATE(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"ATE0");
 	USART_Send_Enter(esp->uartAttr.channel);
 }             
-//Ë¯ÃßÖ¸Áî
+//ç¡çœ æŒ‡ä»¤
 void ESP_SendCom_AT_SLEEP(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+SLEEP=0");
 	USART_Send_Enter(esp->uartAttr.channel);
 }  
-//ESP³õÊ¼»¯£ºÉèÖÃWiFiÁ¬½ÓÄ£Ê½ 
-//3£ºSoftAP+Station Ä£Ê½
+//ESPåˆå§‹åŒ–ï¼šè®¾ç½®WiFiè¿æ¥æ¨¡å¼ 
+//3ï¼šSoftAP+Station æ¨¡å¼
 void ESP_SendCom_AT_CWMODE_DEF(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+CWMODE_DEF=3");
 	USART_Send_Enter(esp->uartAttr.channel);
 }
-//É¨ÃèAP
+//æ‰«æAP
 void ESP_SendCom_AT_CWLAP(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+CWLAP=,,,1,,");
 	USART_Send_Enter(esp->uartAttr.channel);
 	wifiList.lenth = 0;
 }        
-//Á¬½ÓAP£¨ÁÙÊ±£©
+//è¿æ¥APï¼ˆä¸´æ—¶ï¼‰
 //AT+CWJAP_CUR="abc","0123456789","ca:d7:19:d8:a6:44"
 void ESP_SendCom_AT_CWJAP_CUR(struct ESP_cl *esp)
 {
-	//ÊÇ·ñÓĞWiFi´æÔÚ
+	//æ˜¯å¦æœ‰WiFiå­˜åœ¨
 	if(esp->WifiAttr.ecn == 0xff)
 		return;
 	USART_Send_Word(esp->uartAttr.channel,"AT+CWJAP_CUR=\"");
 	USART_Send_Word(esp->uartAttr.channel,esp->WifiAttr.ssid);
 	USART_Send_Word(esp->uartAttr.channel,"\",\"");
 	USART_Send_Word(esp->uartAttr.channel,esp->WifiAttr.pwd); 
-	//·¢ËÍMacµØÖ·
+	//å‘é€Macåœ°å€
 //	USART_Send_Word(esp->uartAttr.channel,"\",\""); 
 //	USART_Send_Byte(esp->uartAttr.channel,esp->EspWifiAttr.mac[0] /10 +0x30);
 //	USART_Send_Byte(esp->uartAttr.channel,esp->EspWifiAttr.mac[0] %10 +0x30);
@@ -830,16 +830,16 @@ void ESP_SendCom_AT_CWJAP_CUR(struct ESP_cl *esp)
 	USART_Send_Byte(esp->uartAttr.channel,'\"'); 
 	USART_Send_Enter(esp->uartAttr.channel);
 }   	
-//¶Ï¿ªAPÁ¬½Ó
+//æ–­å¼€APè¿æ¥
 void ESP_SendCom_AT_CWQAP(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+CWQAP");
 	USART_Send_Enter(esp->uartAttr.channel);
 }        
-//½¨Á¢TCPÁ¬½Ó
+//å»ºç«‹TCPè¿æ¥
 void ESP_SendCom_AT_CIPSTART(struct ESP_cl *esp)
 {
-	//ÊÇ·ñÓĞ·şÎñÆ÷´æÔÚ 
+	//æ˜¯å¦æœ‰æœåŠ¡å™¨å­˜åœ¨ 
 	switch(esp->serverAttr.type)
 	{ 
 		case ServerConnect_Null:
@@ -862,33 +862,33 @@ void ESP_SendCom_AT_CIPSTART(struct ESP_cl *esp)
 	
 	USART_Send_Enter(esp->uartAttr.channel);
 }     
-//·¢ËÍÍøÂçÊı¾İ
+//å‘é€ç½‘ç»œæ•°æ®
 void ESP_SendCom_AT_CIPSEND(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+CIPSEND=");
 	USART_Send_Int(esp->uartAttr.channel, esp->netSendoutData.lenth);
 	USART_Send_Enter(esp->uartAttr.channel);
 }
-//¶Ï¿ªTCP´«Êä
+//æ–­å¼€TCPä¼ è¾“
 void ESP_SendCom_AT_CIPCLOSE(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+CIPCLOSE");
 	USART_Send_Enter(esp->uartAttr.channel);
 }     
-//²éÑ¯SNTPÊ±¼ä
+//æŸ¥è¯¢SNTPæ—¶é—´
 void ESP_SendCom_AT_CIPSNTPTIME(struct ESP_cl *esp)
 {
 	USART_Send_Word(esp->uartAttr.channel,"AT+CIPSNTPTIME?");
 	USART_Send_Enter(esp->uartAttr.channel);	
 }  
-//·¢ËÍÍøÂçÊı¾İ
+//å‘é€ç½‘ç»œæ•°æ®
 void ESP_SendCom_SENDOUT(struct ESP_cl *esp)
 {
 	USART_Send_Word_Lenth(esp->uartAttr.channel,esp->netSendoutData.data,esp->netSendoutData.lenth);
 }
 
-//»Øµ÷º¯Êı
-//AT²âÊÔÖ¸Áî »Øµ÷
+//å›è°ƒå‡½æ•°
+//ATæµ‹è¯•æŒ‡ä»¤ å›è°ƒ
 int8_t ESP_SendCom_AT_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -902,7 +902,7 @@ int8_t ESP_SendCom_AT_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }
-//¸´Î»Ö¸Áî »Øµ÷
+//å¤ä½æŒ‡ä»¤ å›è°ƒ
 int8_t ESP_SendCom_AT_RST_Callback(struct ESP_cl *esp)
 {	
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -914,7 +914,7 @@ int8_t ESP_SendCom_AT_RST_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }
-//ESP³õÊ¼»¯£º¹Ø±Õ»ØÏÔ »Øµ÷
+//ESPåˆå§‹åŒ–ï¼šå…³é—­å›æ˜¾ å›è°ƒ
 int8_t ESP_SendCom_ATE_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -927,9 +927,9 @@ int8_t ESP_SendCom_ATE_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }        
-//½øÈëË¯ÃßÄ£Ê½ »Øµ÷
+//è¿›å…¥ç¡çœ æ¨¡å¼ å›è°ƒ
 int8_t ESP_SendCom_AT_SLEEP_Callback(struct ESP_cl *esp){return 1;}   
-//ESP³õÊ¼»¯£ºÉèÖÃWiFiÁ¬½ÓÄ£Ê½ »Øµ÷
+//ESPåˆå§‹åŒ–ï¼šè®¾ç½®WiFiè¿æ¥æ¨¡å¼ å›è°ƒ
 int8_t ESP_SendCom_AT_CWMODE_DEF_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -942,12 +942,12 @@ int8_t ESP_SendCom_AT_CWMODE_DEF_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }
-//²éÑ¯WiFiÁĞ±í»Øµ÷
+//æŸ¥è¯¢WiFiåˆ—è¡¨å›è°ƒ
 int8_t ESP_SendCom_AT_CWLAP_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
 	{
-		//½ÓÊÕWiFiÁĞ±í
+		//æ¥æ”¶WiFiåˆ—è¡¨
 		if(wifiList.lenth < ESP_WIFILIST_MAX)
 		{ 
 			ESP_WifiAttrCopy(&wifiList.attr[wifiList.lenth], & esp->uartReceivedData.data.cwlapData);
@@ -965,12 +965,12 @@ int8_t ESP_SendCom_AT_CWLAP_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }	
-//Á¬½ÓWiFi»Øµ÷
+//è¿æ¥WiFiå›è°ƒ
 int8_t ESP_SendCom_AT_CWJAP_CUR_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
 	{ 
-    //Á¬½Ó¹ı³ÌÖĞµÄÆäËûĞÅÏ¢
+    //è¿æ¥è¿‡ç¨‹ä¸­çš„å…¶ä»–ä¿¡æ¯
 //		WIFI CONNECTED
 //		WIFI GOT IP
 		
@@ -978,8 +978,8 @@ int8_t ESP_SendCom_AT_CWJAP_CUR_Callback(struct ESP_cl *esp)
 	}
 	else if(esp->uartReceivedData.number == 1)
 	{
-		//×´Ì¬±ä¸ü£ºÒÑÁ¬½Óµ½WiFi
-		//¸ÄÎª½ÓÊÕµ½ WiFi GOT IPÊ±ÈÏÎªÒÑÁ¬½Óµ½WiFi
+		//çŠ¶æ€å˜æ›´ï¼šå·²è¿æ¥åˆ°WiFi
+		//æ”¹ä¸ºæ¥æ”¶åˆ° WiFi GOT IPæ—¶è®¤ä¸ºå·²è¿æ¥åˆ°WiFi
 //		esp->connectStatus = ESPStatus_ConnectedWifi;
 		return 1;
 	}
@@ -988,7 +988,7 @@ int8_t ESP_SendCom_AT_CWJAP_CUR_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }
-//¶Ï¿ªWiFi»Øµ÷
+//æ–­å¼€WiFiå›è°ƒ
 int8_t ESP_SendCom_AT_CWQAP_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -1000,7 +1000,7 @@ int8_t ESP_SendCom_AT_CWQAP_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }        
-//½¨Á¢TCPÁ¬½Ó»Øµ÷
+//å»ºç«‹TCPè¿æ¥å›è°ƒ
 int8_t ESP_SendCom_AT_CIPSTART_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -1024,7 +1024,7 @@ int8_t ESP_SendCom_AT_CIPSEND_Callback(struct ESP_cl *esp)
 		return -1;
 	}
 }      
-//¹Ø±Õ·şÎñÆ÷
+//å…³é—­æœåŠ¡å™¨
 int8_t ESP_SendCom_AT_CIPCLOSE_Callback(struct ESP_cl *esp)
 {
 	if(esp->uartReceivedData.number == ESP_TXDComMessageTable[esp->sendComNumber].receivingType)
@@ -1050,7 +1050,7 @@ int8_t ESP_SendCom_SENDOUT_Callback(struct ESP_cl *esp)
 	}
 }   
 
-//wifiÊôĞÔ¸´ÖÆ
+//wifiå±æ€§å¤åˆ¶
 int8_t ESP_WifiAttrCopy(WifiAttr_st *wifiAttr1, WifiAttr_st *wifiAttr2)
 {
 	uint8_t i;

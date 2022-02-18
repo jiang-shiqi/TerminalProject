@@ -17,7 +17,7 @@ void ASP_Init(void)
 
 void ASP_Service(void)
 { 
-	//算出电压 单位mV
+	//绠楀嚭鐢靛帇 鍗曚綅mV
 	ADCValue[0].bufVal[0] = Get_Adc_Value(0)*3300/2048;
 	
  

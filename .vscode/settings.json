@@ -6,6 +6,8 @@
         "can_communication_matrix.h": "c",
         "sys.h": "c",
         "spi.h": "c",
-        "MMC_SD.C": "c"
+        "MMC_SD.C": "c",
+        "FONT.H": "cpp",
+        "MMC_SD.H": "cpp"
     }
 }

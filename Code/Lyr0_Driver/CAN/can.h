@@ -2,17 +2,17 @@
 #define __CAN_H	 
 #include "sys.h"	    
 	
-//CAN½ÓÊÕRX0ÖĞ¶ÏÊ¹ÄÜ
-#define CAN1_RX0_INT_ENABLE			1		 			//0,²»Ê¹ÄÜ;1,Ê¹ÄÜ.	
-#define CAN2_RX0_INT_ENABLE			1		 			//0,²»Ê¹ÄÜ;1,Ê¹ÄÜ.		
+//CANæ¥æ”¶RX0ä¸­æ–­ä½¿èƒ½
+#define CAN1_RX0_INT_ENABLE			1		 			//0,ä¸ä½¿èƒ½;1,ä½¿èƒ½.	
+#define CAN2_RX0_INT_ENABLE			1		 			//0,ä¸ä½¿èƒ½;1,ä½¿èƒ½.		
 					 							 				    
-u8 CAN_Mode_Init(CAN_TypeDef *CANx,u16 BAUD,u8 mode);//CAN³õÊ¼»¯
-u8 CAN_Tx_Msg(CAN_TypeDef *CANx,u32 id,u8 ide,u8 rtr,u8 len,u8 *dat);	//·¢ËÍÊı¾İ
-u8 CAN_Msg_Pend(CAN_TypeDef *CANx,u8 fifox);								//²éÑ¯ÓÊÏä±¨ÎÄ
-void CAN_Rx_Msg(CAN_TypeDef *CANx,u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat);//½ÓÊÕÊı¾İ
-u8 CAN_Tx_Staus(CAN_TypeDef *CANx,u8 mbox);  							//·µ»Ø·¢ËÍ×´Ì¬
-u8 CAN_Send_Msg(CAN_TypeDef *CANx,u16 id,u8* msg,u8 len);   //·¢ËÍÊı¾İ
-u8 CAN_Receive_Msg(CAN_TypeDef *CANx,u8 *buf);							//½ÓÊÕÊı¾İ
+u8 CAN_Mode_Init(CAN_TypeDef *CANx,u16 BAUD,u8 mode);//CANåˆå§‹åŒ–
+u8 CAN_Tx_Msg(CAN_TypeDef *CANx,u32 id,u8 ide,u8 rtr,u8 len,u8 *dat);	//å‘é€æ•°æ®
+u8 CAN_Msg_Pend(CAN_TypeDef *CANx,u8 fifox);								//æŸ¥è¯¢é‚®ç®±æŠ¥æ–‡
+void CAN_Rx_Msg(CAN_TypeDef *CANx,u8 fifox,u32 *id,u8 *ide,u8 *rtr,u8 *len,u8 *dat);//æ¥æ”¶æ•°æ®
+u8 CAN_Tx_Staus(CAN_TypeDef *CANx,u8 mbox);  							//è¿”å›å‘é€çŠ¶æ€
+u8 CAN_Send_Msg(CAN_TypeDef *CANx,u16 id,u8* msg,u8 len);   //å‘é€æ•°æ®
+u8 CAN_Receive_Msg(CAN_TypeDef *CANx,u8 *buf);							//æ¥æ”¶æ•°æ®
 #endif
 
 

@@ -55,7 +55,7 @@ TaskTCBStruct TaskTCBAttr[] ={
 //{  Tack_Rocker ,      " 摇杆数据采集 " ,    4 ,  BLOCKED , 0 ,    1 , 0 , 0 , 0 , Task_CR_Def ,          Rocker_Service , NULL},
 
 //{ Tack_ESP ,           " ESP模块处理 " ,     12 ,  BLOCKED , 0 ,   20 , 0 , 0 , 0 , Task_CR_Def ,             ESP_Service , NULL},
-{ Tack_DataProcess ,      " 数据处理 " ,     12 ,  BLOCKED , 0 , 1000 , 0 , 0 , 0 , Task_CR_Def ,            Data_Service , NULL},
+{ Tack_DataProcess ,      " 数据处理 " ,     12 ,  BLOCKED , 0 , DATA_SERVICE_CYCLE , 0 , 0 , 0 , Task_CR_Def ,            Data_Service , NULL},
 { Tack_MenuProcess ,      " 菜单处理 " ,     13 ,  BLOCKED , 0 ,  100 , 0 , 0 , 0 , Task_CR_Def , Menu_Processing_Service , NULL},                                                          
 
 { Tack_Graphics ,         " 图像绘制 " ,     14 ,  BLOCKED , 0 , 1000 , 0 , 0 , 0 , Task_CR_Def ,        Graphics_Display , NULL}, //暂时直接显示                                                         
@@ -114,7 +114,7 @@ void Task_Service(void)
 	else
 	{
 		TaskTCBAttr[TaskCurrent].status = SLEEP;
-		TaskTCBAttr[TaskCurrent].delay = TaskTCBAttr[TaskCurrent].cyclel;
+		TaskTCBAttr[TaskCurrent].delay = TaskTCBAttr[TaskCurrent].cycle;
 	}
 	
 	//记录结束时间

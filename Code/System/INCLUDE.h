@@ -36,6 +36,9 @@
 #define EX_ERR  -1
 #define EX_OK    0
 
+#define true 1
+#define false 0
+
 #ifndef NULL
 #define NULL                   ((void *) 0)
 #endif

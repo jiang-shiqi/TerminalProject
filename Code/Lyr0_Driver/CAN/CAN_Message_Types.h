@@ -25,11 +25,11 @@ typedef enum
 
 typedef struct
 {
-    uint8_t             Channel;         //Í¨µÀ
+    uint8_t             Channel;         //é€šé“
     volatile uint8_t   *pMsg;
     volatile uint8_t   *pStatus;
-    volatile uint8_t   *pRecordCnt;  //¼ÇÂ¼½ÓÊÕµÄ´ÎÊı£¨Ñ­»·¼ÆÊı£©»ò ¼ÇÂ¼ÒÑ¾­·¢ËÍµÄ´ÎÊı
-    volatile uint8_t   *pReqCnt;     //Íâ²¿½ÓÊÕµÄ´ÎÊı£¨Ñ­»·¼ÆÊı£©»ò ÇëÇó·¢ËÍµÄ´ÎÊı
+    volatile uint8_t   *pRecordCnt;  //è®°å½•æ¥æ”¶çš„æ¬¡æ•°ï¼ˆå¾ªç¯è®¡æ•°ï¼‰æˆ– è®°å½•å·²ç»å‘é€çš„æ¬¡æ•°
+    volatile uint8_t   *pReqCnt;     //å¤–éƒ¨æ¥æ”¶çš„æ¬¡æ•°ï¼ˆå¾ªç¯è®¡æ•°ï¼‰æˆ– è¯·æ±‚å‘é€çš„æ¬¡æ•°
     volatile uint16_t  *pTimer;
     uint8_t             Init[8];
     uint8_t             TimeOut[8];
@@ -38,25 +38,25 @@ typedef struct
 
 typedef struct
 {
-  uint8_t ChildID;   //×ÓID
-  uint8_t Index;     //ÔÚIDÊı×éÖĞ£¬Ë÷ÒıºÅ
+  uint8_t ChildID;   //å­ID
+  uint8_t Index;     //åœ¨IDæ•°ç»„ä¸­ï¼Œç´¢å¼•å·
 }CAN_Child_Msg_Map_t;
 
 typedef struct
 {
     uint32_t                   MsgID;           //ID
     uint8_t                    pro;
-    CAN_Msg_ID_Type_en_t       IDType;          //±¨ÎÄÀàĞÍ£¨±ê×¼Ö¡/À©Õ¹Ö¡£©
-    const CAN_Msg_Data_st_t   *pMsgData;        //±¨ÎÄÊı¾İ
-    uint8_t                    DLCMax;          //×î´ó³¤¶È
-    uint8_t                    DLCMin;          //×îĞ¡³¤¶È
-    CAN_Msg_Dir_en_t           Dir;             //·½Ïò
-    CAN_Msg_Cyc_Type_en_t      Type;            //±¨ÎÄÀàĞÍ(ÖÜÆÚ/ÊÂ¼ş)
-    uint16_t                   Cycle;           //Ñ­»·ÖÜÆÚ
-    uint16_t                   Offset;          //Æ«ÒÆÁ¿
-    uint8_t                    NumofChild;      //×ÓID¸öÊı
-    const CAN_Child_Msg_Map_t *Map;             //×ÓIDÓ³Éä
-    void                       ( *pDataRdyCallbBack ) ( uint8_t Num );  //»Øµ÷º¯Êı
+    CAN_Msg_ID_Type_en_t       IDType;          //æŠ¥æ–‡ç±»å‹ï¼ˆæ ‡å‡†å¸§/æ‰©å±•å¸§ï¼‰
+    const CAN_Msg_Data_st_t   *pMsgData;        //æŠ¥æ–‡æ•°æ®
+    uint8_t                    DLCMax;          //æœ€å¤§é•¿åº¦
+    uint8_t                    DLCMin;          //æœ€å°é•¿åº¦
+    CAN_Msg_Dir_en_t           Dir;             //æ–¹å‘
+    CAN_Msg_Cyc_Type_en_t      Type;            //æŠ¥æ–‡ç±»å‹(å‘¨æœŸ/äº‹ä»¶)
+    uint16_t                   Cycle;           //å¾ªç¯å‘¨æœŸ
+    uint16_t                   Offset;          //åç§»é‡
+    uint8_t                    NumofChild;      //å­IDä¸ªæ•°
+    const CAN_Child_Msg_Map_t *Map;             //å­IDæ˜ å°„
+    void                       ( *pDataRdyCallbBack ) ( uint8_t Num );  //å›è°ƒå‡½æ•°
 } CAN_Msg_Attr_st_t;
 
 
@@ -73,9 +73,9 @@ typedef union
     } Bit;
 } CAN_Msg_Stat_un_t;
     
-//±¨ÎÄ×´Ì¬ºê¶¨Òå
-#define   CAN_MSG_STAT_BIT_TX_EN            0x80    //µôÏß
-#define   CAN_MSG_STAT_BIT_UPDATE           0x02    //±»¸üĞÂ
+//æŠ¥æ–‡çŠ¶æ€å®å®šä¹‰
+#define   CAN_MSG_STAT_BIT_TX_EN            0x80    //æ‰çº¿
+#define   CAN_MSG_STAT_BIT_UPDATE           0x02    //è¢«æ›´æ–°
 #define   CAN_MSG_STAT_BIT_MSG_LOST         0x01
 #define   CAN_MSG_LOST  CAN_MSG_STAT_BIT_MSG_LOST
 #define   CAN_UPDATE    CAN_MSG_STAT_BIT_UPDATE

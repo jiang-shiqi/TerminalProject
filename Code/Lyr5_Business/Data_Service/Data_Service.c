@@ -69,66 +69,6 @@ void Data_Service(void)
 	ESP32_Service();
 }
 
-//网络数据
-uint8_t netStatus = 0;
-uint16_t netTimeoutVal = 0;
-//智能花盆 数据
-uint16_t SmartFlowerPot_sendHumidityTime = 0;
-uint8_t SmartFlowerPot_sendHumidityStatus = 0;
-uint32_t SmartFlowerPot_humidity = 10000; 
-char SmartFlowerPot_humidityStr[4];
-uint16_t SmartFlowerPot_criticalHumidity = 3000;
-uint8_t SmartFlowerPot_wateringStatus = 0;
-uint16_t SmartFlowerPot_wateringTimeVal = 0;
-int8_t   SmartFlowerPot_RxNetKey = -1;
-uint16_t SmartFlowerPot_oldRxNetKey = 0xffff;
-uint16_t SmartFlowerPot_RxNetTimeout = 0;
-uint16_t SmartFlowerPot_WateringStatus = 0;
-uint16_t SmartFlowerPot_WateringTime = 0;
-
-
-
-
-Data_Net_Data_st netdata;
-Data_Net_SendString_st netSendString[] = {
-	{  DataNet_projectName,         "SmartFlowerPot\n",               15},   //项目名
-	{  DataNet_Time,                "Time",                           4 },   //返回时间
-	{  DataNet_Watering,            "Watering",                       8 },   //浇水
-	{  DataNet_Humidity,            "Humidity",                       8 },   //返回湿度
-	{  DataNet_CriticalHumidity,    "CriticalHumidity",               16},   //设置临界湿度
-	{  DataNet_Character,           "Character",                      9 },   //角色
-};
-
-void Data_Net_Init(void)
-{
-
-}
-
-//判断网络数据类型
-int8_t Data_Net_getRxData(struct ESP_cl *esp,Data_Net_Data_st *data)
-{
-	int8_t res = -1; 
- 
-	return res;
-}
-
-//网络数据 处理函数
-void Data_Net_processing(void)
-{
-}
-char str[50];
-
-//设置网络发送值
-//void Data_Net_SetTxData(uint16_t protocolVersion,uint16_t kLenth,char *kStr,uint16_t vType,uint16_t vLenth,char *vStr)
-void Data_Net_SetTxData(uint16_t protocolVersion,Data_Net_Key_en key,uint16_t vType,uint16_t vLenth,char *vStr)
-{
-}
-
-//发送网络数据
-int8_t Data_Net_TXData(struct ESP_cl *esp, Data_Net_Data_st *netdata)
-{ 
-	return 0;
-}
 
 
  //游戏：贪吃蛇 

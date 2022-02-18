@@ -3,7 +3,7 @@
 #include "GPIO.h"
 void LED_init(void)
 {
-	LED0=1;//LED0¹Ø±Õ 	
+	LED0=1;//
 }
 
 void LED(int num)

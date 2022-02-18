@@ -32,7 +32,7 @@ typedef struct
 	      u8    PRIO;                      //任务优先级  0-63
 	      u8    status;                    //任务状态
 	      u32   delay;                     //延时时间
-	const u32   cyclel;                    //任务执行周期时间       ms
+	const u32   cycle;                    //任务执行周期时间       ms
 	      u32   runOnceTime;               //执行单次任务所需时间   us
 	      u32   run1SecTime;               //1秒总执行任务所需时间  us
 	      u32   runNum;                    //执行次数

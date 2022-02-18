@@ -63,7 +63,7 @@ static const CAN_Msg_Data_st_t                    CANMsg08CData =
     .Mask           = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
 };
 
-//³£×¤¹¦ÄÜÊı×é
+//å¸¸é©»åŠŸèƒ½æ•°ç»„
 static const CAN_Msg_Attr_st_t                      CANCommMatrix1Attr[] =
 {
     /*==============================================================================================================================
@@ -79,7 +79,7 @@ static const CAN_Msg_Attr_st_t                      CANCommMatrix1Attr[] =
 #define   CAN_COMM_MATRIX1_ALL_MSG_NUM         (sizeof(CANCommMatrix1Attr) / sizeof(CAN_Msg_Attr_st_t))
 
 
-//CAN1 CANÊÕ·¢°åÊı×é
+//CAN1 CANæ”¶å‘æ¿æ•°ç»„
 CAN_Msg_Data_st_t CAN_Msg_Data2[100];
 static const CAN_Msg_Attr_st_t                      CANCommMatrix2Attr[100];
 

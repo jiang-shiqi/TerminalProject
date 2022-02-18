@@ -3,7 +3,7 @@
  
 
  	   
-//IO·½ÏòÉèÖÃ
+//IOæ–¹å‘è®¾ç½®
 #define SDA_IN()  {GPIOA->CRH&=0X0FFFFFFF;GPIOA->CRH|=(u32)8<<28;}
 #define SDA_OUT() {GPIOA->CRH&=0X0FFFFFFF;GPIOA->CRH|=(u32)3<<28;}
 
@@ -13,15 +13,15 @@
 #define READ_SDA  		((GPIOA->IDR >> 15) & 0x0001)
 
 
-//IICËùÓĞ²Ù×÷º¯Êı
-void IIC_Init(void);                //³õÊ¼»¯IICµÄIO¿Ú				 
-void IIC_Start(void);				//·¢ËÍIIC¿ªÊ¼ĞÅºÅ
-void IIC_Stop(void);	  			//·¢ËÍIICÍ£Ö¹ĞÅºÅ
-void IIC_Send_Byte(unsigned char txd);			//IIC·¢ËÍÒ»¸ö×Ö½Ú
-unsigned char IIC_Read_Byte(unsigned char ack);//IIC¶ÁÈ¡Ò»¸ö×Ö½Ú
-unsigned char IIC_Wait_Ack(void); 				//IICµÈ´ıACKĞÅºÅ
-void IIC_Ack(void);					//IIC·¢ËÍACKĞÅºÅ
-void IIC_NAck(void);				//IIC²»·¢ËÍACKĞÅºÅ
+//IICæ‰€æœ‰æ“ä½œå‡½æ•°
+void IIC_Init(void);                //åˆå§‹åŒ–IICçš„IOå£				 
+void IIC_Start(void);				//å‘é€IICå¼€å§‹ä¿¡å·
+void IIC_Stop(void);	  			//å‘é€IICåœæ­¢ä¿¡å·
+void IIC_Send_Byte(unsigned char txd);			//IICå‘é€ä¸€ä¸ªå­—èŠ‚
+unsigned char IIC_Read_Byte(unsigned char ack);//IICè¯»å–ä¸€ä¸ªå­—èŠ‚
+unsigned char IIC_Wait_Ack(void); 				//IICç­‰å¾…ACKä¿¡å·
+void IIC_Ack(void);					//IICå‘é€ACKä¿¡å·
+void IIC_NAck(void);				//IICä¸å‘é€ACKä¿¡å·
 
 void IIC_Write_One_Byte(unsigned char daddr,unsigned char addr,unsigned char data);
 unsigned char IIC_Read_One_Byte(unsigned char daddr,unsigned char addr);	  

@@ -3,7 +3,7 @@
 
 #include "include.h"
  
-// SPI×ÜÏßËÙ¶ÈÉèÖÃ 
+// SPIæ€»çº¿é€Ÿåº¦è®¾ç½® 
 #define SPI_SPEED_2   		0
 #define SPI_SPEED_4   		1
 #define SPI_SPEED_8   		2
@@ -14,9 +14,9 @@
 #define SPI_SPEED_256 		7
 
 
-void SPI_Init(SPI_TypeDef *SPIx);			 //³õÊ¼»¯SPI¿Ú
-void SPI_SetSpeed(SPI_TypeDef *SPIx, u8 SpeedSet); //ÉèÖÃSPIËÙ¶È   
-u8 SPI_ReadWriteByte(SPI_TypeDef *SPIx, u8 TxData);//SPI×ÜÏß¶ÁĞ´Ò»¸ö×Ö½Ú 
+void SPI_Init(SPI_TypeDef *SPIx);			 //åˆå§‹åŒ–SPIå£
+void SPI_SetSpeed(SPI_TypeDef *SPIx, u8 SpeedSet); //è®¾ç½®SPIé€Ÿåº¦   
+u8 SPI_ReadWriteByte(SPI_TypeDef *SPIx, u8 TxData);//SPIæ€»çº¿è¯»å†™ä¸€ä¸ªå­—èŠ‚ 
 		 
 #endif
 

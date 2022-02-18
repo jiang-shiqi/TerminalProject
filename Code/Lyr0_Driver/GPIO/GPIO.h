@@ -1,16 +1,16 @@
 /***********************************************************************************************************
-* °æÈ¨                                                                                                     *
+* ç‰ˆæƒ                                                                                                     *
 *                                                                                                          *
-* ÎÄ¼şÃû³Æ: GPIO.h                                                                                         *
-* Ãè    Êö: GPIOÅäÖÃ±í                                                                                     *
-* ×÷    Õß: ½ªÊÀÆæ                                                                                         *
-* µ±Ç°°æ±¾: 1.0.1                                                                                          * 
-* Íê³ÉÊ±¼ä: 2019Äê9ÔÂ25ÈÕ                                                                                  *
+* æ–‡ä»¶åç§°: GPIO.h                                                                                         *
+* æ    è¿°: GPIOé…ç½®è¡¨                                                                                     *
+* ä½œ    è€…: å§œä¸–å¥‡                                                                                         *
+* å½“å‰ç‰ˆæœ¬: 1.0.1                                                                                          * 
+* å®Œæˆæ—¶é—´: 2019å¹´9æœˆ25æ—¥                                                                                  *
 * ---------------------------------------------------------------------------------------------------------*
-* ÀúÊ·ĞÅÏ¢:                                                                                                *
+* å†å²ä¿¡æ¯:                                                                                                *
 *           <Date>            |    <Version>    |    <Author>    |    <Description>                        *
 * ---------------------------------------------------------------------------------------------------------*
-*   2019Äê9ÔÂ25ÈÕ 21:33:40    |      1.0.1      |     ½ªÊÀÆæ     |     Create file                         *            
+*   2019å¹´9æœˆ25æ—¥ 21:33:40    |      1.0.1      |     å§œä¸–å¥‡     |     Create file                         *            
 *----------------------------------------------------------------------------------------------------------*
 ***********************************************************************************************************/
  
@@ -22,118 +22,118 @@
 
 
 /*===========================================================================================================================================
-  GPIOA ¶Ë¿ÚÅäÖÃ
+  GPIOA ç«¯å£é…ç½®
   -------------------------------------------------------------------------------------------------------------------------------------
-  | Ãû³Æ              | ¶Ë¿Ú       |  Òı½Å  |  ·½Ïò  |  ³õÖµ  |  ÉÏÏÂÀ­Ê¹ÄÜ  |  ÉÏ/ÏÂÀ­  |  ËµÃ÷
+  | åç§°              | ç«¯å£       |  å¼•è„š  |  æ–¹å‘  |  åˆå€¼  |  ä¸Šä¸‹æ‹‰ä½¿èƒ½  |  ä¸Š/ä¸‹æ‹‰  |  è¯´æ˜
   ===================================================================================================================================*/
-#define BAT_VIN          Get_Adc_Value(0)   // AD        1            0            0     µç³ØµçÑ¹ÊäÈë 
-//#define ADC1_IN1         Get_Adc_Value(1)   // AD        1            0            0     À©Õ¹ADÊäÈë1
-#define ADC1_IN1         PAIN_PA1      //      IN        1            0            0     ÔİÊ±±»ÓÃ×÷ESP32´Ó»ú¶¯×÷¼ì²âÒı½Å
-#define USART2_TX        PAOUT_PA2     //      AF        1            0            0     ´®¿Ú2·¢ËÍ¶Ë  
-#define USART2_RX        PAOUT_PA3     //      AF        1            1            1     ´®¿Ú2½ÓÊÕ¶Ë   
-#define ADC1_IN4         Get_Adc_Value(4)   // AD        1            0            0     À©Õ¹ADÊäÈë4
+#define BAT_VIN          Get_Adc_Value(0)   // AD        1            0            0     ç”µæ± ç”µå‹è¾“å…¥ 
+//#define ADC1_IN1         Get_Adc_Value(1)   // AD        1            0            0     æ‰©å±•ADè¾“å…¥1
+#define ADC1_IN1         PAIN_PA1      //      IN        1            0            0     æš‚æ—¶è¢«ç”¨ä½œESP32ä»æœºåŠ¨ä½œæ£€æµ‹å¼•è„š
+#define USART2_TX        PAOUT_PA2     //      AF        1            0            0     ä¸²å£2å‘é€ç«¯  
+#define USART2_RX        PAOUT_PA3     //      AF        1            1            1     ä¸²å£2æ¥æ”¶ç«¯   
+#define ADC1_IN4         Get_Adc_Value(4)   // AD        1            0            0     æ‰©å±•ADè¾“å…¥4
 #define ESP_SCK          GPIO_Trap()   //      AF        1            0            0     ESP_Clk        
 #define ESP_MISO         GPIO_Trap()   //      AF        1            0            0     ESP_Miso        
 #define ESP_MOSI         GPIO_Trap()   //      AF        1            0            0     ESP_Mosi        
-#define T_PEN            PAOUT_PA8     //      OUT       1            0            0     LCD´¥Ãş PEN¶Ë
-#define ESP_TXD          GPIO_Trap()   //      AF        1            0            0     ESP8266½ÓÊÕ¶Ë£¨Ö÷»ú·¢ËÍ£©  
-#define ESP_RXD          GPIO_Trap()   //      AF        1            0            1     ESP8266·¢ËÍ¶Ë£¨Ö÷»ú½ÓÊÕ£©
+#define T_PEN            PAOUT_PA8     //      OUT       1            0            0     LCDè§¦æ‘¸ PENç«¯
+#define ESP_TXD          GPIO_Trap()   //      AF        1            0            0     ESP8266æ¥æ”¶ç«¯ï¼ˆä¸»æœºå‘é€ï¼‰  
+#define ESP_RXD          GPIO_Trap()   //      AF        1            0            1     ESP8266å‘é€ç«¯ï¼ˆä¸»æœºæ¥æ”¶ï¼‰
 #define USB_FS_DM        GPIO_Trap()   //      AF        1            0            0     USB D+        
 #define USB_FS_DP        GPIO_Trap()   //      AF        1            0            0     USB D-        
-#define SWDIO            GPIO_Trap()   //      AF        1            0            0     ÏÂÔØÊı¾İ¿Ú          
-#define SWCLK            GPIO_Trap()   //      AF        1            0            0     ÏÂÔØÊ±ÖÓ¿Ú       
-#define MH_Key           PAOUT_PA15    //      OUT       1            0            0     µçÔ´Ä£¿é°´¼ü  
+#define SWDIO            GPIO_Trap()   //      AF        1            0            0     ä¸‹è½½æ•°æ®å£          
+#define SWCLK            GPIO_Trap()   //      AF        1            0            0     ä¸‹è½½æ—¶é’Ÿå£       
+#define MH_Key           PAOUT_PA15    //      OUT       1            0            0     ç”µæºæ¨¡å—æŒ‰é”®  
 
 /*===========================================================================================================================================
-  GPIOB ¶Ë¿ÚÅäÖÃ
+  GPIOB ç«¯å£é…ç½®
   -------------------------------------------------------------------------------------------------------------------------------------
-  | Ãû³Æ              | ¶Ë¿Ú       |  Òı½Å  |  ·½Ïò  |  ³õÖµ  |  ÉÏÏÂÀ­Ê¹ÄÜ  |  ÉÏ/ÏÂÀ­  |  ËµÃ÷
+  | åç§°              | ç«¯å£       |  å¼•è„š  |  æ–¹å‘  |  åˆå€¼  |  ä¸Šä¸‹æ‹‰ä½¿èƒ½  |  ä¸Š/ä¸‹æ‹‰  |  è¯´æ˜
   ===================================================================================================================================*/
-#define ADC1_IN8         Get_Adc_Value(8)   // AD        1            0            0      À©Õ¹ADÊäÈë8 
-#define ADC1_IN9         Get_Adc_Value(9)   // AD        1            0            0      À©Õ¹ADÊäÈë9 
+#define ADC1_IN8         Get_Adc_Value(8)   // AD        1            0            0      æ‰©å±•ADè¾“å…¥8 
+#define ADC1_IN9         Get_Adc_Value(9)   // AD        1            0            0      æ‰©å±•ADè¾“å…¥9 
 #define ESP_CS           PBOUT_PB2  //         AF        1            0            0      ESP_CS       
-#define SPI3_SCK         GPIO_Trap()//         AF        1            0            0      À©Õ¹SPI½Ó¿Ú CLK 
-#define SPI3_MISO        GPIO_Trap()//         AF        1            0            0      À©Õ¹SPI½Ó¿Ú MISO
-#define SPI3_MOSI        GPIO_Trap()//         AF        1            0            0      À©Õ¹SPI½Ó¿Ú MOSI
-#define I2C1_SCL         GPIO_Trap()//         AF        1            0            0      À©Õ¹I2C1½Ó¿Ú SCL
-#define I2C1_SDA         GPIO_Trap()//         AF        1            0            0      À©Õ¹I2C1½Ó¿Ú SDA
-#define CAN1_TX          GPIO_Trap()//         AF        1            0            0      À©Õ¹CAN1½Ó¿Ú TX 
-#define CAN1_RX          GPIO_Trap()//         AF        1            0            0      À©Õ¹CAN1½Ó¿Ú RX
-#define I2C2_SCL         GPIO_Trap()//         AF        1            0            0      À©Õ¹I2C2½Ó¿Ú SCL
-#define I2C2_SDA         GPIO_Trap()//         AF        1            0            0      À©Õ¹I2C2½Ó¿Ú SDA
-#define CAN2_TX          GPIO_Trap()//         AF        1            0            0      À©Õ¹CAN2½Ó¿Ú TX 
-#define CAN2_RX          GPIO_Trap()//         AF        1            0            0      À©Õ¹CAN2½Ó¿Ú RX
-#define CAN1_STB         PBOUT_PB14 //         OUT       1            0            0      À©Õ¹CAN1½Ó¿Ú STB
-#define CAN2_STB         PBOUT_PB15 //         OUT       1            0            0      À©Õ¹CAN2½Ó¿Ú STB
+#define SPI3_SCK         GPIO_Trap()//         AF        1            0            0      æ‰©å±•SPIæ¥å£ CLK 
+#define SPI3_MISO        GPIO_Trap()//         AF        1            0            0      æ‰©å±•SPIæ¥å£ MISO
+#define SPI3_MOSI        GPIO_Trap()//         AF        1            0            0      æ‰©å±•SPIæ¥å£ MOSI
+#define I2C1_SCL         GPIO_Trap()//         AF        1            0            0      æ‰©å±•I2C1æ¥å£ SCL
+#define I2C1_SDA         GPIO_Trap()//         AF        1            0            0      æ‰©å±•I2C1æ¥å£ SDA
+#define CAN1_TX          GPIO_Trap()//         AF        1            0            0      æ‰©å±•CAN1æ¥å£ TX 
+#define CAN1_RX          GPIO_Trap()//         AF        1            0            0      æ‰©å±•CAN1æ¥å£ RX
+#define I2C2_SCL         GPIO_Trap()//         AF        1            0            0      æ‰©å±•I2C2æ¥å£ SCL
+#define I2C2_SDA         GPIO_Trap()//         AF        1            0            0      æ‰©å±•I2C2æ¥å£ SDA
+#define CAN2_TX          GPIO_Trap()//         AF        1            0            0      æ‰©å±•CAN2æ¥å£ TX 
+#define CAN2_RX          GPIO_Trap()//         AF        1            0            0      æ‰©å±•CAN2æ¥å£ RX
+#define CAN1_STB         PBOUT_PB14 //         OUT       1            0            0      æ‰©å±•CAN1æ¥å£ STB
+#define CAN2_STB         PBOUT_PB15 //         OUT       1            0            0      æ‰©å±•CAN2æ¥å£ STB
 
 /*===========================================================================================================================================
-  GPIOC ¶Ë¿ÚÅäÖÃ
+  GPIOC ç«¯å£é…ç½®
   -------------------------------------------------------------------------------------------------------------------------------------
-  | Ãû³Æ              | ¶Ë¿Ú       |  Òı½Å  |  ·½Ïò  |  ³õÖµ  |  ÉÏÏÂÀ­Ê¹ÄÜ  |  ÉÏ/ÏÂÀ­  |  ËµÃ÷
+  | åç§°              | ç«¯å£       |  å¼•è„š  |  æ–¹å‘  |  åˆå€¼  |  ä¸Šä¸‹æ‹‰ä½¿èƒ½  |  ä¸Š/ä¸‹æ‹‰  |  è¯´æ˜
   ===================================================================================================================================*/
-#define ADC1_IN10        Get_Adc_Value(10)  // AD        1            0            0      À©Õ¹ADÊäÈë10
-#define ADC1_IN11        Get_Adc_Value(11)  // AD        1            0            0      À©Õ¹ADÊäÈë11
-#define ADC1_IN12        Get_Adc_Value(12)  // AD        1            0            0      À©Õ¹ADÊäÈë12
-#define ADC1_IN13        Get_Adc_Value(13)  // AD        1            0            0      À©Õ¹ADÊäÈë13
-//#define Ô¤Áô             PCOUT_PC4  //         OUT       1            0            0  
-//#define Ô¤Áô             PCOUT_PC5  //         OUT       1            0            0  
-#define T_MOSI           PCOUT_PC6  //         OUT       1            0            0      LCD´¥Ãş MOSI
-#define T_MISO           PCOUT_PC7  //         OUT       1            0            0      LCD´¥Ãş MISO
-#define SDIO_D0          GPIO_Trap()//         AF        1            0            0      TF¿¨SDIO½Ó¿Ú D0 
-#define SDIO_D1          GPIO_Trap()//         AF        1            0            0      TF¿¨SDIO½Ó¿Ú D1 
-#define SDIO_D2          GPIO_Trap()//         AF        1            0            0      TF¿¨SDIO½Ó¿Ú D2   
-#define SDIO_D3          GPIO_Trap()//         AF        1            0            0      TF¿¨SDIO½Ó¿Ú D3  
-#define SDIO_SCK         GPIO_Trap()//         AF        1            0            0      TF¿¨SDIO½Ó¿Ú SCK 
-#define LED0             PCOUT_PC13 //         AF        1            0            0      ÍÆÍìÊä³ö 3
-//#define Ô¤Áô             PCOUT_PC14 //         OUT       1            0            0  
-//#define Ô¤Áô             PCOUT_PC15 //         OUT       1            0            0  
+#define ADC1_IN10        Get_Adc_Value(10)  // AD        1            0            0      æ‰©å±•ADè¾“å…¥10
+#define ADC1_IN11        Get_Adc_Value(11)  // AD        1            0            0      æ‰©å±•ADè¾“å…¥11
+#define ADC1_IN12        Get_Adc_Value(12)  // AD        1            0            0      æ‰©å±•ADè¾“å…¥12
+#define ADC1_IN13        Get_Adc_Value(13)  // AD        1            0            0      æ‰©å±•ADè¾“å…¥13
+//#define é¢„ç•™             PCOUT_PC4  //         OUT       1            0            0  
+//#define é¢„ç•™             PCOUT_PC5  //         OUT       1            0            0  
+#define T_MOSI           PCOUT_PC6  //         OUT       1            0            0      LCDè§¦æ‘¸ MOSI
+#define T_MISO           PCOUT_PC7  //         OUT       1            0            0      LCDè§¦æ‘¸ MISO
+#define SDIO_D0          GPIO_Trap()//         AF        1            0            0      TFå¡SDIOæ¥å£ D0 
+#define SDIO_D1          GPIO_Trap()//         AF        1            0            0      TFå¡SDIOæ¥å£ D1 
+#define SDIO_D2          GPIO_Trap()//         AF        1            0            0      TFå¡SDIOæ¥å£ D2   
+#define SDIO_D3          GPIO_Trap()//         AF        1            0            0      TFå¡SDIOæ¥å£ D3  
+#define SDIO_SCK         GPIO_Trap()//         AF        1            0            0      TFå¡SDIOæ¥å£ SCK 
+#define LED0             PCOUT_PC13 //         AF        1            0            0      æ¨æŒ½è¾“å‡º 3
+//#define é¢„ç•™             PCOUT_PC14 //         OUT       1            0            0  
+//#define é¢„ç•™             PCOUT_PC15 //         OUT       1            0            0  
 
 /*===========================================================================================================================================
-  GPIOD ¶Ë¿ÚÅäÖÃ
+  GPIOD ç«¯å£é…ç½®
   -------------------------------------------------------------------------------------------------------------------------------------
-  | Ãû³Æ              | ¶Ë¿Ú       |  Òı½Å  |  ·½Ïò  |  ³õÖµ  |  ÉÏÏÂÀ­Ê¹ÄÜ  |  ÉÏ/ÏÂÀ­  |  ËµÃ÷
+  | åç§°              | ç«¯å£       |  å¼•è„š  |  æ–¹å‘  |  åˆå€¼  |  ä¸Šä¸‹æ‹‰ä½¿èƒ½  |  ä¸Š/ä¸‹æ‹‰  |  è¯´æ˜
   ===================================================================================================================================*/
-#define FMC_D2           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D2
-#define FMC_D3           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D3 
-#define SDIO_CMD         GPIO_Trap()//         AF        1            0            0      TF¿¨SDIO½Ó¿Ú CMD 
-//#define Ô¤Áô             PDOUT_PD3  //         OUT       1            0            0       
-#define FMC_NOE          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú NOE 
-#define FMC_NWE          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú NWE 
-//#define Ô¤Áô             PDOUT_PD6  //         OUT       1            0            0       
-#define FMC_NE1          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú NE1 
-#define FMC_D13          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D13 
-#define FMC_D14          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D14
-#define FMC_D15          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D15
-#define T_SCK            PDOUT_PD11 //         OUT       1            0            0      LCD´¥Ãş SCK 
-#define FMC_A17          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú A17 
-#define T_CS             PDOUT_PD13 //         OUT       1            0            0      LCD´¥Ãş CS 
-#define FMC_D0           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D0 
-#define FMC_D1           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D1 
+#define FMC_D2           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D2
+#define FMC_D3           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D3 
+#define SDIO_CMD         GPIO_Trap()//         AF        1            0            0      TFå¡SDIOæ¥å£ CMD 
+//#define é¢„ç•™             PDOUT_PD3  //         OUT       1            0            0       
+#define FMC_NOE          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ NOE 
+#define FMC_NWE          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ NWE 
+//#define é¢„ç•™             PDOUT_PD6  //         OUT       1            0            0       
+#define FMC_NE1          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ NE1 
+#define FMC_D13          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D13 
+#define FMC_D14          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D14
+#define FMC_D15          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D15
+#define T_SCK            PDOUT_PD11 //         OUT       1            0            0      LCDè§¦æ‘¸ SCK 
+#define FMC_A17          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ A17 
+#define T_CS             PDOUT_PD13 //         OUT       1            0            0      LCDè§¦æ‘¸ CS 
+#define FMC_D0           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D0 
+#define FMC_D1           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D1 
 
 /*===========================================================================================================================================
-  GPIOE ¶Ë¿ÚÅäÖÃ
+  GPIOE ç«¯å£é…ç½®
   -------------------------------------------------------------------------------------------------------------------------------------
-  | Ãû³Æ              | ¶Ë¿Ú       |  Òı½Å  |  ·½Ïò  |  ³õÖµ  |  ÉÏÏÂÀ­Ê¹ÄÜ  |  ÉÏ/ÏÂÀ­  |  ËµÃ÷
+  | åç§°              | ç«¯å£       |  å¼•è„š  |  æ–¹å‘  |  åˆå€¼  |  ä¸Šä¸‹æ‹‰ä½¿èƒ½  |  ä¸Š/ä¸‹æ‹‰  |  è¯´æ˜
   ===================================================================================================================================*/
-#define KEY_0_IN         PEIN_PE0   //         IN        1            0            0      °´¼ü0
-#define KEY_1_IN         PEIN_PE1   //         IN        1            0            0      °´¼ü1 
-#define KEY_2_IN         PEIN_PE2   //         IN        1            0            0      °´¼ü2 
-#define KEY_3_IN         PEIN_PE3   //         IN        1            0            0      °´¼ü3 
-#define ROLLER_LEFT      PEIN_PE4   //         IN        1            0            0      ¹öÂÖ ×ó¼ü 
-#define ROLLER_DOWN      PEIN_PE5   //         IN        1            0            0      ¹öÂÖ °´ÏÂ 
-#define ROLLER_RIGHT     PEIN_PE6   //         IN        1            0            0      ¹öÂÖ ÓÒ¼ü 
-#define FMC_D4           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D4 
-#define FMC_D5           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D5 
-#define FMC_D6           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D6 
-#define FMC_D7           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D7 
-#define FMC_D8           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D8 
-#define FMC_D9           GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D9 
-#define FMC_D10          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D10 
-#define FMC_D11          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D11 
-#define FMC_D12          GPIO_Trap()//         AF        1            0            0      LCD FSMC½Ó¿Ú D12 
+#define KEY_0_IN         PEIN_PE0   //         IN        1            0            0      æŒ‰é”®0
+#define KEY_1_IN         PEIN_PE1   //         IN        1            0            0      æŒ‰é”®1 
+#define KEY_2_IN         PEIN_PE2   //         IN        1            0            0      æŒ‰é”®2 
+#define KEY_3_IN         PEIN_PE3   //         IN        1            0            0      æŒ‰é”®3 
+#define ROLLER_LEFT      PEIN_PE4   //         IN        1            0            0      æ»šè½® å·¦é”® 
+#define ROLLER_DOWN      PEIN_PE5   //         IN        1            0            0      æ»šè½® æŒ‰ä¸‹ 
+#define ROLLER_RIGHT     PEIN_PE6   //         IN        1            0            0      æ»šè½® å³é”® 
+#define FMC_D4           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D4 
+#define FMC_D5           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D5 
+#define FMC_D6           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D6 
+#define FMC_D7           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D7 
+#define FMC_D8           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D8 
+#define FMC_D9           GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D9 
+#define FMC_D10          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D10 
+#define FMC_D11          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D11 
+#define FMC_D12          GPIO_Trap()//         AF        1            0            0      LCD FSMCæ¥å£ D12 
 																																													 
 																																													 
-//JTAG½Ó¿Ú×ªIOÓÃºê¶¨Òå
+//JTAGæ¥å£è½¬IOç”¨å®å®šä¹‰
 #define GPIO_Remap_SWJ_JTAGDisable  ((uint32_t)0x00300200)  /*!< JTAG-DP Disabled and SW-DP Enabled */
 #define EVCR_PORTPINCONFIG_MASK     ((uint16_t)0xFF80)
 #define LSB_MASK                    ((uint16_t)0xFFFF)
@@ -143,7 +143,7 @@
 #define DBGAFR_NUMBITS_MASK         ((uint32_t)0x00100000)
 
  
-//º¯ÊıÉùÃ÷
+//å‡½æ•°å£°æ˜
 void GPIO_Init(void);
 void GPIO_JtagToIo(void);
 void GPIO_PinRemapConfig(uint32_t GPIO_Remap, FunctionalState NewState);
