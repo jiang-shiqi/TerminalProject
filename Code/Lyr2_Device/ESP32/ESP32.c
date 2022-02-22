@@ -20,6 +20,7 @@ struct ESP32_Class_st_t ESP32_Drive;
 //RSP32初始化
 void ESP32_Init(void)
 {
+	ESP32_WifiConnectAttr_st_t esp32_wifiattr = {false, 0, "mix2s", "12345678", 0, {0,0,0,0,0,0} };
     ESP32_Drive.initStatus = false;                      //初始化状态
 	ESP32_Drive.driveID = 0x0000;                        //设备ID
 	ESP32_Drive.connectStatus = ESPStatus_NoResponse;    //连接状态 
@@ -33,6 +34,7 @@ void ESP32_Init(void)
 	// ESP32_Drive.netSendoutData; //待发送的网络数据
 	// ESP32_Drive.netReceivedData;//接收到的网络数据
 	// ESP32_Drive.WifiAttr;                                //WiFi属性
+	ESP32_SetWiFiAttr(&ESP32_Drive, &esp32_wifiattr);
 	// ESP32_Drive.serverAttr;                              //服务器属性
 	// ESP32_Drive.stnpTime;                                //STNP时间
 	//函数指针初始化
@@ -124,7 +126,7 @@ void ESP32_Service(void)
 			else
 			{
 				ESP32_Drive.setAttr.wifiAutoConnectEnable = false;
-				disconnectWifi( &ESP32_Drive );
+				disconnectWifi( );
 				ESP32_Drive.infoDisplay = ESPInfo_WifiConnectTimeout;
 				//请求手动操作标志位置一
 				ESP32_Drive.requestManualAction = true;
@@ -135,13 +137,13 @@ void ESP32_Service(void)
 			if(res16 == ESPWifiStatus_PSWDError)
 			{
 				ESP32_Drive.setAttr.wifiAutoConnectEnable = false;
-				disconnectWifi( &ESP32_Drive );
+				disconnectWifi(  );
 				ESP32_Drive.infoDisplay = ESPInfo_WifiPasswordError;
 			}
 			else if(ESPWifiStatus_NoFound)
 			{
 				ESP32_Drive.setAttr.wifiAutoConnectEnable = false;
-				disconnectWifi( &ESP32_Drive );
+				disconnectWifi(  );
 				ESP32_Drive.infoDisplay = ESPInfo_NoAPFound;
 			}
 			else
@@ -173,7 +175,7 @@ void ESP32_Service(void)
 			}
 			else
 			{ 
-				disconnectServer( &ESP32_Drive );
+				disconnectServer(  );
 				ESP32_Drive.infoDisplay = ESPInfo_ServerConnectTimeout;
 				//请求手动操作标志位置一
 				ESP32_Drive.requestManualAction = true;
@@ -319,7 +321,7 @@ int8_t disconnectServer(void)
 	res = EX_ERR;
 }        
 //发送/接收网络数据
-int8_t netSendOutReceivedFun(struct ESP32_Class_st_t *esp){}  
+int8_t netSendOutReceivedFun(struct ESP32_Class_st_t *esp, char *s, uint16_t num){}  
 //查询SNTP时间
 int8_t selectSNTPTime(struct ESP32_Class_st_t *esp){}          
 //读取状态寄存器 
@@ -378,17 +380,6 @@ void ESP32_SetWiFiAttr(struct ESP32_Class_st_t *esp,ESP32_WifiConnectAttr_st_t *
 }
 
 
-//发送网络数据
-void ESP32_SendNetData(char *s, uint32_t num)
-{
-
-}
-
-//接收网络数据
-void ESP32_ReceivedNetData(char *s, uint32_t num)
-{
-
-}
 
 
  

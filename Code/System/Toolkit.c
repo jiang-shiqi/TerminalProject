@@ -263,7 +263,7 @@ void my_strcat(char* strDestination, const char* strSource, uint16_t position, u
 
 	if (strDestination == NULL || strSource == NULL)
 	{
-		return NULL;
+		return ;
 	}
 
 	for( i = 0 ; i < lenth ; i++ )

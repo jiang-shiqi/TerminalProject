@@ -3,6 +3,9 @@
 
 #include "sys.h"  
 
+//全局ESP32句柄
+extern struct ESP32_Class_st_t ESP32_Drive;
+
 //ESP32模块模拟SPI ID
 #define ESP32_DRIVE_ID     0XEF17
 //操作正确返回码
@@ -209,7 +212,7 @@ typedef struct {
 //服务器连接结构体
 typedef struct {
 	uint8_t ready_Flag;                 //准备就绪标志位
-	enum ServerConnect_Type type;       //服务器连接方式
+	enum ESP32_ServerConnectType_en_t type;       //服务器连接方式
 	char website[ESP32_WEBSITE_MAX];    //服务器网址
 	uint8_t ip[4];                      //服务器IPV4
 	uint16_t port;                      //服务器端口号
@@ -233,7 +236,7 @@ typedef struct{
 	uint8_t hour;
 	uint8_t minute;
 	uint8_t second;
-	enum ESPTimeWeek_en week; 
+	enum ESP32_TimeWeek_en_t week; 
 }ESP32_STNPTime_st_t;
 
 //ESP类结构体
@@ -252,12 +255,12 @@ struct ESP32_Class_st_t{
 	ESP32_WifiConnectAttr_st_t WifiAttr;               //WiFi属性
 	ESP32_ServerConnect_st_t serverAttr;               //服务器属性
 	ESP32_STNPTime_st_t stnpTime;                      //STNP时间
-	uint8_t  (*connectWifi)(struct ESP32_Class_st_t *esp);             //连接WiFi
-	uint8_t  (*disconnectWifi)(void);                                  //断开WiFi
-	uint8_t  (*connectServer)(struct ESP32_Class_st_t *esp);           //连接服务器
-	uint8_t  (*disconnectServer)(void);                                //断开服务器
-	uint8_t  (*netSendOutReceivedFun)(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //发送/接收网络数据
-	uint8_t  (*selectSNTPTime)(struct ESP32_Class_st_t *esp);          //查询SNTP时间
+	int8_t  (*connectWifi)(struct ESP32_Class_st_t *esp);             //连接WiFi
+	int8_t  (*disconnectWifi)(void);                                  //断开WiFi
+	int8_t  (*connectServer)(struct ESP32_Class_st_t *esp);           //连接服务器
+	int8_t  (*disconnectServer)(void);                                //断开服务器
+	int8_t  (*netSendOutReceivedFun)(struct ESP32_Class_st_t *esp, char *s, uint16_t num);  //发送/接收网络数据
+	int8_t  (*selectSNTPTime)(struct ESP32_Class_st_t *esp);          //查询SNTP时间
 };
 
 void ESP32_Init(void);
@@ -294,6 +297,9 @@ void ESP32_Service(void);
 
 void ESP32_SendCom(uint16_t com);
 void ESP32_TransmitData(char *sendBuf,char *readBuf, uint16_t len);
+
+void ESP32_SetServiceAttr(struct ESP32_Class_st_t *esp,ESP32_ServerConnect_st_t *serverAttr);
+void ESP32_SetWiFiAttr(struct ESP32_Class_st_t *esp,ESP32_WifiConnectAttr_st_t *wifiAttr);
 
 int16_t ESP32_ReadDeviceID(void);
 int16_t ESP32_SendNetData(char *sendBuf, uint16_t lenth);

@@ -4,7 +4,6 @@
 #include "Rocker.h"
 #include "Line_In.h"
 //#include "Files.h"
-//#include "ESP8266_AT.h"
 #include "SPI.h" 
 #include "lcd.h"
 #include "ESP32.h"
@@ -42,11 +41,11 @@ void Graphics_Display(void)
 //	LCD_ShowString(30, 40,160,16,16,(uint8_t *)"Connection status: ");
 //	LCD_ShowChar(190,40,ESP_Device[0].connectStatus+'0',16,0);
 //	
-//	//WiFi信息
-//	LCD_ShowString(10, 60,100,16,16,(uint8_t *)"SSID: ");
-//	LCD_ShowString(30, 80,210,16,16,(uint8_t *)ESP_Device[0].WifiAttr.ssid);
-//	LCD_ShowString(10,100,100,16,16,(uint8_t *)"PSWD: ");
-//	LCD_ShowString(30,120,210,16,16,(uint8_t *)ESP_Device[0].WifiAttr.pwd);
+	//WiFi信息
+	LCD_ShowString(10, 60,100,16,16,(uint8_t *)"SSID: ");
+	LCD_ShowString(30, 80,210,16,16,(uint8_t *)ESP32_Drive.WifiAttr.ssid);
+	LCD_ShowString(10,100,100,16,16,(uint8_t *)"PSWD: ");
+	LCD_ShowString(30,120,210,16,16,(uint8_t *)ESP32_Drive.WifiAttr.pswd);
 	 
 }
 
@@ -66,7 +65,7 @@ void Data_Service(void)
 	
 //	ESP32_TransmitData("111111111111111111111",SPI1_buf,20);
 	
-	ESP32_Service();
+//	ESP32_Service();
 }
 
 

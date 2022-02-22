@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress=870</MiscControls>
               <Define>STM32F40_41xxx,F407VG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Code\DCC;..\Code\ESP8266_AT;..\Code\Lyr0_Driver\ADC;..\Code\Lyr0_Driver\GPIO;..\Code\Lyr0_Driver\SDIO;..\Code\Lyr0_Driver\SPI;..\Code\Lyr0_Driver\SYSTICK;..\Code\Lyr0_Driver\USART;..\Code\Lyr0_Driver\CAN;..\Code\Lyr0_Driver\EXTI;..\Code\Lyr1_Protocol\Analog_Signal_Processing;..\Code\Lyr2_Device\SD;..\Code\Lyr2_Device\W25QXX;..\Code\Lyr2_Device\LCD;..\Code\Lyr3_Module\Files;..\Code\Lyr4_Socket\KEY;..\Code\Lyr4_Socket\LED;..\Code\Lyr4_Socket\LINE_IN;..\Code\Lyr4_Socket\Rocker;..\Code\Lyr5_Business\Data_Service;..\Code\Lyr5_Business\Menu;..\Code\Lyr5_Business\ESP32;..\Code\Lyr6_Application\GUI;..\Code\MALLOC;..\Code\System\API;..\Code\System\DELAY;..\Code\System</IncludePath>
+              <IncludePath>..\Code\DCC;..\Code\Lyr0_Driver\ADC;..\Code\Lyr0_Driver\GPIO;..\Code\Lyr0_Driver\SDIO;..\Code\Lyr0_Driver\SPI;..\Code\Lyr0_Driver\SYSTICK;..\Code\Lyr0_Driver\USART;..\Code\Lyr0_Driver\CAN;..\Code\Lyr0_Driver\EXTI;..\Code\Lyr1_Protocol\Analog_Signal_Processing;..\Code\Lyr2_Device\SD;..\Code\Lyr2_Device\W25QXX;..\Code\Lyr2_Device\LCD;..\Code\Lyr2_Device\ESP32;..\Code\Lyr3_Module\Files;..\Code\Lyr4_Socket\KEY;..\Code\Lyr4_Socket\LED;..\Code\Lyr4_Socket\LINE_IN;..\Code\Lyr4_Socket\Rocker;..\Code\Lyr5_Business\Data_Service;..\Code\Lyr5_Business\Menu;..\Code\Lyr6_Application\GUI;..\Code\MALLOC;..\Code\System\API;..\Code\System\DELAY;..\Code\System</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -474,6 +474,11 @@
               <FileType>1</FileType>
               <FilePath>..\Code\Lyr2_Device\LCD\ILI93xx.c</FilePath>
             </File>
+            <File>
+              <FileName>ESP32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Code\Lyr2_Device\ESP32\ESP32.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -516,11 +521,6 @@
               <FileName>Menu.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Code\Lyr5_Business\Menu\Menu.c</FilePath>
-            </File>
-            <File>
-              <FileName>ESP32.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Code\Lyr5_Business\ESP32\ESP32.c</FilePath>
             </File>
           </Files>
         </Group>
