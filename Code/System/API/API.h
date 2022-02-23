@@ -44,7 +44,7 @@ typedef struct
 //任务管理器结构体
 typedef struct
 {
-  u16 utilization;         //CPU利用率
+    u16 utilization;         //CPU利用率
 	u32 runOnceTime;         //单次执行时间
 	u32 run1SecTime;         //1秒总执行时间
 	u32 runNum;              //运行次数
@@ -53,7 +53,7 @@ typedef struct
 
 enum TaskStatusEnum
 {
-  RUNNABLE,            //可运行
+    RUNNABLE,            //可运行
 	BLOCKED,             //阻塞
 	SLEEP,               //休眠
 	RUNNING,             //运行中 
@@ -67,12 +67,12 @@ typedef enum
 	Tack_LineInCheck,   //  硬线检测 
 	Tack_KeyCheck,      //  按键检测 
 	Tack_ASP,           //  AD采集 
-//	Tack_Rocker,        //  摇杆数据采集 
+	Tack_Rocker,        //  摇杆数据采集 
 	Tack_ESP,           //  ESP模块处理  
 	Tack_DataProcess,   //  数据处理 
 	Tack_MenuProcess,   //  菜单处理 
 	Tack_Graphics,      //  图像绘制 
-//	Tack_GUIDisplay,    //  图像显示 
+	Tack_GUIDisplay,    //  图像显示 
 	Tack_Idle,          //  空闲任务  
 	
 	Tack_Num_Sentry,

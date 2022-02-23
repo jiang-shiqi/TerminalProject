@@ -18,10 +18,14 @@
 static u8  fac_us=0;							//us延时倍乘数			   
 static u16 fac_ms=0;							//ms延时倍乘数,在ucos下,代表每个节拍的ms数
 
+u32 Timer_1ms = 0ul;
+
 void delay_init(u8 SYSCLK)
 {	
 	fac_us=SYSCLK/8;					    	//不论是否使用OS,fac_us都需要使用
 	fac_ms=(u16)fac_us*1000;				//非OS下,代表每个ms需要的systick时钟数  
+
+	Timer_1ms = SLICE_MS * fac_ms;      //记录1ms的嘀嗒定时器所需步骤
 	
 	SysTick->LOAD = SLICE_MS * fac_ms;	//以1ms作为时基单位
 	SysTick->VAL  = 0;										//写入使其清零

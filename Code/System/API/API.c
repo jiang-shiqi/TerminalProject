@@ -48,20 +48,20 @@ u8 Task_CR_Def(void){ return 1; }
 
 TaskTCBStruct TaskTCBAttr[] ={
 	
-{  Tack_TaskManager ,   " 任务管理器 " ,      0 ,  BLOCKED , 0 , 1000 , 0 , 0 , 0 , Task_CR_Def ,            Task_Manager , NULL},	
-{  Tack_LineInCheck ,     " 硬线检测 " ,      1 ,  BLOCKED , 0 ,    1 , 0 , 0 , 0 , Task_CR_Def , LineIn_Debounce_Service , NULL},
-{  Tack_KeyCheck ,        " 按键检测 " ,      2 ,  BLOCKED , 0 ,    1 , 0 , 0 , 0 , Task_CR_Def ,             KEY_Service , NULL},
-{  Tack_ASP ,               " AD采集 " ,      3 ,  BLOCKED , 0 ,    1 , 0 , 0 , 0 , Task_CR_Def ,             ASP_Service , NULL},
-//{  Tack_Rocker ,      " 摇杆数据采集 " ,    4 ,  BLOCKED , 0 ,    1 , 0 , 0 , 0 , Task_CR_Def ,          Rocker_Service , NULL},
+{  Tack_TaskManager ,   " 任务管理器 " ,      0 ,  BLOCKED , 0 ,               1000 , 0 , 0 , 0 , Task_CR_Def ,            Task_Manager , NULL},	
+{  Tack_LineInCheck ,     " 硬线检测 " ,      1 ,  BLOCKED , 0 ,                  1 , 0 , 0 , 0 , Task_CR_Def , LineIn_Debounce_Service , NULL},
+{  Tack_KeyCheck ,        " 按键检测 " ,      2 ,  BLOCKED , 0 ,                  1 , 0 , 0 , 0 , Task_CR_Def ,             KEY_Service , NULL},
+{  Tack_ASP ,               " AD采集 " ,      3 ,  BLOCKED , 0 ,                 1 , 0 , 0 , 0 , Task_CR_Def ,             ASP_Service , NULL},
+//{  Tack_Rocker ,      " 摇杆数据采集 " ,    4 ,  BLOCKED , 0 ,                  1 , 0 , 0 , 0 , Task_CR_Def ,          Rocker_Service , NULL},
 
-//{ Tack_ESP ,           " ESP模块处理 " ,     12 ,  BLOCKED , 0 ,   20 , 0 , 0 , 0 , Task_CR_Def ,             ESP_Service , NULL},
+//{ Tack_ESP ,           " ESP模块处理 " ,     12 ,  BLOCKED , 0 ,               20 , 0 , 0 , 0 , Task_CR_Def ,             ESP_Service , NULL},
 { Tack_DataProcess ,      " 数据处理 " ,     12 ,  BLOCKED , 0 , DATA_SERVICE_CYCLE , 0 , 0 , 0 , Task_CR_Def ,            Data_Service , NULL},
-{ Tack_MenuProcess ,      " 菜单处理 " ,     13 ,  BLOCKED , 0 ,  100 , 0 , 0 , 0 , Task_CR_Def , Menu_Processing_Service , NULL},                                                          
+{ Tack_MenuProcess ,      " 菜单处理 " ,     13 ,  BLOCKED , 0 ,                100 , 0 , 0 , 0 , Task_CR_Def , Menu_Processing_Service , NULL},                                                          
 
-{ Tack_Graphics ,         " 图像绘制 " ,     14 ,  BLOCKED , 0 , 1000 , 0 , 0 , 0 , Task_CR_Def ,        Graphics_Display , NULL}, //暂时直接显示                                                         
-//{ Tack_GUIDisplay ,       " 图像显示 " ,   15 ,  BLOCKED , 0 ,   20 , 0 , 0 , 0 , Task_CR_Def ,             GUI_Display , NULL}, 
+{ Tack_Graphics ,         " 图像绘制 " ,     14 ,  BLOCKED , 0 ,               1000 , 0 , 0 , 0 , Task_CR_Def ,        Graphics_Display , NULL}, //暂时直接显示                                                         
+//{ Tack_GUIDisplay ,       " 图像显示 " ,   15 ,  BLOCKED , 0 ,                 20 , 0 , 0 , 0 , Task_CR_Def ,             GUI_Display , NULL}, 
                                                            
-{                63 ,     " 空闲任务 " ,     63 , RUNNABLE , 0 ,    0 , 0 , 0 , 0 , Task_CR_Def ,             LED_Service , NULL},
+{  Tack_Idle ,            " 空闲任务 " ,     63 , RUNNABLE , 0 ,                   0 , 0 , 0 , 0 , Task_CR_Def ,             LED_Service , NULL},
  
 }; 
 
@@ -89,6 +89,7 @@ void Task_Service(void)
 	//防止数据溢出
 	if(i >= TCB_TOTAL)
 	{
+		//执行空闲程序
 		TaskCurrent = TCB_TOTAL - 1;
 	}
 	 
@@ -107,7 +108,7 @@ void Task_Service(void)
 	 
 	//线程进入休眠 等待倒计时结束
 		//空闲任务处理
-	if(TaskTCBAttr[TaskCurrent].index == 63)
+	if(TaskTCBAttr[TaskCurrent].index == Tack_Idle)
 	{
 		TaskTCBAttr[TaskCurrent].status = RUNNABLE;
 	}
@@ -129,15 +130,15 @@ void Task_Service(void)
 	} 
 	if(cupA0 < cupA1)
 	{
-		if(cupB1 == 0)
-		{
-		  cupB1++;
-		}
-  	cupB1 --;
+		// if(cupB1 == 0)
+		// {
+		//   cupB1++;
+		// }
+  		cupB1 --;
 		cupA0 += cupA;
 	}
 	//单次运行时间 
-	TaskTCBAttr[TaskCurrent].runOnceTime = (cupB1 - cupB0) * cupA + (cupA0 - cupA1);
+	TaskTCBAttr[TaskCurrent].runOnceTime = ((cupB1 - cupB0) * cupA + (cupA0 - cupA1)) / ( cupA / 1000 );
 	//1秒总运行时间
 	TaskTCBAttr[TaskCurrent].run1SecTime += TaskTCBAttr[TaskCurrent].runOnceTime;
 	//执行次数
@@ -169,9 +170,10 @@ void Task_CheckStatus(void)
 					break;
 				}
 			case BLOCKED:  
-			  if(pTaskFunc == NULL)
+			  	if(pTaskFunc == NULL)
 				{
 					TaskTCBAttr[i].status = RUNNABLE;
+					break;
 				} 
 				if((*pTaskFunc)())
 				{
@@ -207,13 +209,15 @@ void Task_Manager(void)
 	//赋值
 	for(i=0;i<TCB_TOTAL;i++)
 	{
-		TaskManager[i].runOnceTime = TaskTCBAttr[i].runOnceTime / 9;
-		TaskManager[i].run1SecTime = TaskTCBAttr[i].run1SecTime / 9;
+		// TaskManager[i].runOnceTime = TaskTCBAttr[i].runOnceTime / 9;
+		// TaskManager[i].run1SecTime = TaskTCBAttr[i].run1SecTime / 9;
+		TaskManager[i].runOnceTime = TaskTCBAttr[i].runOnceTime;
+		TaskManager[i].run1SecTime = TaskTCBAttr[i].run1SecTime;
 		TaskManager[i].runNum      = TaskTCBAttr[i].runNum;
 		
 		//每秒清零一次空闲任务总执行时间和执行次数
 		TaskTCBAttr[i].run1SecTime = 0;
-	  TaskTCBAttr[i].runNum      = 0;
+	  	TaskTCBAttr[i].runNum      = 0;
 	}
 	 
 	//计算利用率
